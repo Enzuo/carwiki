@@ -7,14 +7,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.min.js"></script>
     <script src="https://unpkg.com/vue"></script>
     <script src="node_modules/vue-charts/dist/vue-charts.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/vue-nav-tabs/themes/vue-tabs.css">
+    <script src="https://unpkg.com/vue-nav-tabs/dist/vue-tabs.js"></script>
 </head>
 <body>
-    <div id="app">        
-        <vue-chart    
-            :columns="columns"    
-            :rows="rows"    
-            :options="options"        
-        ></vue-chart>
+    <div id="app">
+        <vue-tabs>
+            <v-tab title="First tab">
+                <engine-curve></engine-curve>
+            </v-tab>
+        
+            <v-tab title="Power curve">
+                <vue-chart    
+                    :columns="columns"    
+                    :rows="rows"    
+                    :options="options"        
+                ></vue-chart>             
+            </v-tab>
+        
+            <v-tab title="Third tab">
+                Third tab content
+            </v-tab>
+        </vue-tabs>    
+
     </div>
     
     <script src="./index.js"></script>
