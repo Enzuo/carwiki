@@ -12,8 +12,14 @@
 </template>
 
 <script>
-import VueChart from 'vue-charts/src/components/chart'
+import VueChart from './FixedCharts.js'
 import {torqueToPS, torqueToPSperT} from '../helpers.js'
+
+const CURVETYPES = {
+	Torque : 1,
+	PS : 2,
+	PSperT : 3,
+}
 
 export default {
 	name : 'engine-graph',
@@ -34,30 +40,55 @@ export default {
         }
     },
     computed : {
+		curvesPerEngines : function () {
+			var curvesPerEngines = []
+			for(var j=0; j< this.engines.length; j++){
+				var engine = this.engines[j]
+
+				var engineCurves = []
+				if(this.showTorque){
+					engineCurves.push(CURVETYPES.Torque) 
+				}
+
+				if(this.showHP){
+					engineCurves.push(CURVETYPES.PS)
+				}
+
+				if(this.showHPperT){
+					engineCurves.push(CURVETYPES.PSperT)
+				}
+
+				curvesPerEngines.push(engineCurves)
+			}
+			return curvesPerEngines
+		},
         rows : function () {
             var data = []
             for(var i=1000; i<= 7000; i+=500){
                 var dataTick = [i]
-                for(var j=0; j< this.engines.length; j++){
+                for(var j=0; j< this.curvesPerEngines.length; j++){
+					var curves = this.curvesPerEngines[j]
                     var engine = this.engines[j]
                     var engineTick = engine.torque.find(function(tick){
                         return tick[0] === i
                     })
                     var torque = engineTick ? engineTick[1] : 0
 
-                    if(this.showTorque){
-                        dataTick.push(torque)
-                    }
-
-                    if(this.showHP){
-                        var PS = torqueToPS(torque, i)
-                        dataTick.push(PS)
-                    }
-
-                    if(this.showHPperT){
-                        var PSperT = torqueToPSperT(torque, i, 1000)
-                        dataTick.push(PSperT)
-                    }
+					for(var k=0; k < curves.length; k++){
+						switch(curves[k]){
+							case CURVETYPES.Torque :
+								dataTick.push(torque)
+								break
+							case CURVETYPES.PS :
+								var PS = torqueToPS(torque, i)
+                       			dataTick.push(PS)
+								break
+							case CURVETYPES.PSperT :
+								var PSperT = torqueToPSperT(torque, i, engine.carWeight)
+								dataTick.push(PSperT)
+								break
+						}
+					}
                 }
                 data.push(dataTick)
             }
@@ -70,49 +101,55 @@ export default {
                 label : 'RPM'
             })
 
+			for(var j=0; j< this.curvesPerEngines.length; j++){
+				var curves = this.curvesPerEngines[j]
+				var engine = this.engines[j]
 
-            for(var j=0; j< this.engines.length; j++){
-                var engine = this.engines[j]
-                
-                if(this.showTorque){
-                    columns.push({
-                        type  : 'number',
-                        label : engine.name+' Torque',
-                        lineDashStyle : [4,4],
-                    })
-                }
-
-                if(this.showHP){
-                    columns.push({
-                        type  : 'number',
-                        label : engine.name+' HP',
-                    })
-                }
-
-                if(this.showHPperT){
-                    columns.push({
-                        type  : 'number',
-                        label : engine.name+' HP/T',
-                    })
-                }
-
-                console.log('options', this.options)
-            }
+				for(var k=0; k < curves.length; k++){
+					switch(curves[k]){
+						case CURVETYPES.Torque :
+							columns.push({
+								type  : 'number',
+								label : engine.name+' Torque',
+							})
+							break
+						case CURVETYPES.PS :
+							columns.push({
+								type  : 'number',
+								label : engine.name+' HP',
+							})
+							break
+						case CURVETYPES.PSperT :
+							columns.push({
+								type  : 'number',
+								label : engine.name+' HP/T',
+							})
+							break
+					}
+				}
+			}
 
             return columns
         },
         options : function () {
             /** dashed line for torque */
             var series = {}
-            if(this.showTorque){
-                var nbCurvePerCar = 1 
-                nbCurvePerCar += this.showHP ? 1 : 0
-                nbCurvePerCar += this.showHPperT ? 1 : 0
-                for(var i=0; i < this.engines.length; i++){
-                    var torqueSerie = series[i*nbCurvePerCar] = {}
-                    torqueSerie.lineDashStyle = [4,4]
-                }
-            }
+			var serieIndex = 0;
+			var colors = [];
+			for(var j=0; j< this.curvesPerEngines.length; j++){
+				var curves = this.curvesPerEngines[j]
+				var engine = this.engines[j]
+				for(var k=0; k < curves.length; k++){
+					var serie = series[serieIndex] = {}
+					switch(curves[k]){
+						case CURVETYPES.Torque :
+							serie.lineDashStyle = [4,4]
+							break
+					}
+					serieIndex++;
+					colors.push(engine.color)
+				}
+			}
 
             return {
                 title: 'Torque Curve',
@@ -129,7 +166,8 @@ export default {
                 width: 900,
                 height: 500,
                 curveType: 'none',
-                series : series,
+				series : series,
+				colors : colors,
             }
         }
     },

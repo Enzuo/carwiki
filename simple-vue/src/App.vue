@@ -33,13 +33,19 @@ import data from './data.js'
 var selectedCars = []
 selectedCars.push(data.cars[0])
 selectedCars.push(data.cars[1])
+selectedCars[0].color = '#3366cc'
+selectedCars[1].color = '#dc3912'
 
 export default {
   name: 'app',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      engines: selectedCars.map((car) => { return car.engine }),
+      engines: selectedCars.map((car) => { 
+        var engine = car.engine
+        engine.color = car.color 
+        return engine 
+      }),
     }
   },
   components : {
