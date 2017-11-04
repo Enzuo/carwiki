@@ -135,7 +135,6 @@ export default {
             /** dashed line for torque */
             var series = {}
 			var serieIndex = 0;
-			var colors = [];
 			for(var j=0; j< this.curvesPerEngines.length; j++){
 				var curves = this.curvesPerEngines[j]
 				var engine = this.engines[j]
@@ -147,7 +146,7 @@ export default {
 							break
 					}
 					serieIndex++;
-					colors.push(engine.color)
+					serie.color = engine.color
 				}
 			}
 
@@ -167,7 +166,6 @@ export default {
                 height: 500,
                 curveType: 'none',
 				series : series,
-				colors : colors,
             }
         }
     },
