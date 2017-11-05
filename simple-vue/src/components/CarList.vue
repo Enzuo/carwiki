@@ -1,9 +1,9 @@
 <template>
     <div id="car-list">
         <ul>
-            <li v-for="(car, index) in carsWithColor" :key="index" :style="{'background-color': car.colorObj.hex}">
+            <li v-for="(car, index) in cars" :key="index" :style="{'background-color': car.color}">
                 {{ car.name }}
-                <compact-picker :value="car.colorObj" :palette="palette" v-on:input="updateValue(index, $event)" ></compact-picker>
+                <compact-picker :value="{'hex' : car.color }" :palette="palette" v-on:input="updateValue(index, $event)" ></compact-picker>
             </li>
         </ul>
     </div>
@@ -11,7 +11,6 @@
 
 <script>
 import {Compact} from 'vue-color'
-import Vue from 'vue'
 
 export default {
     name : 'car-list',
@@ -25,11 +24,6 @@ export default {
     },
     data () {
         return {
-            carsWithColor : this.cars.map((car) =>{
-                car.colorObj = {}
-                car.colorObj.hex = car.color
-                return car
-            }),
             palette : [
                 "#3366cc","#dc3912","#ff9900","#109618",
                 "#990099","#0099c6","#dd4477","#66aa00",
@@ -44,8 +38,7 @@ export default {
     },
     methods : {
         updateValue : function(index, col) {
-            var newVal = Object.assign({}, this.carsWithColor[index], {colorObj: col})
-            Vue.set(this.carsWithColor, index, newVal)
+            this.$emit('colorChange',{index, color:col.hex})
         },
     },
 }

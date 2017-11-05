@@ -22,11 +22,14 @@
     </vue-tabs>    
     <car-list
       :cars="cars"
+      v-on:colorChange="colorChange"
     ></car-list>
+    {{ cars }}
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import VueCharts from 'vue-charts'
 import {VueTabs, VTab} from 'vue-nav-tabs'
 import EngineGraph from './components/EngineGraph.vue'
@@ -58,7 +61,13 @@ export default {
       }),
     }
   },
-  
+  methods : {
+    colorChange : function(event){
+      console.log(event)
+      var newVal = Object.assign({}, this.cars[event.index], {color: event.color})
+      Vue.set(this.cars, event.index, newVal)
+    }
+  }
 }
 </script>
 
