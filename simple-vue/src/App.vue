@@ -19,6 +19,7 @@
         <car-list
           :cars="cars"
           v-on:colorChange="colorChange"
+          @gearChange="gearChange"
         ></car-list>
       </v-tab>
     </vue-tabs>    
@@ -68,8 +69,11 @@ export default {
   },
   methods : {
     colorChange : function(event){
-      console.log(event)
       var newVal = Object.assign({}, this.cars[event.index], {color: event.color})
+      Vue.set(this.cars, event.index, newVal)
+    },
+    gearChange : function(event){
+      var newVal = Object.assign({}, this.cars[event.index], {selectedGear: event.selectedGear})
       Vue.set(this.cars, event.index, newVal)
     }
   }

@@ -2,8 +2,9 @@
     <div id="car-list">
         <ul>
             <li v-for="(car, index) in cars" :key="index" :style="{'background-color': car.color}">
-                {{ car.name }}
-                <compact-picker :value="{'hex' : car.color }" :palette="palette" v-on:input="updateValue(index, $event)" ></compact-picker>
+                Name : {{ car.name }}
+                <div v-on:click="changeGear(index)">SelectedGear : {{ romanize(car.selectedGear) }}</div>
+                <compact-picker :value="{'hex' : car.color }" :palette="palette" v-on:input="changeColor(index, $event)" ></compact-picker>
             </li>
         </ul>
     </div>
@@ -11,6 +12,7 @@
 
 <script>
 import {Compact} from 'vue-color'
+import {romanize} from '../helpers.js'
 
 export default {
     name : 'car-list',
@@ -34,11 +36,21 @@ export default {
                 "#9c5935","#a9c413","#2a778d","#668d1c",
                 "#bea413","#0c5922","#743411"
             ],
+            romanize : romanize,
         }
     },
     methods : {
-        updateValue : function(index, col) {
+        changeColor : function(index, col) {
             this.$emit('colorChange',{index, color:col.hex})
+        },
+        changeGear : function(index) {
+            var car = this.cars[index]
+            var selectedGear = car.selectedGear || 3
+            selectedGear += 1
+            if(selectedGear > car.gearRatio.length){
+                selectedGear = 1
+            }
+            this.$emit('gearChange', {index, selectedGear})
         },
     },
 }
