@@ -13,7 +13,7 @@
 
 <script>
 import VueChart from './FixedCharts.js'
-import {torqueToPS, torqueToPSperT} from '../helpers.js'
+import {torqueToPS, torqueToPSperT, getTorqueForRPM} from '../helpers.js'
 
 const CURVETYPES = {
 	Torque : 1,
@@ -69,10 +69,10 @@ export default {
                 for(var j=0; j< this.curvesPerEngines.length; j++){
 					var curves = this.curvesPerEngines[j]
                     var engine = this.engines[j]
-                    var engineTick = engine.torque.find(function(tick){
-                        return tick[0] === i
-                    })
-                    var torque = engineTick ? engineTick[1] : 0
+                    // var engineTick = engine.torque.find(function(tick){
+                    //     return tick[0] === i
+                    // })
+                    var torque = getTorqueForRPM(engine.torque, i)
 
 					for(var k=0; k < curves.length; k++){
 						switch(curves[k]){

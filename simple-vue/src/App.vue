@@ -37,8 +37,11 @@ import data from './data.js'
 var selectedCars = []
 selectedCars.push(data.cars[0])
 selectedCars.push(data.cars[1])
+selectedCars.push(data.cars[2])
 selectedCars[0].color = '#3366cc'
 selectedCars[1].color = '#dc3912'
+selectedCars[2].color = '#ff9900'
+
 
 export default {
   name: 'app',

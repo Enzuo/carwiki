@@ -4,10 +4,12 @@
  * Compute Functions
  */
 export function torqueToPS(torque, rpm){
+    if(torque === null){ return null }
     return (torque * rpm) / (9549 * 0.7457)
 }
 
 export function torqueToPSperT(torque, rpm, weight){
+    if(torque === null){ return null }    
     return torqueToPS(torque, rpm) / (weight / 1000)
 }
 
