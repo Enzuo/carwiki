@@ -8,11 +8,11 @@
       </v-tab>
   
       <v-tab title="Situations power curves">
-        <!--<vue-chart    
-          :columns="columns"    
-          :rows="rows"    
-          :options="options"        
-        ></vue-chart>   -->          
+        <car-power-graph
+          :cars="cars"
+          :minSpeed="20"
+          :maxSpeed="120"
+        ></car-power-graph>       
       </v-tab>
   
       <v-tab title="Car list details">
@@ -30,6 +30,7 @@ import Vue from 'vue'
 import VueCharts from 'vue-charts'
 import {VueTabs, VTab} from 'vue-nav-tabs'
 import EngineGraph from './components/EngineGraph.vue'
+import CarPowerGraph from './components/CarPowerGraph.vue'
 import CarList from './components/CarList.vue'
 import data from './data.js'
 
@@ -46,6 +47,7 @@ export default {
     VTab,
     EngineGraph,
     CarList,
+    CarPowerGraph,
   },
   data () {
     return {
