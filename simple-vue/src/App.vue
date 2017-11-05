@@ -54,12 +54,16 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       cars : selectedCars,
-      engines: selectedCars.map((car) => { 
+    }
+  },
+  computed : {
+    engines : function(){
+      return this.cars.map((car) => { 
         var engine = car.engine
         engine.color = car.color 
         return engine 
-      }),
-    }
+      })
+    },
   },
   methods : {
     colorChange : function(event){
