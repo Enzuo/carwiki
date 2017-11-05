@@ -20,7 +20,9 @@
         Third tab content
       </v-tab>
     </vue-tabs>    
-
+    <car-list
+      :cars="cars"
+    ></car-list>
   </div>
 </template>
 
@@ -28,6 +30,7 @@
 import VueCharts from 'vue-charts'
 import {VueTabs, VTab} from 'vue-nav-tabs'
 import EngineGraph from './components/EngineGraph.vue'
+import CarList from './components/CarList.vue'
 import data from './data.js'
 
 var selectedCars = []
@@ -38,9 +41,16 @@ selectedCars[1].color = '#dc3912'
 
 export default {
   name: 'app',
+  components : {
+    VueTabs,
+    VTab,
+    EngineGraph,
+    CarList,
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
+      cars : selectedCars,
       engines: selectedCars.map((car) => { 
         var engine = car.engine
         engine.color = car.color 
@@ -48,11 +58,6 @@ export default {
       }),
     }
   },
-  components : {
-    VueTabs,
-    VTab,
-    EngineGraph,
-  }
   
 }
 </script>
