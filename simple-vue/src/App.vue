@@ -1,14 +1,13 @@
 <template>
   <div id="app">
     <vue-tabs>
-      <v-tab title="First tab">
-        {{msg}}
+      <v-tab title="Power curve">
         <engine-graph
           :engines="engines"
         ></engine-graph>
       </v-tab>
   
-      <v-tab title="Power curve">
+      <v-tab title="Situations power curves">
         <!--<vue-chart    
           :columns="columns"    
           :rows="rows"    
@@ -16,15 +15,13 @@
         ></vue-chart>   -->          
       </v-tab>
   
-      <v-tab title="Third tab">
-        Third tab content
+      <v-tab title="Car list details">
+        <car-list
+          :cars="cars"
+          v-on:colorChange="colorChange"
+        ></car-list>
       </v-tab>
     </vue-tabs>    
-    <car-list
-      :cars="cars"
-      v-on:colorChange="colorChange"
-    ></car-list>
-    {{ cars }}
   </div>
 </template>
 
@@ -52,7 +49,6 @@ export default {
   },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
       cars : selectedCars,
     }
   },

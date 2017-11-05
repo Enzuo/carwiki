@@ -5,7 +5,6 @@ import Chart from 'vue-charts/src/components/chart'
 export default Object.assign(Chart, {
   watch: {
     options() {
-        console.log('options changed !')
       if (this.wrapper) {
         this.wrapper.setOptions(this.options)
       }
