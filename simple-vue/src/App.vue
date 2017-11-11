@@ -22,7 +22,11 @@
           @gearChange="gearChange"
         ></car-list>
       </v-tab>
-    </vue-tabs>    
+    </vue-tabs>   
+
+    <engine-edit
+      :engine="cars[0].engine"
+    ></engine-edit> 
   </div>
 </template>
 
@@ -31,6 +35,7 @@ import Vue from 'vue'
 import VueCharts from 'vue-charts'
 import {VueTabs, VTab} from 'vue-nav-tabs'
 import EngineGraph from './components/EngineGraph.vue'
+import EngineEdit from './components/EngineEdit.vue'
 import CarPowerGraph from './components/CarPowerGraph.vue'
 import CarList from './components/CarList.vue'
 import data from './data.js'
@@ -52,6 +57,7 @@ export default {
     EngineGraph,
     CarList,
     CarPowerGraph,
+    EngineEdit,
   },
   data () {
     return {

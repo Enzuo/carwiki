@@ -4,8 +4,13 @@
  * Compute Functions
  */
 export function torqueToPS(torque, rpm){
-    if(torque === null){ return null }
+    if(torque === null || !rpm){ return null }
     return (torque * rpm) / (9549 * 0.7457)
+}
+
+export function torqueToKW(torque, rpm){
+    if(torque === null || !rpm){ return null }
+    return (torque * rpm) / 9549
 }
 
 export function torqueToPSperT(torque, rpm, weight){
@@ -13,6 +18,10 @@ export function torqueToPSperT(torque, rpm, weight){
     return torqueToPS(torque, rpm) / (weight / 1000)
 }
 
+export function PSToTorque(PS, rpm){
+    if(!PS || !rpm ) return 0
+    return (PS * (9549 * 0.7457)) / rpm
+}
 // Get Torque for any RPM
 // Assuming the torqueCurve is of the form
 // [[rpm, torque],[rpm, torque],...]
@@ -43,6 +52,28 @@ export function romanize(num) {
         }
     }
     return roman;
+}
+
+export function getTypicalRPMInterval(torque, precision){
+    var intervals = [];
+    for(var i=1; i<torque.length; i++){
+        intervals.push(torque[i][0] - torque[i-1][0])
+    }
+
+    intervals.sort( function(a,b) {return a - b;} );
+
+    var half = Math.floor(intervals.length/2);
+    
+    var typicalInterval = 0
+
+    if(intervals.length % 2){
+        typicalInterval = intervals[half];
+    }
+    else {
+        typicalInterval = (intervals[half-1] + intervals[half]) / 2.0;
+    }
+
+    return Math.round(typicalInterval/precision) * precision
 }
 
 

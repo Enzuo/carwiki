@@ -7,7 +7,6 @@
         <input type="checkbox" id="hpt-checkbox" v-model="showHPperT">
         <label for="hpt-checkbox">Horsepower/T (Ps)</label>
         <vue-chart :columns="columns" :rows="rows" :options="options"></vue-chart>
-        {{options}}
     </div>
 </template>
 
