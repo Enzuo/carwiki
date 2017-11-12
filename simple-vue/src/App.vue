@@ -24,9 +24,8 @@
       </v-tab>
     </vue-tabs>   
 
-    <engine-edit
-      :engine="cars[0].engine"
-    ></engine-edit> 
+    <router-link to="/engine-edit">Go to Engine Edit</router-link>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -40,6 +39,10 @@ import CarPowerGraph from './components/CarPowerGraph.vue'
 import CarList from './components/CarList.vue'
 import data from './data.js'
 
+import VueRouter from 'vue-router'
+
+Vue.use(VueRouter)
+
 var selectedCars = []
 selectedCars.push(data.cars[0])
 selectedCars.push(data.cars[1])
@@ -48,9 +51,28 @@ selectedCars[0].color = '#3366cc'
 selectedCars[1].color = '#dc3912'
 selectedCars[2].color = '#ff9900'
 
+const EnginePage = {
+  data : () => {
+    return {
+      engine : selectedCars[0].engine
+    }
+  },
+  components : { EngineEdit },
+  template: '<engine-edit :engine="engine"></engine-edit>' 
+}
+
+const routes = [
+  { path: '/engine-edit', component: EnginePage },
+]
+
+const router = new VueRouter({
+  routes // short for `routes: routes`
+})
+
 
 export default {
   name: 'app',
+  router : router,
   components : {
     VueTabs,
     VTab,
