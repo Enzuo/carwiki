@@ -41,6 +41,10 @@ import data from './data.js'
 
 import VueRouter from 'vue-router'
 
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
 Vue.use(VueRouter)
 
 var selectedCars = []
@@ -67,6 +71,21 @@ const routes = [
 
 const router = new VueRouter({
   routes // short for `routes: routes`
+})
+
+/*============================
+           Store
+============================*/
+
+const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    }
+  }
 })
 
 
