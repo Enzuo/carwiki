@@ -17,4 +17,25 @@
 
 const Route = use('Route')
 
-Route.any('*', 'NuxtController.render')
+
+// Route.get('/api/engine/', 'EngineController.index')
+Route.get('/api/engine/', (ctx) => {
+  console.log('I am in the callback func')
+  // ctx.request
+  // ctx.response
+  return 'gottcha'
+})
+Route.get('/api/engine/:id', 'EngineController.show')
+
+// Route
+// .resource('engine', 'EngineController')
+// .apiOnly()
+// .middleware(new Map([
+//   ['auth'], ['engine.store', 'engine.update', 'engine.delete']
+// ]))
+// .formats(['json'])
+// prefix('api')
+
+
+// wildcard route (SPA http://adonisjs.com/docs/4.0/routing#_routing_for_spa_s)
+// Route.any('*', 'NuxtController.render')
