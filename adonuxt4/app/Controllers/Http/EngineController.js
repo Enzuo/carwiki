@@ -1,12 +1,21 @@
 'use strict'
 
+const Engine = use('App/Models/Engine')
+
 class EngineController {
-  index () {
-    return 'list of all engines'
+  async index () {
+    let engines = await Engine.all()
+    return engines
   }
 
-  show ({params}) {
-    return 'engine details of engine id '+params.id
+  async show ({params}) {
+    try {
+      let engine = await Engine.find(params.id)
+      return engine
+    }
+    catch (e) {
+      console.log(e)
+    }
   }
 }
 
