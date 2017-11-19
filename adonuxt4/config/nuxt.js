@@ -9,7 +9,8 @@ module.exports = {
       analyzerMode: 'static',
       generateStatsFile: true,
       statsFilename: 'webpack-stats.json'
-    }
+    },
+    vendor: ['axios']
   },
 
   css: ['~assets/css/main.css'],
