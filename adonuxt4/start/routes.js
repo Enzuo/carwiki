@@ -23,7 +23,7 @@ Route.group(() => {
 
 }).prefix('api/v1')
 
-Route.get('engine', 'EngineController.index')
-Route.get('engine/:id', 'EngineController.show')
+Route.get('api/engine', 'EngineController.index')
+Route.get('api/engine/:id', 'EngineController.show')
 
 Route.any('*', 'NuxtController.render')
