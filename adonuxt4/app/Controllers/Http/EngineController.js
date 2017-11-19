@@ -9,13 +9,12 @@ class EngineController {
   }
 
   async show ({params}) {
-    try {
-      let engine = await Engine.find(params.id)
-      return engine
+    let id = params.id
+    let engine = await Engine.find(id)
+    if(!engine){
+      throw Error('no such engine')
     }
-    catch (e) {
-      console.log(e)
-    }
+    return engine
   }
 }
 
