@@ -34,7 +34,8 @@
     "@adonisjs/vow": "^1.0.12",
     "axios": "^0.17.1",
     "cross-env": "^5.1.0",
-    "nuxt": "^1.0.0-rc11"
+    "nuxt": "^1.0.0-rc11",
+    "pg": "^7.4.0"
   },
   "devDependencies": {
     "standard": "^10.0.3"
