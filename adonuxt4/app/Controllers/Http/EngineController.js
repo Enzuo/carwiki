@@ -1,10 +1,22 @@
 'use strict'
 
 const Engine = use('App/Models/Engine')
+const {prepareTsQuery} = use('App/Helpers/sql')
+
 
 class EngineController {
-  async index () {
-    let engines = await Engine.all()
+  async index ({request}) {
+    let search = request.input('search')
+    let engines = []
+    let query = Engine.query()
+      .select('id', 'name')
+      .limit(5).clone()
+    if(search){
+      engines = await query.whereRaw('name_tsv @@ to_tsquery(?)', prepareTsQuery(search))
+    }
+    else{
+      engines = await query
+    }
     return engines
   }
 
