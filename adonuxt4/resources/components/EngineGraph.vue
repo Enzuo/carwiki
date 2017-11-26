@@ -6,7 +6,9 @@
         <label for="hp-checkbox">Horsepower (Ps)</label>
         <input type="checkbox" id="hpt-checkbox" v-model="showHPperT">
         <label for="hpt-checkbox">Horsepower/T (Ps)</label>
-        <vue-chart :columns="columns" :rows="rows" :options="options"></vue-chart>
+        <no-ssr>
+          <vue-chart :columns="columns" :rows="rows" :options="options"></vue-chart>
+        </no-ssr>
         {{ rows }} {{ columns }}
     </div>
 </template>
@@ -14,6 +16,7 @@
 <script>
 import VueChart from "~/plugins/vue-charts.js";
 import { torqueToPS, torqueToPSperT, getTorqueForRPM } from "~/../app/Helpers/helpers"
+import NoSSR from 'vue-no-ssr'
 
 const CURVETYPES = {
   Torque: 1,
@@ -24,7 +27,8 @@ const CURVETYPES = {
 export default {
   name: "engine-graph",
   components: {
-    VueChart
+    VueChart,
+    NoSSR
   },
   props: {
     engines: {
