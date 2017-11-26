@@ -1,34 +1,46 @@
 <template>
-    <div>
-        {{message}} {{$route.params.id}} {{ title}}
-    </div>
+  <div>
+    <search-select
+      @select="selectEngine"
+    >
+    </search-select>
+    {{message}} {{$route.params.id}} {{ engine }}
+  </div>
 </template>
 
 <script>
 import axios from '~/plugins/axios'
+import SearchSelect from '~/components/SearchSelect'
+
 
 export default {
-    props: ['id','params'],
-    validate : ({params}) => {
-        console.log('validate params', params)
-        return /^\d+$/.test(params.id) || !params.id
-    },
-    // The fetch method is used to fill the store before rendering the page,
-    // it's like the asyncData method except it doesn't set the component data.
-    // async fetch ({ params }) {
-    //   let { data } = await axios.get()
-    //   console.log('got data', data)
-    //   return { title: data.title }
-    // },
-    async asyncData ({ params }) {
+  props: ['id','params'],
+  validate : ({params}) => {
+      console.log('validate params', params)
+      return /^\d+$/.test(params.id) || !params.id
+  },
+  components : {
+    SearchSelect
+  },
+  async asyncData ({ params }) {
+    let engine = null
+    if(params.id){
       let { data } = await axios.get(`engine/${params.id}`)
-      return { title: data }
-    },
-    data : () => {
-        return {
-            message : 'hello engine'
-        }
+      engine = data
     }
+    return { engine }
+  },
+  data : () => {
+    return {
+      message : 'hello engine'
+    }
+  },
+  methods : {
+    selectEngine (id) {
+      console.log('route re push ', id)
+      this.$router.push({ path: `/engine/${id}`})
+    }
+  }
 }
 </script>
 
