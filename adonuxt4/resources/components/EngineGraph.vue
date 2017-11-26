@@ -4,8 +4,10 @@
         <label for="torque-checkbox">Torque (Nm)</label>
         <input type="checkbox" id="hp-checkbox" v-model="showHP">
         <label for="hp-checkbox">Horsepower (Ps)</label>
-        <input type="checkbox" id="hpt-checkbox" v-model="showHPperT">
-        <label for="hpt-checkbox">Horsepower/T (Ps)</label>
+        <div v-if="carWeight">
+          <input type="checkbox" id="hpt-checkbox" v-model="showHPperT">
+          <label for="hpt-checkbox">Horsepower/T (Ps)</label>
+        </div>
         <no-ssr>
           <vue-chart :columns="columns" :rows="rows" :options="options"></vue-chart>
         </no-ssr>
