@@ -1,17 +1,26 @@
 <template>
   <div>
     {{message}} {{$route.params.id}} {{ engine }}
+    <engine-graph
+      :engines="[engine]"
+    ></engine-graph>
   </div>
 </template>
 
 <script>
 import axios from '~/plugins/axios'
+import EngineGraph from '~/components/EngineGraph'
+// import Chart from 'vue-charts/src/components/chart'
+
 
 export default {
   props: ['id','params'],
   validate : ({params}) => {
       console.log('validate params', params)
       return /^\d+$/.test(params.id) || !params.id
+  },
+  components : {
+    EngineGraph,
   },
   async asyncData ({ params }) {
     let engine = null

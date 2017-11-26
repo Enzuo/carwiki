@@ -10,7 +10,7 @@ module.exports = {
       generateStatsFile: true,
       statsFilename: 'webpack-stats.json'
     },
-    vendor: ['axios']
+    vendor: ['axios','~/plugins/vue-charts']
   },
 
   css: ['~assets/css/main.css'],
