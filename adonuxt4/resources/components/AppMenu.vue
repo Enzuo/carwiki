@@ -24,7 +24,11 @@
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          <v-list-tile-title>
+            <nuxt-link :to="item.link">
+              {{ item.title }}
+            </nuxt-link>
+          </v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
@@ -37,8 +41,10 @@
     data : () => {
       return {
         items : [
-          { title: 'Home', icon: 'dashboard' },
-          { title: 'About', icon: 'question_answer' }
+          { title: 'Car', icon: 'directions_car', link : '/car' },
+          { title: 'Engine', icon: 'power', link : '/engine' },
+          { title: 'Compare', icon: 'compare_arrows', link : '/compare' },
+          { title: 'About', icon: 'question_answer', link : '/about' }
         ],
         mini: true,
         right: null
