@@ -1,18 +1,25 @@
 <template>
-  <div>
-    <nuxt/>
+  <v-app>
+    <app-menu/>
+    <v-content>
+      <v-container fluid fill-height>
+        <nuxt/>
+      </v-container>
+    </v-content>
     <my-footer/>
-  </div>
+  </v-app>
 </template>
 
 <script>
-  const MyFooter = () => import('~/components/MyFooter')
+  import MyFooter from '~/components/MyFooter'
+  import AppMenu from '~/components/AppMenu'
 
   export default {
     name: 'layout-default',
 
     components: {
-      MyFooter
+      MyFooter,
+      AppMenu
     }
   }
 </script>
