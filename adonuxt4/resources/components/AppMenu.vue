@@ -19,15 +19,13 @@
     </v-toolbar>
     <v-list class="pt-0" dense>
       <v-divider></v-divider>
-      <v-list-tile v-for="item in items" :key="item.title" @click="">
+      <v-list-tile v-for="item in items" :key="item.title" nuxt :to="item.link" >
         <v-list-tile-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title>
-            <nuxt-link :to="item.link">
-              {{ item.title }}
-            </nuxt-link>
+            {{ item.title }}
           </v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
@@ -42,7 +40,7 @@
       return {
         items : [
           { title: 'Car', icon: 'directions_car', link : '/car' },
-          { title: 'Engine', icon: 'power', link : '/engine' },
+          { title: 'Engine', icon: 'power', link : '/engine', active : true },
           { title: 'Compare', icon: 'compare_arrows', link : '/compare' },
           { title: 'About', icon: 'question_answer', link : '/about' }
         ],
@@ -50,6 +48,11 @@
         right: null
       }
     },
+    methods : {
+      navigate(link) {
+
+      }
+    }
   }
 </script>
 
