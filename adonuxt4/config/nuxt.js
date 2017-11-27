@@ -10,10 +10,12 @@ module.exports = {
       generateStatsFile: true,
       statsFilename: 'webpack-stats.json'
     },
-    vendor: ['axios','~/plugins/vue-charts']
+    vendor: ['axios', '~/plugins/vue-charts', '~/plugins/vuetify']
   },
 
-  css: ['~assets/css/main.css'],
+  plugins : ['~/plugins/vuetify'],
+
+  css: ['~assets/css/main.css','vuetify/dist/vuetify.min.css'],
 
   head: {
     title: 'Adonuxt',
@@ -43,6 +45,10 @@ module.exports = {
         rel: 'shortcut icon',
         type: 'image/x-icon',
         href: 'favicon.png'
+      },
+      {
+        href :'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons',
+        rel : 'stylesheet'
       }
     ],
     noscript: [{ innerHtml: `

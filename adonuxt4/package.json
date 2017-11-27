@@ -39,7 +39,8 @@
     "vue-charts": "^0.2.1",
     "vue-multiselect": "^2.0.6",
     "vue-no-ssr": "^0.2.2",
-    "vue-search-select": "^2.4.0"
+    "vue-search-select": "^2.4.0",
+    "vuetify": "^0.17.3"
   },
   "devDependencies": {
     "standard": "^10.0.3"
