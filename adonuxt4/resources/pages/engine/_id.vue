@@ -1,9 +1,11 @@
 <template>
   <div>
     {{message}} {{$route.params.id}} {{ engine }}
-    <engine-graph
-      :engines="[engine]"
-    ></engine-graph>
+    <div v-if="engine">
+      <engine-graph
+        :engines="[engine]"
+      ></engine-graph>
+    </div>
   </div>
 </template>
 
