@@ -4,7 +4,7 @@
         <label for="torque-checkbox">Torque (Nm)</label>
         <input type="checkbox" id="hp-checkbox" v-model="showHP">
         <label for="hp-checkbox">Horsepower (Ps)</label>
-        <div v-if="engines[0].carWeight">
+        <div v-if="showHPperTOption">
           <input type="checkbox" id="hpt-checkbox" v-model="showHPperT">
           <label for="hpt-checkbox">Horsepower/T (Ps)</label>
         </div>
@@ -173,7 +173,13 @@ export default {
         curveType: "none",
         series: series
       };
-    }
+    },
+    showHPperTOption : function () {
+      if(!this.engines || this.engines.length === 0 || !this.engines[0] || !this.engines[0].carWeight){
+        return false
+      }
+      return true
+    },
   }
 };
 </script>
