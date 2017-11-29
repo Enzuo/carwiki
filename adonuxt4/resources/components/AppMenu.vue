@@ -38,15 +38,26 @@
     name : 'app-menu',
     data : () => {
       return {
-        items : [
-          { title: 'Car', icon: 'directions_car', link : '/car' },
-          { title: 'Engine', icon: 'power', link : '/engine', active : true },
-          { title: 'Compare', icon: 'compare_arrows', link : '/compare' },
-          { title: 'About', icon: 'question_answer', link : '/about' }
-        ],
+        // items : [
+        //   { title: 'Car', icon: 'directions_car', link : '/car' },
+        //   { title: 'Engine', icon: 'power', link : '/engine', active : true },
+        //   { title: 'Compare', icon: 'compare_arrows', link : '/compare' },
+        //   { title: 'About', icon: 'question_answer', link : '/about' }
+        // ],
         mini: true,
         right: null
       }
+    },
+    computed : {
+      items () {
+        console.log('this store', this.$store);
+        return [
+          { title: 'Car', icon: 'directions_car', link : '/car' },
+          { title: 'Engine', icon: 'power', link : '/engine'+this.$store.getters.currentEngineUrl },
+          { title: 'Compare', icon: 'compare_arrows', link : '/compare' },
+          { title: 'About', icon: 'question_answer', link : '/about' }
+        ];
+      },
     },
     methods : {
       navigate(link) {
