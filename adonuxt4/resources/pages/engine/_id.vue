@@ -5,6 +5,20 @@
       <engine-graph
         :engines="[engine]"
       ></engine-graph>
+
+      {{ editUrl = '/edit/engine/'+engine.id }}
+      <v-btn
+        color="blue"
+        dark
+        fab
+        fixed
+        bottom
+        right
+        :to="editUrl"
+      >
+        <v-icon>edit</v-icon>
+      </v-btn>
+
     </div>
   </div>
 </template>
@@ -18,11 +32,6 @@ import EngineGraph from '~/components/EngineGraph'
 export default {
   props: ['id','params'],
   validate : ({params}) => {
-    // var isOk = /^\d+$/.test(params.id) || !params.id
-    // if(isOk){
-    //   console.log('commit mounted engine mutation', params)
-    //   this.$store.commit('setCurrentEngine', params.id)
-    // }
     return /^\d+$/.test(params.id) || !params.id
   },
   components : {
