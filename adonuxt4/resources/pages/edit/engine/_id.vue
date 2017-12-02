@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <v-container fluid>
-      <v-layout row>
-        <v-flex xs6 order-lg2>
-          <engine-edit :engine="engine"/>
-        </v-flex>
-        <v-flex xs6>
-          <engine-graph
-            :engines="[engine]"
-          ></engine-graph>
-        </v-flex>
-      </v-layout>
-    </v-container>
-  </div>
+  <v-container fluid>
+    <v-layout row wrap>
+      <v-flex sm12 md6>
+        <engine-edit :engine="engine"/>
+      </v-flex>
+      <v-flex sm12 md6>
+        <engine-graph
+          :engines="[engine]"
+        ></engine-graph>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>

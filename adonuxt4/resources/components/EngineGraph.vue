@@ -1,17 +1,22 @@
 <template>
     <div>
-        <input type="checkbox" id="torque-checkbox" v-model="showTorque">
-        <label for="torque-checkbox">Torque (Nm)</label>
-        <input type="checkbox" id="hp-checkbox" v-model="showHP">
-        <label for="hp-checkbox">Horsepower (Ps)</label>
-        <div v-if="showHPperTOption">
-          <input type="checkbox" id="hpt-checkbox" v-model="showHPperT">
-          <label for="hpt-checkbox">Horsepower/T (Ps)</label>
-        </div>
-        <no-ssr>
-          <vue-chart :columns="columns" :rows="rows" :options="options"></vue-chart>
-        </no-ssr>
-        {{ rows }} {{ columns }}
+      <v-checkbox
+        label="Torque (Nm)"
+        v-model="showTorque"
+      ></v-checkbox>
+      <v-checkbox
+        label="Horsepower (Ps)"
+        v-model="showHP"
+      ></v-checkbox>
+      <v-checkbox
+        v-if="showHPperTOption"
+        label="Horsepower/T (Ps)"
+        v-model="showHPperT"
+      ></v-checkbox>
+      <no-ssr>
+        <vue-chart ref="graph" :columns="columns" :rows="rows" :options="options"></vue-chart>
+      </no-ssr>
+      {{ rows }} {{ columns }}
     </div>
 </template>
 
@@ -157,21 +162,14 @@ export default {
       }
 
       return {
-        title: "Torque Curve",
-        hAxis: {
-          title: "RPM",
-          minValue: "500",
-          maxValue: "7000"
-        },
-        vAxis: {
-          title: "Torque ",
-          minValue: 0,
-          maxValue: 120
-        },
-        width: 900,
         height: 500,
         curveType: "none",
-        series: series
+        series: series,
+        chartArea: { width: '100%', height: '80%'},
+        legend: {
+          position: 'bottom',
+          textStyle: { fontSize: 11 }
+        }
       };
     },
     showHPperTOption : function () {
@@ -180,6 +178,18 @@ export default {
       }
       return true
     },
-  }
+  },
+  beforeDestroy: function () {
+    window.removeEventListener('resize', this.handleWindowResize)
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleWindowResize);
+  },
+  methods : {
+    handleWindowResize(event) {
+      let graph = this.$refs.graph
+      graph.$emit('redrawChart')
+    },
+  },
 };
 </script>

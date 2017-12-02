@@ -7,5 +7,11 @@ export default Object.assign(VueCharts, {
         this.wrapper.setOptions(this.options)
       }
     }
-  }
+  },
+  created() {
+    this.$on('redrawChart', function() {
+      this.drawChart()
+    })
+  },
+
 });
