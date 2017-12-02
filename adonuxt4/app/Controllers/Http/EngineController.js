@@ -28,6 +28,14 @@ class EngineController {
     }
     return engine
   }
+
+  async update ({ params, request }) {
+    return await Engine
+      .query()
+      .where({ id: params.id })
+      .update(request.post())
+      .returning(['id','name','profile'])
+  }
 }
 
 module.exports = EngineController
