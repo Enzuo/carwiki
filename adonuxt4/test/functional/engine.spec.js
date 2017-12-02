@@ -18,14 +18,10 @@ test ('get list of engines', async ({ client }) => {
   var engines = await Engine.all()
   console.log('all engines', engines.toJSON())
 
-  const response = await client.get('/api/engine').end()
+  const response = await client.get('/api/engines').end()
 
   response.assertStatus(200)
   response.assertJSONSubset([{
     name : 'test engine',
-    profile : JSON.stringify([
-      [1500,10],
-      [3500,45]
-    ])
   }])
 })

@@ -54,7 +54,7 @@ export default {
 
     },
     async getEngines () {
-      let { data } = await axios.get('engine')
+      let { data } = await axios.get('engines')
       this.engines = data
     }
   }

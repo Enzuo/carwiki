@@ -21,9 +21,9 @@ Route.group(() => {
     .resource('users', 'UserController')
     .apiOnly()
 
+  Route.resource('engines', 'EngineController').apiOnly()
+
 }).prefix('api')
 
-Route.get('api/engine', 'EngineController.index')
-Route.get('api/engine/:id([0-9]+)', 'EngineController.show')
 
 Route.any('*', 'NuxtController.render')

@@ -45,7 +45,7 @@ export default {
   async asyncData ({ params, store }) {
     let engine = null
     if(params.id){
-      let { data } = await axios.get(`engine/${params.id}`)
+      let { data } = await axios.get(`engines/${params.id}`)
       engine = data
     }
     return { engine }
