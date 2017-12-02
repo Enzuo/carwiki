@@ -21,7 +21,7 @@ Route.group(() => {
     .resource('users', 'UserController')
     .apiOnly()
 
-}).prefix('api/v1')
+}).prefix('api')
 
 Route.get('api/engine', 'EngineController.index')
 Route.get('api/engine/:id([0-9]+)', 'EngineController.show')

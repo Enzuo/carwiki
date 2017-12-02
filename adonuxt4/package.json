@@ -10,7 +10,8 @@
     "dev": "adonis serve --dev",
     "dev-debug": "adonis serve --dev --debug",
     "build": "adonis nuxt:build",
-    "start": "cross-env NODE_ENV=production node server.js"
+    "start": "cross-env NODE_ENV=production node server.js",
+    "test" : "adonis test"
   },
   "keywords": [
     "adonuxt",
@@ -39,7 +40,6 @@
     "vue-charts": "^0.2.1",
     "vue-multiselect": "^2.0.6",
     "vue-no-ssr": "^0.2.2",
-    "vue-search-select": "^2.4.0",
     "vuetify": "^0.17.3"
   },
   "devDependencies": {

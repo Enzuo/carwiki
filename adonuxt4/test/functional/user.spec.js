@@ -14,10 +14,10 @@ test ('get list of users', async ({ client }) => {
     password: 'Sup3rStr0ngPa55w0rd!'
   })
 
-  const response = await client.get('/users').end()
+  const response = await client.get('/api/users').end()
 
-  response.assetStatus(200)
-  response.assetJSONSubset([{
+  response.assertStatus(200)
+  response.assertJSONSubset([{
     first_name: 'Liam',
     last_name: 'Potter',
     email_address: 'test@test.com'

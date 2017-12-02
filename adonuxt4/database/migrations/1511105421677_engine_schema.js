@@ -16,7 +16,7 @@ class EngineSchema extends Schema {
     //https://www.compose.com/articles/indexing-for-full-text-search-in-postgresql/
     .raw(`
       CREATE TABLE engines(
-         id INTEGER PRIMARY KEY NOT NULL
+         id SERIAL PRIMARY KEY
         ,name VARCHAR(80) NOT NULL
         ,name_tsv tsvector
         ,profile json
