@@ -22,3 +22,8 @@ In the long run, this project would become a wiki where user can input car data,
 - adonis migration:run
 - adonis migration:rollback
 - adonis seed (--files EngineSeeder.js)
+
+### Tests
+- Create a database for tests
+- Fill the .env.testing file
+- Launch with adonis test or npm test
