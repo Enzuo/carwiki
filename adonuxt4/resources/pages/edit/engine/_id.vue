@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-layout row wrap>
       <v-flex sm12 md6>
-        <engine-edit :engine="engine"/>
+        <engine-edit :engine.sync="engine"/>
       </v-flex>
       <v-flex sm12 md6>
         <engine-graph
@@ -10,6 +10,15 @@
         ></engine-graph>
       </v-flex>
     </v-layout>
+    <v-btn
+      color="blue"
+      :loading="isSaving"
+      dark fab fixed bottom right
+      :disabled="!shouldSave"
+      @click="save"
+    >
+      <v-icon>save</v-icon>
+    </v-btn>
   </v-container>
 </template>
 
@@ -27,6 +36,12 @@ export default {
     EngineGraph,
     EngineEdit
   },
+  data () {
+    return {
+      shouldSave : false,
+      isSaving : false,
+    }
+  },
   async asyncData ({ params, store }) {
     let engine = null
     if(params.id){
@@ -35,6 +50,22 @@ export default {
     }
     return { engine }
   },
+  watch: {
+    engine: {
+      handler : function () {
+        if(this.shouldSave !== true){
+          this.shouldSave = true
+        }
+      },
+      deep: true
+    },
+  },
+  methods: {
+    save () {
+      console.log('save !')
+      this.isSaving = true
+    }
+  }
 }
 </script>
 
