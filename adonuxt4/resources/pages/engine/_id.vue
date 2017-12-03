@@ -9,11 +9,7 @@
       {{ editUrl = '/edit/engine/'+engine.id }}
       <v-btn
         color="blue"
-        dark
-        fab
-        fixed
-        bottom
-        right
+        dark fab fixed bottom right
         :to="editUrl"
       >
         <v-icon>edit</v-icon>
@@ -26,8 +22,6 @@
 <script>
 import axios from '~/plugins/axios'
 import EngineGraph from '~/components/EngineGraph'
-// import Chart from 'vue-charts/src/components/chart'
-
 
 export default {
   props: ['id','params'],
@@ -40,7 +34,7 @@ export default {
   async asyncData ({ params, store }) {
     let engine = null
     if(params.id){
-      let { data } = await axios.get(`engine/${params.id}`)
+      let { data } = await axios.get(`engines/${params.id}`)
       engine = data
     }
     store.commit('setCurrentEngine', params.id)

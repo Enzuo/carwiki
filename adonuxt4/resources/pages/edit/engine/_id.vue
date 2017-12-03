@@ -66,6 +66,7 @@ export default {
       this.isSaving = true
       await axios.put(`engines/${this.engine.id}`,this.engine)
       this.isSaving = false
+      this.shouldSave = false
     }
   }
 }
