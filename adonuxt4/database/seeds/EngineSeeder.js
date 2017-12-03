@@ -19,7 +19,7 @@ const Factory = use('Factory')
 class EngineSeeder {
   async run () {
     for (let engine of enginesSeedData) {
-      engine.profile = JSON.stringify(engine.torque)
+      engine.profile = engine.torque
       delete engine.torque
       await Engine.create(engine)
     }

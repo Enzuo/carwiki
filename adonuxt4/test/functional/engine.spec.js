@@ -6,6 +6,7 @@ const Engine = use('App/Models/Engine')
 trait('DatabaseTransactions')
 trait('Test/ApiClient')
 
+
 test ('get list of engines', async ({ client }) => {
   await Engine.create({
     name : 'test engine',
@@ -27,14 +28,18 @@ test ('get list of engines', async ({ client }) => {
 test ('update engine', async ({ client }) => {
   var engine = await Engine.create({
     name : 'test engine',
-    profile : JSON.stringify([
+    profile : [
       [1500,10],
       [3500,45]
-    ])
+    ]
   })
 
   engine = engine.toJSON()
   engine.name = 'test updated engine'
+  engine.profile = [
+    [1500,10],
+    [3200,45]
+  ]
 
   const response = await client.put('/api/engines/'+engine.id).send(engine).end()
 
@@ -42,6 +47,6 @@ test ('update engine', async ({ client }) => {
   response.assertJSONSubset([{
     id : engine.id,
     name : 'test updated engine',
-    profile : JSON.parse(engine.profile),
+    profile : engine.profile,
   }])
 })
