@@ -30,20 +30,11 @@ class EngineController {
   }
 
   async update ({ params, request }) {
-    let body = request.post()
-    let _engine = new Engine()
-    _engine.fill(body)
-    console.log(_engine.toJSON())
-    return await Engine
-    .query()
-    .where({ id: params.id })
-    .update(_engine.toJSON())
-    .returning(['id','name','profile'])
-
-    // engine.fill(body)
-    // engine.save()
-    // console.log('engine', engine)
-    // return engine
+    const data = request.only(['name', 'profile'])
+    const engine = await Engine.findOrFail(params.id)
+    engine.merge(data)
+    await engine.save()
+    return engine.toJSON()
   }
 }
 
