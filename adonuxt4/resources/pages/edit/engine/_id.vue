@@ -61,9 +61,11 @@ export default {
     },
   },
   methods: {
-    save () {
+    async save () {
       console.log('save !')
       this.isSaving = true
+      await axios.put(`engines/${this.engine.id}`,this.engine)
+      this.isSaving = false
     }
   }
 }
