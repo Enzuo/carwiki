@@ -2,6 +2,7 @@
   <div>
     <search-select
       @select="selectEngine"
+      api="engines"
     >
     </search-select>
     <nuxt-child/>
@@ -18,7 +19,6 @@ export default {
   },
   methods : {
     selectEngine (id) {
-      console.log('route re push ', id)
       this.$router.push({ path: `/engine/${id}`})
     }
   }

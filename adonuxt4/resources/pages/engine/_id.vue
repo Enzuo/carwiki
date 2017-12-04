@@ -1,7 +1,7 @@
 <template>
   <div>
-    {{message}} {{$route.params.id}} {{ engine }}
     <div v-if="engine">
+      {{engine.name}}
       <engine-graph
         :engines="[engine]"
       ></engine-graph>

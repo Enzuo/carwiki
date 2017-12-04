@@ -1,21 +1,11 @@
 <template>
   <div>
-    hi
-    <!-- <no-ssr>
-      <model-list-select
-        :list="engines"
-        option-value="id"
-        v-model="selectedEngine"
-        placeholder="select item"
-        @searchchange="searchEngine">
-      </model-list-select>
-    </no-ssr> -->
     <multiselect
-      v-model="selectedEngine"
-      :options="engines"
+      v-model="selectedItem"
+      :options="items"
       placeholder="Search"
-      @input="selectEngine"
-      @search-change="searchEngine"
+      @input="selectItem"
+      @search-change="searchItem"
       label="name"
       track-by="name"
     >
@@ -26,36 +16,33 @@
 
 <script>
 import axios from '~/plugins/axios'
-// import { ModelListSelect } from 'vue-search-select'
 import Multiselect from 'vue-multiselect'
 
 export default {
   name : 'search-select',
-  props: ['id','params'],
+  props: ['id','params','api'],
   components : {
-    // ModelListSelect,
     Multiselect,
   },
   data : () => {
     return {
-      engines : [],
-      selectedEngine : null,
+      items : [],
+      selectedItem : null,
     }
   },
   mounted() {
-    this.getEngines()
+    this.getItems()
   },
   methods : {
-    selectEngine (engine) {
-      console.log('select', engine)
-      this.$emit('select', engine.id)
+    selectItem (item) {
+      this.$emit('select', item.id)
     },
-    searchEngine : async(searchText) => {
+    searchItem : async(searchText) => {
 
     },
-    async getEngines () {
-      let { data } = await axios.get('engines')
-      this.engines = data
+    async getItems () {
+      let { data } = await axios.get(this.api)
+      this.items = data
     }
   }
 }
