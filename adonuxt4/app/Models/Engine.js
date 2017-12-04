@@ -11,9 +11,9 @@ class Engine extends Model {
     return JSON.stringify(profile)
   }
 
-  getProfile (profile) {
-    return JSON.parse(profile)
-  }
+  // getProfile (profile) {
+  //   return JSON.parse(profile)
+  // }
 }
 
 module.exports = Engine

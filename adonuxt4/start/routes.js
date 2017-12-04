@@ -22,6 +22,7 @@ Route.group(() => {
     .apiOnly()
 
   Route.resource('engines', 'EngineController').apiOnly()
+  Route.resource('cars', 'CarController').apiOnly()
 
 }).prefix('api')
 
