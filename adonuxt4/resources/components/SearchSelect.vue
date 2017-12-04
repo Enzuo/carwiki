@@ -9,6 +9,7 @@
       label="name"
       track-by="name"
     >
+      <template slot="noResult">Not found, <button>create one </button>?</template>
     </multiselect>
   </div>
 </template>
@@ -47,3 +48,6 @@ export default {
   }
 }
 </script>
+
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+
