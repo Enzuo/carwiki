@@ -5,6 +5,7 @@ const createStore = () => {
     state: {
       currentEngine: null,
       currentCar: null,
+      carBasket: [],
     },
     mutations: {
       setCurrentEngine (state, id) {
@@ -13,6 +14,11 @@ const createStore = () => {
       setCurrentCar (state, id) {
         state.currentCar = id
       },
+      addToBasket(state, car) {
+        if(!state.carBasket.find((carInList) => { return carInList.id === car.id })){
+          state.carBasket.push(car)
+        }
+      }
     },
     getters: {
       currentEngineUrl: (state) => {
@@ -21,6 +27,10 @@ const createStore = () => {
       currentCarUrl: (state) => {
         return state.currentCar ? `/${state.currentCar}` : ''
       },
+      basketUrl: (state) => {
+        var _carIdArr = state.carBasket.map((car) => { return car.id })
+        return state.carBasket ? `?cars=[${_carIdArr.toString()}]` : ''
+      }
     }
   })
 }

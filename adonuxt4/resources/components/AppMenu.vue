@@ -48,7 +48,7 @@
         return [
           { title: 'Car', icon: 'directions_car', link : '/car'+this.$store.getters.currentCarUrl },
           { title: 'Engine', icon: 'power', link : '/engine'+this.$store.getters.currentEngineUrl },
-          { title: 'Compare', icon: 'compare_arrows', link : '/compare' },
+          { title: 'Compare', icon: 'compare_arrows', link : '/compare'+this.$store.getters.basketUrl },
           { title: 'About', icon: 'question_answer', link : '/about' }
         ];
       },

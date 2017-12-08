@@ -1,11 +1,23 @@
 <template>
   <div>
-    {{car.name}}
+    <div v-if="car">
+      {{car.name}}
+
+      <v-btn
+          color="blue"
+          dark fab fixed bottom right
+          @click="addToBasket(car)"
+        >
+        <v-icon>add</v-icon>
+      </v-btn>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from '~/plugins/axios'
+import { mapMutations } from 'vuex'
+
 
 export default {
   validate : ({params}) => {
@@ -20,6 +32,11 @@ export default {
     store.commit('setCurrentCar', params.id)
     return { car }
   },
+  methods : {
+    ...mapMutations([
+      'addToBasket',
+    ])
+  }
 }
 </script>
 
