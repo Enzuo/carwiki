@@ -169,7 +169,7 @@ export default {
         legend: {
           position: 'bottom',
           textStyle: { fontSize: 11 }
-        }
+        },
       };
     },
     showHPperTOption : function () {
