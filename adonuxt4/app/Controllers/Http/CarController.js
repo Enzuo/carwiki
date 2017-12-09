@@ -12,6 +12,7 @@ class CarController {
   async show ({params}) {
     let id = params.id
     let car = await Car.findOrFail(id)
+    await car.load('engine')
     // let engine = await car.engine.fetch()
     return car
   }

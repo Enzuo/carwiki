@@ -20,6 +20,9 @@
         <v-tabs-content
           :id="'engine'"
         >
+          <engine-graph
+            :engines="engines"
+          ></engine-graph>
           <div v-for="car in cars" :key="car.id">
             {{ car.name }}
           </div>
@@ -37,7 +40,18 @@
 </template>
 
 <script>
+import EngineGraph from '~/components/EngineGraph'
+
 export default {
+  components : {
+    EngineGraph,
+  },
+  data : function() {
+    return {
+      text : 'lorem ipsum',
+      active : 'engine',
+    }
+  },
   async asyncData ({ params, store, query }) {
     console.log(params, query);
     if(query && query.cars){
@@ -52,6 +66,19 @@ export default {
     }
     let cars = store.getters.carsInBasket
     return { cars }
+  },
+  computed : {
+    engines : function () {
+      return this.cars.reduce((result, car) => {
+        var engine = car.engine
+        if(engine){
+          // TODO : it changes the store here
+          engine.carWeight = car.weight
+          result.push(engine)
+        }
+        return result
+      }, [])
+    }
   }
 }
 </script>
