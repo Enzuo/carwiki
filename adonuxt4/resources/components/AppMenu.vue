@@ -44,7 +44,6 @@
     },
     computed : {
       items () {
-        console.log('this store', this.$store);
         return [
           { title: 'Car', icon: 'directions_car', link : '/car'+this.$store.getters.currentCarUrl },
           { title: 'Engine', icon: 'power', link : '/engine'+this.$store.getters.currentEngineUrl },

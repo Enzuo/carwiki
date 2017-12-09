@@ -1,4 +1,5 @@
 import Vuex from 'vuex'
+import axios from '~/plugins/axios'
 
 const createStore = () => {
   return new Vuex.Store({
@@ -18,6 +19,15 @@ const createStore = () => {
         if(!state.carBasket.find((carInList) => { return carInList.id === car.id })){
           state.carBasket.push(car)
         }
+      },
+    },
+    actions: {
+      async addToBasket({commit, state}, carId){
+        if(!state.carBasket.find((carInList) => { return carInList.id === carId })){
+          let { data } = await axios.get(`cars/${carId}`)
+          let car = data
+          commit('addToBasket', car)
+        }
       }
     },
     getters: {
@@ -30,6 +40,9 @@ const createStore = () => {
       basketUrl: (state) => {
         var _carIdArr = state.carBasket.map((car) => { return car.id })
         return state.carBasket ? `?cars=[${_carIdArr.toString()}]` : ''
+      },
+      carsInBasket: (state) => {
+        return state.carBasket
       }
     }
   })
