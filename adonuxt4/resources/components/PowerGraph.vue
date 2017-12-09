@@ -1,13 +1,16 @@
 <template>
   <div>
     <no-ssr>
-      <vue-chart :columns="columns" :rows="rows" :options="options"></vue-chart>
+      <vue-chart ref="graph" :columns="columns" :rows="rows" :options="options"></vue-chart>
     </no-ssr>
+    <resize-observer @notify="handleWindowResize" />
   </div>
 </template>
 
 <script>
 import NoSSR from 'vue-no-ssr'
+import { ResizeObserver } from 'vue-resize'
+
 import VueChart from "~/plugins/vue-charts.js";
 import {
   romanize,
@@ -21,7 +24,8 @@ export default {
   name: "car-power-graph",
   components: {
     VueChart,
-    NoSSR
+    NoSSR,
+    ResizeObserver
   },
   props: {
     cars: {
@@ -80,7 +84,7 @@ export default {
               1000);
           // dataTick.push(rpmForSpeed)
 
-          var torqueForRPM = getTorqueForRPM(car.engine.profile, rpmForSpeed);
+          var torqueForRPM = getTorqueForRPM(car.engine.profile , rpmForSpeed);
           var PSperTForRPM = torqueToPSperT(
             torqueForRPM,
             rpmForSpeed,
@@ -133,6 +137,15 @@ export default {
         },
       };
     }
-  }
+  },
+  methods : {
+    handleWindowResize(event) {
+      let graph = this.$refs.graph
+      console.log('resize',graph)
+      if(graph){
+        graph.$emit('redrawChart')
+      }
+    },
+  },
 };
 </script>
