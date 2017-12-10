@@ -3,7 +3,7 @@
     <template v-for="car in cars">
       <v-list-tile v-bind:key="car.id">
         <v-list-tile-action>
-          <v-icon :color="car.color">directions_car</v-icon>
+          <v-icon :style="{ color: car.color }">directions_car</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
           <v-list-tile-title v-html="car.name"></v-list-tile-title>

@@ -81,6 +81,7 @@ export default {
         if(engine){
           // TODO : it changes the store here
           engine.carWeight = car.weight
+          engine.color = car.color
           result.push(engine)
         }
         return result
