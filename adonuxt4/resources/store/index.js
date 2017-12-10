@@ -19,6 +19,7 @@ const createStore = () => {
         let length = state.carBasket.length
 
         if(!state.carBasket.find((carInList) => { return carInList.id === car.id })){
+          // Get non alrady used color
           let color = COLORS.find( col => {
             return !state.carBasket.find((carInList) => { return carInList.color === col })
           })
@@ -30,6 +31,19 @@ const createStore = () => {
         let index = state.carBasket.findIndex((carInList) => { return carInList.id === carId })
         if(index >= 0){
           state.carBasket.splice(index, 1)
+        }
+      },
+      changeBasketCarGear(state, {carId, gear}){
+        let car = state.carBasket.find((carInList) => { return carInList.id === carId })
+        if(car){
+          let maxGear = car.gearRatio ? car.gearRatio.length : 0
+          if(gear > maxGear){
+            return car.selectedGear = maxGear
+          }
+          if(gear < 1){
+            return car.selectedGear = maxGear
+          }
+          return car.selectedGear = gear
         }
       }
     },

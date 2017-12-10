@@ -43,6 +43,7 @@
 
 <script>
 import PowerGraph from '~/components/PowerGraph'
+import {mapMutations} from 'vuex'
 import {romanize} from '~/plugins/helpers'
 
 export default {
@@ -86,12 +87,22 @@ export default {
       return gears
     }
   },
+  watch : {
+    gear : function(gear){
+      this.cars.forEach((car) => {
+        this.changeBasketCarGear({carId : car.id, gear })
+      })
+    }
+  },
   methods : {
     onSituationChange (evt, data) {
       this.fromSpeed = evt.fromSpeed
       this.toSpeed = evt.toSpeed
       this.gear = evt.gear
-    }
+    },
+    ...mapMutations([
+      'changeBasketCarGear'
+    ])
   }
 
 }
