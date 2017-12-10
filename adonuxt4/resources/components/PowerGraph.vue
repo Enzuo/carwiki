@@ -130,7 +130,7 @@ export default {
         height: 500,
         curveType: "none",
         series: series,
-        chartArea: { width: '100%', height: '80%'},
+        chartArea: { width: '90%', height: '80%'},
         legend: {
           position: 'bottom',
           textStyle: { fontSize: 11 }

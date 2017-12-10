@@ -33,11 +33,10 @@
         <v-tabs-content
           :id="'situations'"
         >
-          <car-power-graph
-          :cars="cars"
-          :minSpeed="20"
-          :maxSpeed="120">
-          </car-power-graph>
+          <car-situation-power
+            :cars="cars"
+          >
+          </car-situation-power>
         </v-tabs-content>
       </v-tabs-items>
     </v-tabs>
@@ -46,12 +45,12 @@
 
 <script>
 import EngineGraph from '~/components/EngineGraph'
-import PowerGraph from '~/components/PowerGraph'
+import CarSituationPower  from '~/components/CarSituationPower'
 
 export default {
   components : {
     EngineGraph,
-    'car-power-graph': PowerGraph,
+    CarSituationPower,
   },
   data : function() {
     return {
