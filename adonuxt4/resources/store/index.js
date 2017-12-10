@@ -19,10 +19,19 @@ const createStore = () => {
         let length = state.carBasket.length
 
         if(!state.carBasket.find((carInList) => { return carInList.id === car.id })){
-          car.color = COLORS[length]
+          let color = COLORS.find( col => {
+            return !state.carBasket.find((carInList) => { return carInList.color === col })
+          })
+          car.color = color
           state.carBasket.push(car)
         }
       },
+      removeFromBasket(state, carId){
+        let index = state.carBasket.findIndex((carInList) => { return carInList.id === carId })
+        if(index >= 0){
+          state.carBasket.splice(index, 1)
+        }
+      }
     },
     actions: {
       async addToBasket({commit, state}, carId){
