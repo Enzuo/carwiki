@@ -29,30 +29,41 @@
           </v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
+      <v-divider></v-divider>
+      <car-basket :cars="carBasket"></car-basket>
     </v-list>
     </v-navigation-drawer>
 </template>
 
 <script>
-  export default {
-    name : 'app-menu',
-    data : () => {
-      return {
-        mini: true,
-        right: null
-      }
+import CarBasket from '~/components/CarBasket'
+import { mapState } from 'vuex'
+
+export default {
+  name : 'app-menu',
+  components : {
+    CarBasket
+  },
+  data : () => {
+    return {
+      mini: true,
+      right: null
+    }
+  },
+  computed : {
+    items () {
+      return [
+        { title: 'Car', icon: 'directions_car', link : '/car'+this.$store.getters.currentCarUrl },
+        { title: 'Engine', icon: 'power', link : '/engine'+this.$store.getters.currentEngineUrl },
+        { title: 'Compare', icon: 'compare_arrows', link : '/compare'+this.$store.getters.basketUrl },
+        { title: 'About', icon: 'question_answer', link : '/about' }
+      ];
     },
-    computed : {
-      items () {
-        return [
-          { title: 'Car', icon: 'directions_car', link : '/car'+this.$store.getters.currentCarUrl },
-          { title: 'Engine', icon: 'power', link : '/engine'+this.$store.getters.currentEngineUrl },
-          { title: 'Compare', icon: 'compare_arrows', link : '/compare'+this.$store.getters.basketUrl },
-          { title: 'About', icon: 'question_answer', link : '/about' }
-        ];
-      },
-    },
-  }
+    ...mapState([
+      'carBasket'
+    ])
+  },
+}
 </script>
 
 <style scoped>
