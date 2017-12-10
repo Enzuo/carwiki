@@ -20,6 +20,10 @@ class EngineSchema extends Schema {
         ,name VARCHAR(80) NOT NULL
         ,name_tsv tsvector
         ,profile json
+        ,fueltype SMALLINT
+        ,displacement INTEGER
+        ,cylinders SMALLINT
+        ,compression_ratio INTEGER
         ,created_at TIMESTAMP DEFAULT NOW()
         ,updated_at TIMESTAMP
       );
