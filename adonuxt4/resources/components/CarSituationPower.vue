@@ -3,13 +3,13 @@
     <v-layout row>
       <v-flex xs3>
         <v-text-field
-          v-model="fromSpeed"
+          v-model.number="fromSpeed"
           label="From speed (km/h)"
         ></v-text-field>
       </v-flex>
       <v-flex xs3>
         <v-text-field
-          v-model="toSpeed"
+          v-model.number="toSpeed"
           label="To speed (km/h)"
         ></v-text-field>
       </v-flex>

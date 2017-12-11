@@ -46,6 +46,7 @@
 <script>
 import EngineGraph from '~/components/EngineGraph'
 import CarSituationPower  from '~/components/CarSituationPower'
+import {mapState} from 'vuex'
 
 export default {
   components : {
@@ -70,8 +71,9 @@ export default {
       await Promise.all(actions)
       console.log('all cars', cars)
     }
-    let cars = store.getters.carsInBasket
-    return { cars }
+    // console.log(store)
+    // let cars = store.state.carBasket
+    // return { cars }
   },
   computed : {
     engines : function () {
@@ -85,7 +87,10 @@ export default {
         }
         return result
       }, [])
-    }
+    },
+    ...mapState({
+      cars : 'carBasket'
+    })
   }
 }
 </script>

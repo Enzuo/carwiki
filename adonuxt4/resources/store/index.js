@@ -1,4 +1,5 @@
 import Vuex from 'vuex'
+import Vue from 'vue'
 import axios from '~/plugins/axios'
 
 const createStore = () => {
@@ -33,17 +34,24 @@ const createStore = () => {
           state.carBasket.splice(index, 1)
         }
       },
-      changeBasketCarGear(state, {carId, gear}){
-        let car = state.carBasket.find((carInList) => { return carInList.id === carId })
+      changeBasketCarGear({carBasket}, {carId, gear}){
+        let index = carBasket.findIndex((carInList) => { return carInList.id === carId })
+        let car = carBasket[index]
         if(car){
           let maxGear = car.gearRatio ? car.gearRatio.length : 0
+          let selectedGear = gear
           if(gear > maxGear){
-            return car.selectedGear = maxGear
+            selectedGear = maxGear
           }
-          if(gear < 1){
-            return car.selectedGear = maxGear
+          else if(gear < 1){
+            selectedGear = 1
           }
-          return car.selectedGear = gear
+          // console.log(car, selectedGear)
+          // car.selectedGear = selectedGear
+          // var newVal = Object.assign({}, carBasket[index], {selectedGear: selectedGear})
+          Vue.set(car, 'selectedGear', selectedGear)
+          // Vue.set(carBasket, index, car)
+          // console.log('index', index)
         }
       }
     },
