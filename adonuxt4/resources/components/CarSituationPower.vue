@@ -3,13 +3,13 @@
     <v-layout row>
       <v-flex xs3>
         <v-text-field
-          v-model.number="fromSpeed"
+          v-model.number.lazy="fromSpeed"
           label="From speed (km/h)"
         ></v-text-field>
       </v-flex>
       <v-flex xs3>
         <v-text-field
-          v-model.number="toSpeed"
+          v-model.number.lazy="toSpeed"
           label="To speed (km/h)"
         ></v-text-field>
       </v-flex>
@@ -35,8 +35,8 @@
     </v-layout>
     <power-graph
       :cars="cars"
-      :minSpeed="fromSpeed"
-      :maxSpeed="toSpeed">
+      :fromSpeed="fromSpeed"
+      :toSpeed="toSpeed">
     </power-graph>
   </div>
 </template>

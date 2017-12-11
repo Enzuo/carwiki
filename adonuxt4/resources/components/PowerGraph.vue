@@ -1,5 +1,16 @@
 <template>
   <div>
+    <v-card-text>
+      <v-layout row wrap>
+        <v-flex v-for="(curve, index) of curves" v-bind:key="index" xs6>
+          <v-checkbox
+            :label="curve.label"
+            v-model="curve.active"
+          ></v-checkbox>
+        </v-flex>
+      </v-layout>
+    </v-card-text>
+    {{options}}
     <no-ssr>
       <vue-chart ref="graph" :columns="columns" :rows="rows" :options="options"></vue-chart>
     </no-ssr>
@@ -32,44 +43,31 @@ export default {
       required: true,
       type: Array
     },
-    minSpeed: {
+    fromSpeed: {
       required: true,
       type: Number
     },
-    maxSpeed: {
+    toSpeed: {
       required: true,
       type: Number
     }
   },
   data: function() {
-    return {};
+    return {
+      showRPM : false,
+      showHPperT : true,
+      curves : {
+        rpm : {label : 'RPM', active : false},
+        hpt : {label : 'Horsepower/T', active : true},
+      },
+    };
   },
   computed: {
-    curvesPerEngines: function() {
-      var curvesPerEngines = [];
-      for (var j = 0; j < this.engines.length; j++) {
-        var engine = this.engines[j];
-
-        var engineCurves = [];
-        if (this.showTorque) {
-          engineCurves.push(CURVETYPES.Torque);
-        }
-
-        if (this.showHP) {
-          engineCurves.push(CURVETYPES.PS);
-        }
-
-        if (this.showHPperT) {
-          engineCurves.push(CURVETYPES.PSperT);
-        }
-
-        curvesPerEngines.push(engineCurves);
-      }
-      return curvesPerEngines;
-    },
     rows: function() {
       var data = [];
-      for (var speed = this.minSpeed; speed <= this.maxSpeed; speed += 5) {
+      var step = Math.round((this.toSpeed - this.fromSpeed) / 10)
+      step = step > 1 ? step : 1
+      for (var speed = this.fromSpeed; speed <= this.toSpeed; speed += step) {
         var dataTick = [speed];
         for (var j = 0; j < this.cars.length; j++) {
           var car = this.cars[j];
@@ -82,7 +80,6 @@ export default {
               car.gearRatio[selectedGear - 1] *
               car.gearSpeed /
               1000);
-          // dataTick.push(rpmForSpeed)
 
           var torqueForRPM = getTorqueForRPM(car.engine.profile , rpmForSpeed);
           var PSperTForRPM = torqueToPSperT(
@@ -90,7 +87,13 @@ export default {
             rpmForSpeed,
             car.weight
           );
-          dataTick.push(PSperTForRPM);
+          if(this.curves.rpm.active){
+            // Only push rpm if there is available torque for this number (no above redline)
+            dataTick.push(torqueForRPM ? rpmForSpeed : null)
+          }
+          if(this.curves.hpt.active){
+            dataTick.push(PSperTForRPM);
+          }
         }
         data.push(dataTick);
       }
@@ -106,10 +109,18 @@ export default {
       for (var j = 0; j < this.cars.length; j++) {
         var car = this.cars[j];
 
-        columns.push({
-          type: "number",
-          label: car.name + " " + romanize(car.selectedGear)
-        });
+        if(this.curves.rpm.active){
+          columns.push({
+            type: "number",
+            label: car.name + " " + romanize(car.selectedGear)
+          });
+        }
+        if(this.curves.hpt.active){
+          columns.push({
+            type: "number",
+            label: car.name + " " + romanize(car.selectedGear)
+          });
+        }
       }
 
       return columns;
@@ -120,15 +131,43 @@ export default {
       var serieIndex = 0;
       for (var j = 0; j < this.cars.length; j++) {
         var car = this.cars[j];
-        var serie = (series[serieIndex] = {});
-        serie.color = car.color;
-        serieIndex++;
+        if(this.curves.rpm.active){
+          let serie = (series[serieIndex] = {})
+          serie.color = car.color
+          serie.lineDashStyle = [3, 6];
+          serie.targetAxisIndex = 1
+          serieIndex++
+        }
+        if(this.curves.hpt.active){
+          let serie = (series[serieIndex] = {})
+          serie.color = car.color
+          serie.targetAxisIndex = 0
+          serieIndex++
+        }
+      }
+
+      var vAxes = {}
+      if(this.curves.rpm.active){
+        vAxes[1] = {
+          viewWindowMode:'explicit',
+          viewWindow:{
+            min:750
+          },
+          gridlines: { color: 'transparent' },
+        }
+      }
+      if(this.curves.hpt.active){
+        vAxes[0] = {
+          viewWindowMode:'explicit',
+          gridlines: { color: 'transparent' },
+        }
       }
 
       return {
         title: "RPM Curve",
         height: 500,
         curveType: "none",
+        vAxes : vAxes,
         series: series,
         chartArea: { width: '90%', height: '80%'},
         legend: {

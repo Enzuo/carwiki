@@ -35,8 +35,7 @@ const createStore = () => {
         }
       },
       changeBasketCarGear({carBasket}, {carId, gear}){
-        let index = carBasket.findIndex((carInList) => { return carInList.id === carId })
-        let car = carBasket[index]
+        let car = carBasket.find((carInList) => { return carInList.id === carId })
         if(car){
           let maxGear = car.gearRatio ? car.gearRatio.length : 0
           let selectedGear = gear
@@ -46,12 +45,7 @@ const createStore = () => {
           else if(gear < 1){
             selectedGear = 1
           }
-          // console.log(car, selectedGear)
-          // car.selectedGear = selectedGear
-          // var newVal = Object.assign({}, carBasket[index], {selectedGear: selectedGear})
           Vue.set(car, 'selectedGear', selectedGear)
-          // Vue.set(carBasket, index, car)
-          // console.log('index', index)
         }
       }
     },
