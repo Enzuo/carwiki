@@ -26,15 +26,25 @@ function PSToTorque(PS, rpm) {
 // Assuming the torqueCurve is of the form
 // [[rpm, torque],[rpm, torque],...]
 // (Interpolate curve)
+// And ordered by rpm asc
 function getTorqueForRPM(torqueCurve, rpm) {
-  var index = torqueCurve.findIndex((torque) => {
-    return rpm < torque[0]
+  var torque = torqueCurve.find((torque) => {
+    return torque[0] === rpm
   })
-  if (index <= 0) {
+  if(torque){
+    return torque[1]
+  }
+
+  var indexHigherRPM = torqueCurve.findIndex((torque) => {
+    return torque[0] > rpm
+  })
+  // not found or first torque point was higher,
+  // meaning the wanted rpm is before the torque curve if 0 or after if -1
+  if (indexHigherRPM <= 0) {
     return null
   }
-  var prevTorquePoint = torqueCurve[index - 1]
-  var nextTorquePoint = torqueCurve[index]
+  var prevTorquePoint = torqueCurve[indexHigherRPM - 1]
+  var nextTorquePoint = torqueCurve[indexHigherRPM]
 
   var distRPM = nextTorquePoint[0] - prevTorquePoint[0]
   var distPercent = (rpm - prevTorquePoint[0]) / distRPM
