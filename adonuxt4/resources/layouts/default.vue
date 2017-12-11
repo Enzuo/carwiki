@@ -2,11 +2,7 @@
   <v-app>
     <app-menu/>
     <v-content>
-      <v-container fluid fill-height>
-        <v-layout child-flex>
-          <nuxt/>
-        </v-layout>
-      </v-container>
+      <nuxt/>
     </v-content>
     <my-footer/>
   </v-app>
