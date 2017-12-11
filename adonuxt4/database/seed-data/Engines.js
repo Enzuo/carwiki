@@ -71,6 +71,23 @@ module.exports = [
     displacement : 1368,
     compression_ratio : 11,
     cylinders : 4, // Inline 4
+  },
+  {
+    id : 5,
+    name : 'renault clio 2 1.6 (90)',
+    torque : [
+      [1500, 127.3],
+      [2000, 128.9],
+      [2500, 131.0],
+    	[3000, 124.1],
+    	[4000, 131.0],
+    	[4500, 130.0],
+    	[5000, 128.0],
+      [5500, 109.4],
+    ],
+    fueltype : 1,
+    displacement : 1598,
+    cylinders : 4,
   }
 ]
 

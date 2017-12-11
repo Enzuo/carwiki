@@ -7,10 +7,12 @@ class CarSchema extends Schema {
     this.create('cars', (table) => {
       table.increments()
       table.string('name').unique()
+      table.date('fromProductionDate')
+      table.date('toProductionDate')
 
       table.json('gearRatio')
       table.decimal('gearSpeed')
-      table.integer('transmission') // 1:Manual, 2:Auto
+      table.integer('transmission') // 1:Manual, 2:Auto .defaultTo(1)
       table.integer('traction') // 1:FWD, 2:RWD, 3:AWD
 
       table.integer('weight')

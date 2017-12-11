@@ -11,6 +11,10 @@ class Car extends Model {
     return JSON.stringify(gearRatio)
   }
 
+  static get dates () {
+    return super.dates.concat(['fromProductionDate','toProductionDate'])
+  }
+
   // getGearRatio (gearRatio) {
   //   console.log('before parse', gearRatio)
   //   let parsedRatios = JSON.parse(gearRatio)

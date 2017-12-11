@@ -3,13 +3,13 @@
     <v-layout row>
       <v-flex xs3>
         <v-text-field
-          v-model.number.lazy="fromSpeed"
+          :value="fromSpeed" @change="v => fromSpeed = v ? parseInt(v) : 0"
           label="From speed (km/h)"
         ></v-text-field>
       </v-flex>
       <v-flex xs3>
         <v-text-field
-          v-model.number.lazy="toSpeed"
+          :value="toSpeed" @change="v => toSpeed = v ? parseInt(v) : 0"
           label="To speed (km/h)"
         ></v-text-field>
       </v-flex>
@@ -75,11 +75,10 @@ export default {
   },
   computed : {
     availableGears : function () {
-      let maxGear = this.cars.reduce(function(a, b) {
-        let aGear = a.gearRatio ? a.gearRatio.length : 0
+      let maxGear = this.cars.reduce(function(aGear, b) {
         let bGear = b.gearRatio ? b.gearRatio.length : 0
         return Math.max(aGear, bGear);
-      });
+      }, 1);
       let gears = []
       for(let i=1; i<=maxGear; i++){
         gears.push({gear:i, name:romanize(i)})

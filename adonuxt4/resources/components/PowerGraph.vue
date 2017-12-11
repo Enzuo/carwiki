@@ -76,7 +76,7 @@ export default {
 
           var rpmForSpeed =
             speed /
-            (car.gearRatio[4] /
+            (car.gearRatio[car.gearRatio.length-1] /
               car.gearRatio[selectedGear - 1] *
               car.gearSpeed /
               1000);
