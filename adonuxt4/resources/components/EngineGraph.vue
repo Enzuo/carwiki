@@ -16,12 +16,13 @@
       <no-ssr>
         <vue-chart ref="graph" :columns="columns" :rows="rows" :options="options"></vue-chart>
       </no-ssr>
-      {{ rows }} {{ columns }}
+      <resize-observer @notify="handleWindowResize" />
     </div>
 </template>
 
 <script>
 import VueChart from "~/plugins/vue-charts.js";
+import { ResizeObserver } from 'vue-resize'
 import { torqueToPS, torqueToPSperT, getTorqueForRPM } from "~/../app/Helpers/helpers"
 import NoSSR from 'vue-no-ssr'
 
@@ -35,7 +36,8 @@ export default {
   name: "engine-graph",
   components: {
     VueChart,
-    NoSSR
+    NoSSR,
+    ResizeObserver
   },
   props: {
     engines: {
@@ -178,12 +180,6 @@ export default {
       }
       return true
     },
-  },
-  beforeDestroy: function () {
-    window.removeEventListener('resize', this.handleWindowResize)
-  },
-  mounted() {
-    window.addEventListener('resize', this.handleWindowResize);
   },
   methods : {
     handleWindowResize(event) {
