@@ -88,6 +88,27 @@ module.exports = [
     fueltype : 1,
     displacement : 1598,
     cylinders : 4,
+  },
+  {
+    id : 6,
+    name : 'ford ecoboost 1.0 (100)',
+    torque : [
+      [1000 , 119 ],
+      [1500 , 170 ],
+      [2000 , 170 ],
+      [2500 , 170 ],
+      [3000 , 170 ],
+      [3500 , 170 ],
+      [4000 , 170 ],
+      [4500 , 156 ],
+      [5000 , 140.4 ],
+      [5500 , 127.6],
+      [6000 , 117],
+    ],
+    fueltype : 1,
+    displacement : 1000,
+    cylinders : 3,
+    // engineType /* Natural Aspirated, Turbo */
   }
 ]
 

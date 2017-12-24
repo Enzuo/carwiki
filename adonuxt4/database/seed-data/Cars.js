@@ -22,9 +22,9 @@ module.exports = [
   },
   {
       name : 'fiat tipo 1.4 (95)',
-      fromProductionDate : 2016,
       engine_id : 4,
-      gearRatio : [3.9,	2.174, 1.345, 0.974, 0.766, 0.646],
+      fromProductionDate : 2016,
+      gearRatio : [3.9, 2.174, 1.345, 0.974, 0.766, 0.646],
       gearSpeed : 37.6,
       transmission : 1, // manual
       traction : 1, // FWD
@@ -47,9 +47,9 @@ module.exports = [
     // https://www.carfolio.com/specifications/models/car/?car=100188
     // http://www.forum-clio.com/index.php/topic,4345.20.html
     name : 'renault clio 2 RXT 1.6 (90) auto',
+    engine_id : 5,
     fromProductionDate : 1998,
     toProductionDate : 2007,
-    engine_id : 5,
     gearRatio : [3.994, 2.536, 1.581, 1],
     gearSpeed : 40, // speed IV
     transmission : 2, // auto
@@ -66,5 +66,17 @@ module.exports = [
     factoryMileageCountry : 7,
     factoryAcc : 12.9,
     factoryEmission : 184,
+  },
+  {
+    name : 'ford fiesta 6 ecobost 1.0',
+    engine_id : 6,
+    gearRatio : [3.583, 1.926, 1.206, 0.878, 0.689],
+    gearSpeed : 45.1,
+    transmission : 1,
+    weight : 1016,
+    lengthmm : 3969,
+    width: 1722,
+    height: 1495,
+    wheelbase:2489,
   }
 ]
