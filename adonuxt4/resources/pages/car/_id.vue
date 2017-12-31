@@ -10,6 +10,7 @@
         >
         <v-icon>add</v-icon>
       </v-btn>
+      <car-eco :car="car"></car-eco>
     </div>
   </div>
 </template>
@@ -17,9 +18,13 @@
 <script>
 import axios from '~/plugins/axios'
 import { mapMutations } from 'vuex'
+import CarEco from '~/components/CarEco'
 
 
 export default {
+  components : {
+    CarEco,
+  },
   validate : ({params}) => {
     return /^\d+$/.test(params.id) || !params.id
   },
