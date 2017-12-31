@@ -78,5 +78,21 @@ module.exports = [
     width: 1722,
     height: 1495,
     wheelbase:2489,
+  },
+  {
+    name : 'nissan micra 4 (80)',
+    engine_id : 7,
+    gearRatio : [3.296, 1.815, 1.231, 0.972, 0.790],
+    gearSpeed : 36.3,
+    transmission : 1,
+    weight : 1055,
+  },
+  {
+    name : 'trafic dci 2.0 (90)',
+    engine_id : 8,
+    gearRatio : [4.564, 2.442, 1.515, 0.986, 0.773, 0.600],
+    weight : 1848,
+    gearSpeed : 50.44,
+    dragArea : 3.5,
   }
 ]

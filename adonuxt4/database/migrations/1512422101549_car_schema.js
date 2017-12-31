@@ -21,6 +21,7 @@ class CarSchema extends Schema {
       table.integer('height')
       table.integer('wheelbase')
       table.decimal('dragCoef')
+      table.decimal('dragArea')
 
       table.integer('trunk')
       table.integer('fuelTank')
