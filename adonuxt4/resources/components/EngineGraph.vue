@@ -184,7 +184,9 @@ export default {
   methods : {
     handleWindowResize(event) {
       let graph = this.$refs.graph
-      graph.$emit('redrawChart')
+      // if(graph){
+      //   graph.$emit('redrawChart')
+      // }
     },
   },
 };
