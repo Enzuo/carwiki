@@ -10,7 +10,9 @@ export default Object.assign(VueCharts, {
   },
   created() {
     this.$on('redrawChart', function() {
-      this.drawChart()
+      if(this.chart){
+        this.drawChart()
+      }
     })
   },
 
