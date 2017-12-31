@@ -10,7 +10,6 @@
         </v-flex>
       </v-layout>
     </v-card-text>
-    {{options}}
     <no-ssr>
       <vue-chart ref="graph" :columns="columns" :rows="rows" :options="options"></vue-chart>
     </no-ssr>
