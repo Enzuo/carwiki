@@ -36,7 +36,9 @@ export default {
   },
   methods : {
     selectItem (item) {
-      this.$emit('select', item.id)
+      if(item){
+        this.$emit('select', item.id)
+      }
     },
     searchItem : async(searchText) => {
 
