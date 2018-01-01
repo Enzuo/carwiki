@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="car">
-      {{car.name}}
+      <car-view :car="car"></car-view>
 
       <v-btn
           color="blue"
@@ -19,11 +19,13 @@
 import axios from '~/plugins/axios'
 import { mapMutations } from 'vuex'
 import CarEco from '~/components/CarEco'
+import CarView from '~/components/CarView'
 
 
 export default {
   components : {
     CarEco,
+    CarView
   },
   validate : ({params}) => {
     return /^\d+$/.test(params.id) || !params.id
