@@ -66,29 +66,25 @@ const createStore = () => {
           commit('SET_USER', req.session.authUser)
         }
       },
-      login ({ commit }, { email, password }) {
-        return axios.post('/login', {
-          // Send the client cookies to the server
-          // credentials: 'same-origin',
-          // headers: {
-          //   'Content-Type': 'application/json'
-          // },
-          // body: JSON.stringify({
-            email,
-            password
-          // })
-        })
-        .then((res) => {
-          if (res.status === 401) {
-            throw new Error('Bad credentials')
-          } else {
-            return res
-          }
-        })
-        .then((authUser) => {
-          console.log(authUser)
+      async login ({ commit }, { email, password }) {
+        try {
+          var authUser = await axios.post('/login', {
+              email,
+              password
+          })
           commit('SET_USER', authUser)
-        })
+        }
+        catch(e) {
+          console.log('bad credentials',JSON.stringify(e))
+          // throw e
+          if(!e.response){
+            throw 'Network error'
+          }
+          if(e.response.status === 401){
+            throw 'Bad credentials'
+          }
+          throw 'Server error'
+        }
       },
       logout ({ commit }) {
         return axios.post('/api/logout')

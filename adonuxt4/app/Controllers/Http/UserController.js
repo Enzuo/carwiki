@@ -30,15 +30,16 @@ class UserController {
       .delete()
   }
 
-  async login ({ request, auth }) {
+  async login ({ request, auth, response }) {
     const { email, password } = request.all()
-    try {
+    // try {
       await auth.attempt(email, password)
-    }
-    catch (e) {
-      console.log(e)
-      return 'Incorrect user'+e
-    }
+    // }
+    // catch (e) {
+    //   console.log(e)
+    //   response.status = 401
+    //   return 'Incorrect user'+e
+    // }
 
     return 'Logged in successfully'
   }

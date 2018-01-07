@@ -6,6 +6,7 @@
           <v-card-text>
             <v-container>
               <form @submit.prevent="onLogin">
+                <div>{{error}}</div>
                 <v-layout row>
                   <v-flex xs12>
                     <v-text-field
@@ -13,6 +14,7 @@
                       label="Mail"
                       id="email"
                       v-model="email"
+                      :autofocus="true"
                       type="email"
                       required></v-text-field>
                   </v-flex>
@@ -49,11 +51,12 @@ export default {
     return {
       email: '',
       password: '',
+      error: null,
     }
   },
   computed: {
     user () {
-      return this.$store.authUser
+      return this.$store.state.authUser
     }
   },
   watch: {
@@ -61,11 +64,22 @@ export default {
       if (value !== null && value !== undefined) {
         this.$router.push('/')
       }
+    },
+    email(value) {
+      this.error = null
+    },
+    password(value) {
+      this.error = null
     }
   },
   methods: {
-    onLogin () {
-      this.$store.dispatch('login', {email: this.email, password: this.password})
+    async onLogin () {
+      try {
+        await this.$store.dispatch('login', {email: this.email, password: this.password})
+      }
+      catch(e){
+        this.error = e
+      }
     }
   }
 }
