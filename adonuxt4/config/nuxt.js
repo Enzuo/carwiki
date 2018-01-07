@@ -4,6 +4,10 @@ const { resolve } = require('path')
 
 module.exports = {
 
+  modules : [
+    '@nuxtjs/axios',
+  ],
+
   build: {
     analyze: {
       analyzerMode: 'static',

@@ -24,7 +24,12 @@ Route.group(() => {
   Route.post('login', 'UserController.login')
   Route.post('logout', 'UserController.logout')
 
-  Route.resource('engines', 'EngineController').apiOnly()
+  Route.resource('engines', 'EngineController')
+  // .middleware(new Map([
+  //   [['engines.store', 'engines.update', 'engines.delete'], ['auth']]
+  // ]))
+  .middleware(['auth'])
+  .apiOnly()
   Route.resource('cars', 'CarController').apiOnly()
 
 }).prefix('api')

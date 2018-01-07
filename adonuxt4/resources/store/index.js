@@ -62,21 +62,22 @@ const createStore = () => {
         }
       },
       nuxtServerInit ({ commit }, { req }) {
-        if (req.session && req.session.authUser) {
-          commit('SET_USER', req.session.authUser)
+        console.log('nuxtServerInit', req.session)
+        if (req.authUser) {
+          commit('SET_USER', req.authUser)
         }
       },
       async login ({ commit }, { email, password }) {
         try {
-          var authUser = await axios.post('/login', {
+          var authUser = await this.$axios.$post('/login', {
               email,
               password
           })
+          console.log('authUser', authUser)
           commit('SET_USER', authUser)
         }
         catch(e) {
-          console.log('bad credentials',JSON.stringify(e))
-          // throw e
+          console.log(JSON.stringify(e))
           if(!e.response){
             throw 'Network error'
           }
@@ -87,7 +88,7 @@ const createStore = () => {
         }
       },
       logout ({ commit }) {
-        return axios.post('/api/logout')
+        return this.$axios.$post('/logout')
         .then(() => {
           commit('SET_USER', null)
         })

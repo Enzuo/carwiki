@@ -32,14 +32,17 @@ class UserController {
 
   async login ({ request, auth, response }) {
     const { email, password } = request.all()
+
     // try {
-      await auth.attempt(email, password)
+    var user =  await auth.remember(true).attempt(email, password)
+    console.log('auth', auth)
     // }
     // catch (e) {
     //   console.log(e)
     //   response.status = 401
     //   return 'Incorrect user'+e
     // }
+    return user
 
     return 'Logged in successfully'
   }

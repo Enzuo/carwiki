@@ -44,7 +44,7 @@ export default {
 
     },
     async getItems () {
-      let { data } = await axios.get(this.api)
+      let data = await this.$axios.$get(this.api)
       this.items = data
     }
   }
