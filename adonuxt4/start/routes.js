@@ -25,10 +25,9 @@ Route.group(() => {
   Route.post('logout', 'UserController.logout')
 
   Route.resource('engines', 'EngineController')
-  // .middleware(new Map([
-  //   [['engines.store', 'engines.update', 'engines.delete'], ['auth']]
-  // ]))
-  .middleware(['auth'])
+  .middleware(new Map([
+    [['engines.update'], ['auth']]
+  ]))
   .apiOnly()
   Route.resource('cars', 'CarController').apiOnly()
 

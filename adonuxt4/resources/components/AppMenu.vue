@@ -2,7 +2,7 @@
   <v-navigation-drawer permanent fixed app light :mini-variant.sync="mini">
     <v-toolbar flat class="transparent">
       <v-list class="pa-0">
-        <v-list-tile avatar>
+        <v-list-tile avatar to="/profile">
           <v-list-tile-avatar>
             <v-icon v-if="!authUser">account_circle</v-icon>
             <img v-if="authUser" src="https://randomuser.me/api/portraits/men/85.jpg" />

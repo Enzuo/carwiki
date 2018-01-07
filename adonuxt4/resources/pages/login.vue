@@ -75,6 +75,9 @@ export default {
   methods: {
     async onLogin () {
       try {
+        // if(this.store.state.authUser){
+        //   await this.$store.dispatch('logout')
+        // }
         await this.$store.dispatch('login', {email: this.email, password: this.password})
       }
       catch(e){
