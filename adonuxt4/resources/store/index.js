@@ -8,6 +8,7 @@ const createStore = () => {
       currentEngine: null,
       currentCar: null,
       carBasket: [],
+      authUser : null,
     },
     mutations: {
       setCurrentEngine (state, id) {
@@ -47,7 +48,10 @@ const createStore = () => {
           }
           Vue.set(car, 'selectedGear', selectedGear)
         }
-      }
+      },
+      SET_USER: function (state, user) {
+        state.authUser = user
+      },
     },
     actions: {
       async addToBasket({commit, state}, carId){
@@ -56,6 +60,41 @@ const createStore = () => {
           let car = data
           commit('addToBasket', car)
         }
+      },
+      nuxtServerInit ({ commit }, { req }) {
+        if (req.session && req.session.authUser) {
+          commit('SET_USER', req.session.authUser)
+        }
+      },
+      login ({ commit }, { email, password }) {
+        return axios.post('/login', {
+          // Send the client cookies to the server
+          // credentials: 'same-origin',
+          // headers: {
+          //   'Content-Type': 'application/json'
+          // },
+          // body: JSON.stringify({
+            email,
+            password
+          // })
+        })
+        .then((res) => {
+          if (res.status === 401) {
+            throw new Error('Bad credentials')
+          } else {
+            return res
+          }
+        })
+        .then((authUser) => {
+          console.log(authUser)
+          commit('SET_USER', authUser)
+        })
+      },
+      logout ({ commit }) {
+        return axios.post('/api/logout')
+        .then(() => {
+          commit('SET_USER', null)
+        })
       }
     },
     getters: {

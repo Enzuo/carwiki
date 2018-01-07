@@ -30,6 +30,23 @@ class UserController {
       .delete()
   }
 
+  async login ({ request, auth }) {
+    const { email, password } = request.all()
+    try {
+      await auth.attempt(email, password)
+    }
+    catch (e) {
+      console.log(e)
+      return 'Incorrect user'+e
+    }
+
+    return 'Logged in successfully'
+  }
+
+  async logout ({ auth }) {
+    await auth.logout()
+  }
+
 }
 
 module.exports = UserController
