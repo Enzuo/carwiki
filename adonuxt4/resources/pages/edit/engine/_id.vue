@@ -29,7 +29,8 @@ import EngineEdit from '~/components/EngineEdit'
 
 
 export default {
-  validate : ({params}) => {
+  middleware : 'auth',
+  validate : ({params, store}) => {
     return /^\d+$/.test(params.id) || !params.id
   },
   components : {

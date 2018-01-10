@@ -7,7 +7,7 @@
       ></engine-graph>
 
       {{ editUrl = '/edit/engine/'+engine.id }}
-      <v-btn
+      <v-btn v-if="$store.state.authUser"
         color="blue"
         dark fab fixed bottom right
         :to="editUrl"
