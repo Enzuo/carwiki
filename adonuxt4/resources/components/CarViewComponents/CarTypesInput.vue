@@ -34,6 +34,33 @@ const transmissionsTypes = [
   { id : 1, label : 'Manual' },
   { id : 2, label : 'Automatic'},
 ]
+
+const bodyTypes = [
+  { id : 1, label : 'City' }, // citadine
+  { id : 2, label : 'Supermini' }, // citadine polyvalente
+  { id : 3, label : 'Hatchback' }, // compacte
+  { id : 4, label : 'Mini MPV' }, // monospace compact
+  { id : 5, label : 'MPV' }, // monospace
+  { id : 6, label : 'Saloon' }, // sedan
+  { id : 7, label : 'Estates' }, // break
+  { id : 8, label : 'Crossover' }, // crossover
+  { id : 9, label : 'SUV' }, // suv
+  { id : 10, label : '4x4' }, // 4x4
+  { id : 11, label : 'Coupe' }, // sedan coupe
+  { id : 12, label : 'Carbiolet' }, // Cabriolet
+  { id : 13, label : 'Roadster' }, // Roadster
+]
+
+const EngineTypes = [
+  { id : 1, label : 'petrol'},
+  { id : 2, label : 'diesel'},
+  { id : 3, label : 'hybrid'},
+  { id : 4, label : 'eletric'},
+  { id : 5, label : 'flex-fuel'},
+  { id : 6, label : 'gpl'},
+  { id : 7, label : 'plugin electric hybrid'},
+]
+
 export default {
   props : { value : Number, edit : Boolean, type : String },
   data : function () {
