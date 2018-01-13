@@ -2,7 +2,7 @@
   <div>
     Name : {{car.name}}
     <v-container fluid grid-list-md >
-      <v-layout display-helpers	 rows wrap >
+      <v-layout  rows wrap >
     <v-flex xs6 v-for="category in details" :key="category.title" >
       <v-card>
         <v-card-title>
