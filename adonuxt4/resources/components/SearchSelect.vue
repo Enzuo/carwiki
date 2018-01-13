@@ -21,14 +21,14 @@ import Multiselect from 'vue-multiselect'
 
 export default {
   name : 'search-select',
-  props: ['id','params','api'],
+  props: ['id','params','api','preSelect'],
   components : {
     Multiselect,
   },
   data : () => {
     return {
       items : [],
-      selectedItem : null,
+      selectedItem : this.preSelect || null,
     }
   },
   mounted() {
@@ -37,8 +37,9 @@ export default {
   methods : {
     selectItem (item) {
       if(item){
-        this.$emit('select', item.id)
+        this.$emit('select', item.id, item)
       }
+      console.log(this.selectedItem)
     },
     searchItem : async(searchText) => {
 

@@ -20,41 +20,52 @@
     </div>
     <v-container fluid grid-list-md >
       <v-layout  rows wrap >
-    <v-flex xs6 v-for="category in view_structure" :key="category.title" >
-      <v-card>
-        <v-card-title>
-          <h3><v-icon>{{category.icon}}</v-icon>{{category.title}}</h3>
-        </v-card-title>
-        <v-card-content>
-          <v-data-table
-            :items="category.items"
-            class="elevation-1"
-            hide-actions
-            hide-headers
-          >
-            <template slot="items" scope="props">
-              <td class="text-xs-left">{{ props.item.title }}</td>
-              <td v-if="props.item.component === 'engine'" class="text-xs-right"><v-btn flat color="primary" :href="props.item.href">{{ car.engine.name }}</v-btn></td>
-              <td v-else-if="edit"><input v-model="car[props.item.value]"></td>
-              <td v-else class="text-xs-right">{{ car[props.item.value] }}</td>
-              <td class="text-xs-right caption">{{ props.item.unit }}</td>
-            </template>
-          </v-data-table>
-        </v-card-content>
-      </v-card>
-    </v-flex>
+        <v-flex xs6 v-for="category in view_structure" :key="category.title" >
+          <v-card>
+            <v-card-title>
+              <h3><v-icon>{{category.icon}}</v-icon>{{category.title}}</h3>
+            </v-card-title>
+            <v-card-content>
+              <v-data-table
+                :items="category.items"
+                class="elevation-1"
+                hide-actions
+                hide-headers
+              >
+                <template slot="items" scope="props">
+                  <td class="text-xs-left">{{ props.item.title }}</td>
+                  <td v-if="props.item.component === 'engine'" class="text-xs-right">
+                    <engine-input :engine.sync="car[props.item.value]" :edit="edit"></engine-input>
+                  </td>
+                  <td v-else-if="props.item.component === 'traction'" class="text-xs-right">
+                    <traction-input v-model="car[props.item.value]" :edit="edit"></traction-input>
+                  </td>
+                  <td v-else-if="edit"><input v-model="car[props.item.value]"></td>
+                  <td v-else class="text-xs-right">{{ car[props.item.value] }}</td>
+                  <td class="text-xs-right caption">{{ props.item.unit }}</td>
+                </template>
+              </v-data-table>
+            </v-card-content>
+          </v-card>
+        </v-flex>
       </v-layout>
     </v-container>
+    {{car}}
   </div>
 </template>
 
 <script>
-import SearchSelect from '~/components/SearchSelect'
+import EngineInput from '~/components/CarViewComponents/EngineInput'
+import TractionInput from '~/components/CarViewComponents/TractionInput'
 
 export default {
   props : {
     car : Object,
     edit : Boolean
+  },
+  components : {
+    EngineInput,
+    TractionInput
   },
   data : function () {
     return {
@@ -74,7 +85,7 @@ export default {
         title : 'performance',
         icon : 'flash_on',
         items : [
-          {title:'engine', value: 'engine', href:'/engine/'+this.car.engine.id, component : 'engine' },
+          {title:'engine', value: 'engine', component : 'engine' },
           {title:'acc 0-100', value: 'factoryAcc', unit:'s'},
         ]
       },{
@@ -82,10 +93,16 @@ export default {
         icon : 'settings',
         items : [
           {title:'type', value: 'transmission' },
-          {title:'traction', value: 'traction' },
+          {title:'traction', value: 'traction', component : 'traction' },
         ]
       }]
     }
   }
 }
 </script>
+
+<style scoped>
+v-card-content .table__overflow {
+  overflow: visible;
+}
+</style>
