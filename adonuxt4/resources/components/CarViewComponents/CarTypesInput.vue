@@ -33,6 +33,7 @@ const tractionsTypes = [
 const transmissionsTypes = [
   { id : 1, label : 'Manual' },
   { id : 2, label : 'Automatic'},
+  { id : 3, label : 'Automatic CVT'},
 ]
 
 const bodyTypes = [
