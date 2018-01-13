@@ -18,8 +18,7 @@
       </template>
     </v-select>
     <div v-else>
-      {{ o = getTractionById(value) }}
-      {{ o ? o.label : null}}
+      {{ traction }}
     </div>
   </div>
 </template>
@@ -35,6 +34,12 @@ export default {
   data : function () {
     return {
       tractionsTypes
+    }
+  },
+  computed : {
+    traction : function () {
+      var o = this.getTractionById(this.value)
+      return o ? o.label : null
     }
   },
   methods : {
