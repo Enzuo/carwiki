@@ -38,7 +38,10 @@
                     <engine-input :engine.sync="car[props.item.value]" :edit="edit"></engine-input>
                   </td>
                   <td v-else-if="props.item.component === 'traction'" class="text-xs-right">
-                    <traction-input v-model="car[props.item.value]" :edit="edit"></traction-input>
+                    <car-types-input v-model="car[props.item.value]" :edit="edit"></car-types-input>
+                  </td>
+                  <td v-else-if="props.item.component === 'transmission'" class="text-xs-right">
+                    <car-types-input v-model="car[props.item.value]" type="transmission" :edit="edit"></car-types-input>
                   </td>
                   <td v-else-if="edit"><input v-model="car[props.item.value]"></td>
                   <td v-else class="text-xs-right">{{ car[props.item.value] }}</td>
@@ -56,7 +59,7 @@
 
 <script>
 import EngineInput from '~/components/CarViewComponents/EngineInput'
-import TractionInput from '~/components/CarViewComponents/TractionInput'
+import CarTypesInput from '~/components/CarViewComponents/CarTypesInput'
 
 export default {
   props : {
@@ -65,7 +68,7 @@ export default {
   },
   components : {
     EngineInput,
-    TractionInput
+    CarTypesInput
   },
   data : function () {
     return {
@@ -92,7 +95,7 @@ export default {
         title : 'transmission',
         icon : 'settings',
         items : [
-          {title:'type', value: 'transmission' },
+          {title:'type', value: 'transmission', component : 'transmission' },
           {title:'traction', value: 'traction', component : 'traction' },
         ]
       }]
