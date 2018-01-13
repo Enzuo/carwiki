@@ -3,15 +3,11 @@
     <div v-if="car">
       <car-view :car="car"></car-view>
 
-      <v-btn
-          color="blue"
-          dark fab fixed bottom right
-          @click="addToBasket(car)"
-        >
-        <v-icon>add</v-icon>
-      </v-btn>
       <car-eco :car="car"></car-eco>
+
+      <action-buttons :actions="actions"></action-buttons>
     </div>
+
   </div>
 </template>
 
@@ -20,12 +16,14 @@ import axios from '~/plugins/axios'
 import { mapMutations } from 'vuex'
 import CarEco from '~/components/CarEco'
 import CarView from '~/components/CarView'
+import ActionButtons from '~/components/ActionButtons'
 
 
 export default {
   components : {
     CarEco,
-    CarView
+    CarView,
+    ActionButtons
   },
   validate : ({params}) => {
     return /^\d+$/.test(params.id) || !params.id
@@ -38,6 +36,14 @@ export default {
     }
     store.commit('setCurrentCar', params.id)
     return { car }
+  },
+  computed : {
+    actions : function () {
+      return [
+        {icon : 'edit', to : '/edit/car/'+(this.car ? this.car.id : null), disabled : !this.$store.state.authUser},
+        {icon : 'shopping_cart', click : () => { this.addToBasket(this.car) } }
+      ]
+    }
   },
   methods : {
     ...mapMutations([
