@@ -1,9 +1,26 @@
 <template>
   <div>
-    Name : {{car.name}}
+    <div v-if="edit">
+      <v-layout row>
+        <v-flex xs3>
+          <v-subheader>Name</v-subheader>
+        </v-flex>
+        <v-flex xs9>
+          <v-text-field
+            name="name"
+            label="Name"
+            v-model="car.name"
+            single-line
+          ></v-text-field>
+        </v-flex>
+      </v-layout>
+    </div>
+    <div v-else>
+      Name : {{car.name}}
+    </div>
     <v-container fluid grid-list-md >
       <v-layout  rows wrap >
-    <v-flex xs6 v-for="category in details" :key="category.title" >
+    <v-flex xs6 v-for="category in view_structure" :key="category.title" >
       <v-card>
         <v-card-title>
           <h3><v-icon>{{category.icon}}</v-icon>{{category.title}}</h3>
@@ -17,8 +34,9 @@
           >
             <template slot="items" scope="props">
               <td class="text-xs-left">{{ props.item.title }}</td>
-              <td v-if="props.item.href" class="text-xs-right"><v-btn flat color="primary" :href="props.item.href">{{ props.item.value }}</v-btn></td>
-              <td v-else class="text-xs-right">{{ props.item.value }}</td>
+              <td v-if="props.item.component === 'engine'" class="text-xs-right"><v-btn flat color="primary" :href="props.item.href">{{ car.engine.name }}</v-btn></td>
+              <td v-else-if="edit"><input v-model="car[props.item.value]"></td>
+              <td v-else class="text-xs-right">{{ car[props.item.value] }}</td>
               <td class="text-xs-right caption">{{ props.item.unit }}</td>
             </template>
           </v-data-table>
@@ -31,35 +49,40 @@
 </template>
 
 <script>
+import SearchSelect from '~/components/SearchSelect'
+
 export default {
-  props : ['car'],
-  computed : {
-    details : function () {
-      return [{
+  props : {
+    car : Object,
+    edit : Boolean
+  },
+  data : function () {
+    return {
+      view_structure : [{
         title : 'size',
         icon : 'fullscreen',
         items : [
-          {title:'length', value: this.car.lengthmm, unit:'mm'},
-          {title:'width', value: this.car.width, unit:'mm'},
-          {title:'height', value: this.car.height, unit:'mm'},
-          {title:'weight', value: this.car.weight, unit:'kg'},
-          {title:'wheel base', value: this.car.wheelbase, unit:'mm'},
-          {title:'drag coef', value: this.car.dragCoef, unit:''},
-          {title:'drag area', value: this.car.dragArea, unit:'m2'},
+          {title:'length', value: 'lengthmm', unit:'mm'},
+          {title:'width', value: 'width', unit:'mm'},
+          {title:'height', value: 'height', unit:'mm'},
+          {title:'weight', value: 'weight', unit:'kg'},
+          {title:'wheel base', value: 'wheelbase', unit:'mm'},
+          {title:'drag coef', value: 'dragCoef', unit:''},
+          {title:'drag area', value: 'dragArea', unit:'m2'},
         ]
       },{
         title : 'performance',
         icon : 'flash_on',
         items : [
-          {title:'engine', value: this.car.engine.name, href:'/engine/'+this.car.engine.id},
-          {title:'acc 0-100', value: this.car.factoryAcc, unit:'s'},
+          {title:'engine', value: 'engine', href:'/engine/'+this.car.engine.id, component : 'engine' },
+          {title:'acc 0-100', value: 'factoryAcc', unit:'s'},
         ]
       },{
         title : 'transmission',
         icon : 'settings',
         items : [
-          {title:'type', value: this.car.transmission },
-          {title:'traction', value: this.car.factoryAcc },
+          {title:'type', value: 'transmission' },
+          {title:'traction', value: 'traction' },
         ]
       }]
     }
