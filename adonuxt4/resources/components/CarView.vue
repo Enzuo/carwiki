@@ -20,7 +20,7 @@
     </div>
     <v-container fluid grid-list-md >
       <v-layout  rows wrap >
-        <v-flex xs6 v-for="category in view_structure" :key="category.title" >
+        <v-flex md6 v-for="category in view_structure" :key="category.title" >
           <v-card>
             <v-card-title>
               <h3><v-icon>{{category.icon}}</v-icon>{{category.title}}</h3>
@@ -48,15 +48,14 @@
                   <td class="text-xs-right caption">{{ props.item.unit }}</td>
                 </template>
               </v-data-table>
+              <div v-for="component in category.components" :key="component">
+                <car-gears v-if="component === 'gears'" :car="car" :edit="edit"></car-gears>
+              </div>
             </v-card-content>
           </v-card>
         </v-flex>
-          <v-card>
-            <car-gears :car="car"></car-gears>
-          </v-card>
       </v-layout>
     </v-container>
-    {{car}}
   </div>
 </template>
 
@@ -102,6 +101,9 @@ export default {
         items : [
           {title:'type', value: 'transmission', component : 'transmission' },
           {title:'traction', value: 'traction', component : 'traction' },
+        ],
+        components : [
+          'gears'
         ]
       }]
     }

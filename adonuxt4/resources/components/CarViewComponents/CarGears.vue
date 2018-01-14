@@ -6,7 +6,7 @@
       hide-actions
       item-key="name"
     >
-      <template slot="headers" scope="props">
+      <template :slot="edit ? 'headers' : ''" scope="props">
         <tr>
           <th v-for="header in props.headers" :key="header.text"
               :class="['column',
@@ -22,20 +22,25 @@
           </th>
         </tr>
       </template>
-      <template slot="items" scope="props">
-        <td><input :value="props.item.gear"></td>
-        <td class="text-xs-right"><input :value="props.item.rpm" @input="changeRPM($event.target.value, props.index)"></td>
-        <td class="text-xs-right"><input :value="props.item.speed" @change="changeSpeed($event.target.value, props.index)"></td>
-        <td class="text-xs-right"><input :value="props.item.ratio" @change="changeRatio($event.target.value, props.index)"></td>
+      <template :slot="edit ? 'items' : ''" scope="props">
+        <td><input size="2" :value="props.item.gear"></td>
+        <td class="text-xs-right"><input size="4" :value="props.item.rpm" @input="changeRPM($event.target.value, props.index)"></td>
+        <td class="text-xs-right"><input size="5" :value="props.item.speed" @change="changeSpeed($event.target.value, props.index)"></td>
+        <td class="text-xs-right"><input size="5" :value="props.item.ratio" @change="changeRatio($event.target.value, props.index)"></td>
         <td><v-btn flat icon @click="deleteRow(props.index)"><v-icon>delete</v-icon></v-btn></td>
       </template>
-      <template slot="footer">
+      <template :slot="edit ? '' : 'items'" scope="props">
+        <td>{{props.item.gear}}</td>
+        <td class="text-xs-right"><input size="4" :value="props.item.rpm" @input="changeRPM($event.target.value, props.index)"></td>
+        <td class="text-xs-right">{{props.item.speed}}</td>
+        <td class="text-xs-right">{{props.item.ratio}}</td>
+      </template>
+      <template v-if="edit" slot="footer">
         <td colspan="100%">
           <v-btn flat @click="add"><v-icon>add</v-icon></v-btn>
         </td>
       </template>
     </v-data-table>
-    {{ isRatioLocked }}
   </div>
 </template>
 
@@ -43,7 +48,7 @@
 import Vue from 'vue'
 
 export default {
-  props : ['car'],
+  props : { car : Object, edit : Boolean },
   data : function () {
     var rpms = []
     for(var i=0; i<this.car.gearRatio.length; i++){
@@ -79,9 +84,9 @@ export default {
     headers : function () {
       return  [
         {text: 'Gear', align: 'left', sortable: false, value: 'name'},
-        {text: 'Rpm', align: 'left', sortable: false, value: 'rpm'},
-        {text: 'Speed (km/h)', align: 'left', sortable: false, lockable: true, value: 'speed', active : this.isSpeedLocked},
-        {text: 'Ratio', align: 'left', sortable: false, lockable: true, value: 'ratio', active : this.isRatioLocked},
+        {text: 'Rpm', align: 'right', sortable: false, value: 'rpm'},
+        {text: 'Speed (km/h)', align: 'right', sortable: false, lockable: true, value: 'speed', active : this.isSpeedLocked},
+        {text: 'Ratio', align: 'right', sortable: false, lockable: true, value: 'ratio', active : this.isRatioLocked},
       ]
     }
   },
