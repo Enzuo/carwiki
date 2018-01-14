@@ -51,6 +51,9 @@
             </v-card-content>
           </v-card>
         </v-flex>
+          <v-card>
+            <car-gears :car="car"></car-gears>
+          </v-card>
       </v-layout>
     </v-container>
     {{car}}
@@ -60,6 +63,7 @@
 <script>
 import EngineInput from '~/components/CarViewComponents/EngineInput'
 import CarTypesInput from '~/components/CarViewComponents/CarTypesInput'
+import CarGears from '~/components/CarViewComponents/CarGears'
 
 export default {
   props : {
@@ -68,7 +72,8 @@ export default {
   },
   components : {
     EngineInput,
-    CarTypesInput
+    CarTypesInput,
+    CarGears,
   },
   data : function () {
     return {
