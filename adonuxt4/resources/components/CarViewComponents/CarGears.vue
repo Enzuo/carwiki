@@ -31,7 +31,7 @@
       </template>
       <template slot="footer">
         <td colspan="100%">
-          <v-btn flat icon @click="add"><v-icon>add</v-icon></v-btn>
+          <v-btn flat @click="add"><v-icon>add</v-icon></v-btn>
         </td>
       </template>
     </v-data-table>
@@ -64,8 +64,14 @@ export default {
         var rpm = this.rpms[i]
         var maxGearRatio = gearRatio[gearRatio.length-1]
         var currentGearRatio = gearRatio[i]
-        var speedForRPM = (maxGearRatio / currentGearRatio * maxGearSpeed) * (rpm / 1000)
-        var gearData = {gear : i, rpm : rpm, speed : parseFloat(speedForRPM).toFixed(1), ratio : parseFloat(currentGearRatio).toFixed(3)}
+        var speed = (maxGearRatio / currentGearRatio * maxGearSpeed)
+        var gearData = {
+          gear : i,
+          rpm : rpm,
+          speed : parseFloat(speed * (rpm / 1000)).toFixed(1),
+          baseSpeed : parseFloat(speed).toFixed(1),
+          ratio : parseFloat(currentGearRatio).toFixed(3)
+        }
         datas.push(gearData)
       }
       return datas
@@ -91,11 +97,9 @@ export default {
       // speed locked behavior : change all the ratios
       // according to the new Ratio and the current speeds
       if(this.isSpeedLocked){
-        var refRPM = this.rpms[index]
-        var refSpeed = this.gears[index].speed / (refRPM/1000)
+        var refSpeed = this.gears[index].baseSpeed
         for(var i=0; i<gearRatio.length; i++){
-          var rpm = this.rpms[i]
-          var speed = this.gears[i].speed / (rpm/1000)
+          var speed = this.gears[i].baseSpeed
           var ratio = refSpeed / speed * newRatio
           this.car.gearRatio[i] = ratio
         }
@@ -156,7 +160,14 @@ export default {
       this.car.gearRatio.push([defaultRatio])
     },
     deleteRow : function (index) {
-      console.log('delete ', index)
+      var gears = this.gears
+      // last gear
+      if(index === gears.length-1){
+        if(gears.length >= 2){
+          this.car.gearSpeed = gears[gears.length-2].baseSpeed
+        }
+      }
+      this.rpms.splice(index, 1)
       this.car.gearRatio.splice(index, 1)
     },
     lockColumn : function (colValue) {
