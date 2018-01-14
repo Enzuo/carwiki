@@ -50,12 +50,8 @@ export default {
       rpms.push(1000)
     }
     return {
-      headers : [
-        {text: 'Gear', align: 'left', sortable: false, value: 'name'},
-        {text: 'Rpm', align: 'left', sortable: false, value: 'rpm'},
-        {text: 'Speed (km/h)', align: 'left', lockable: true, value: 'speed'},
-        {text: 'Ratio', align: 'left', lockable: true, value: 'ratio'},
-      ],
+      isRatioLocked : false,
+      isSpeedLocked : false,
       rpms
     }
   },
@@ -74,12 +70,13 @@ export default {
       }
       return datas
     },
-    isRatioLocked : function () {
-      return !!this.headers.find((col) => {
-        if(col.value === 'ratio' && col.active === true){
-          return true
-        }
-      })
+    headers : function () {
+      return  [
+        {text: 'Gear', align: 'left', sortable: false, value: 'name'},
+        {text: 'Rpm', align: 'left', sortable: false, value: 'rpm'},
+        {text: 'Speed (km/h)', align: 'left', lockable: true, value: 'speed', active : this.isSpeedLocked},
+        {text: 'Ratio', align: 'left', lockable: true, value: 'ratio', active : this.isRatioLocked},
+      ]
     }
   },
   methods : {
@@ -133,30 +130,15 @@ export default {
     },
     lockColumn : function (colValue) {
       // Unlock previous different locked column
-      var indexAlreadyLocked = this.headers.findIndex(function (col) {
-        if(col.active === true && col.value !== colValue){
-          return true
-        }
-        return false
-      })
-      if(indexAlreadyLocked > -1){
-        var header = this.headers[indexAlreadyLocked]
-        header.active = false
-        Vue.set(this.headers, index, header)
+      if(colValue === 'ratio'){
+        this.isSpeedLocked = false
+        this.isRatioLocked = this.isRatioLocked ? false : true
       }
-
-      // Lock or unlock clicked column
-      var index = this.headers.findIndex(function(col) {
-        if(col.value === colValue){
-          return true
-        }
-        return false
-      })
-      var header = this.headers[index]
-      header.active = header.active ? false : true
-      Vue.set(this.headers, index, header)
+      if(colValue === 'speed'){
+        this.isRatioLocked = false
+        this.isSpeedLocked = this.isSpeedLocked ? false : true
+      }
     }
-
   }
 }
 </script>
