@@ -144,7 +144,7 @@ module.exports = [
     fuelTank : 44,
   },
   {
-    name : 'hyundai ioniq eletric',
+    name : 'hyundai ioniq eletric (120)',
     engine_id : 11,
     gearRatio : [7.412],
     gearSpeed : 16.1,
@@ -160,5 +160,13 @@ module.exports = [
     turnCircle : 10.6,
     transmission : 2,
     factoryAcc : 9.9,
+  },
+  {
+    name : 'hyundai i20 1.4 (100)',
+    weight : 1175,
+    engine_id : 12,
+    gearRatio : [3.769, 2.045, 1.37, 1.036, 0.893, 0.774],
+    gearSpeed : 35.5,
+    factoryAcc : 11.6,
   }
 ]
