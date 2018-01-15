@@ -50,32 +50,31 @@ import Vue from 'vue'
 export default {
   props : { car : Object, edit : Boolean },
   data : function () {
+    var gearRatios = this.car.gearRatio
     var rpms = []
-    for(var i=0; i<this.car.gearRatio.length; i++){
+    for(var i=0; i<gearRatios.length; i++){
       rpms.push(1000)
     }
     return {
       isRatioLocked : false,
       isSpeedLocked : false,
+      refRatio : gearRatios[gearRatios.length-1] * this.car.gearSpeed,
       rpms
     }
   },
   computed : {
     gears : function () {
-      var gearRatio = this.car.gearRatio
-      var maxGearSpeed = this.car.gearSpeed
+      var gearRatios = this.car.gearRatio
       var datas = []
-      for(var i=0; i<gearRatio.length; i++){
+      for(var i=0; i<gearRatios.length; i++){
         var rpm = this.rpms[i]
-        var maxGearRatio = gearRatio[gearRatio.length-1]
-        var currentGearRatio = gearRatio[i]
-        var speed = (maxGearRatio / currentGearRatio * maxGearSpeed)
+        var speed = 1/gearRatios[i] * this.refRatio
         var gearData = {
           gear : i,
           rpm : rpm,
           speed : parseFloat(speed * (rpm / 1000)).toFixed(1),
           baseSpeed : parseFloat(speed).toFixed(1),
-          ratio : parseFloat(currentGearRatio).toFixed(3)
+          ratio : parseFloat(gearRatios[i]).toFixed(3)
         }
         datas.push(gearData)
       }
@@ -95,33 +94,22 @@ export default {
       Vue.set(this.rpms, index, value)
     },
     changeRatio : function (newRatio, index) {
-      var gearRatio = this.car.gearRatio
-      var maxGearRatio = gearRatio[gearRatio.length-1]
-      var maxGearSpeed = this.car.gearSpeed
+      newRatio = parseFloat(newRatio) || 0.1
 
-      // speed locked behavior : change all the ratios
-      // according to the new Ratio and the current speeds
       if(this.isSpeedLocked){
-        var refSpeed = this.gears[index].baseSpeed
-        for(var i=0; i<gearRatio.length; i++){
+        var newRefRatio = newRatio * this.gears[index].baseSpeed
+        for(var i=0; i<this.car.gearRatio.length; i++){
           var speed = this.gears[i].baseSpeed
-          var ratio = refSpeed / speed * newRatio
-          this.car.gearRatio[i] = ratio
+          this.car.gearRatio[i] = newRefRatio*1/speed
         }
-        // Actually just to refresh once the calculations are done
-        Vue.set(this.car.gearRatio, index, newRatio)
+        this.refRatio = newRefRatio
         return
       }
 
-      // default behavior : just change ratio, it'll change the speed as a result
-      if(!this.isSpeedLocked){
-        Vue.set(this.car.gearRatio, index, newRatio)
-      }
+      Vue.set(this.car.gearRatio, index, newRatio)
 
-      // last gear : change ref speed
-      if(index === gearRatio.length-1){
-        var speed = maxGearRatio / newRatio * maxGearSpeed
-        this.car.gearSpeed = speed
+      if(index === this.car.gearRatio.length-1){
+        this.car.gearSpeed = 1/newRatio * this.refRatio
       }
     },
     changeSpeed : function (speed, index) {
@@ -130,31 +118,17 @@ export default {
       if(speed < 1){
         speed = 1
       }
-      var gearRatio = this.car.gearRatio
-      var maxGearRatio = gearRatio[gearRatio.length-1]
-      var maxGearSpeed = this.car.gearSpeed
 
-      // last gear also always affect ref speed
-      if(index === gearRatio.length-1){
-        this.car.gearSpeed = speed
-      }
-
-      // one line behavior : change ref speed and that's all
-      if(!(gearRatio.length > 1)){
+      if(this.isRatioLocked){
+        this.refRatio = this.car.gearRatio[index] * speed
         return
       }
 
-      // default behavior : change gear ratio according to new speed ()
-      if(!this.isRatioLocked){
-        var newRatio = (maxGearSpeed/(speed / maxGearRatio)) //* (rpm / 1000)
-        Vue.set(this.car.gearRatio, index, newRatio)
-      }
+      var newRatio = this.refRatio * 1/speed
+      Vue.set(this.car.gearRatio, index, newRatio)
 
-      // gear column locked behavior : change ref speed according to new speed using gear ratios
-      if(this.isRatioLocked && index !== gearRatio.length-1){
-        var currentGearRatio = gearRatio[index]
-        var speedForMaxGear = speed * (currentGearRatio / maxGearRatio )
-        this.car.gearSpeed = speedForMaxGear
+      if(index === this.car.gearRatio.length-1){
+        this.car.gearSpeed = speed
       }
     },
     add : function () {
