@@ -19,7 +19,7 @@ export default {
   },
   methods : {
     selectCar (id) {
-      this.$router.push({ path: `/car/${id}`})
+      this.$router.go({ path: `/car/${id}`})
     }
   },
 }
