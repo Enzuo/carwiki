@@ -5,7 +5,7 @@
         <v-list-tile avatar to="/profile">
           <v-list-tile-avatar>
             <v-icon v-if="!authUser">account_circle</v-icon>
-            <img v-if="authUser" src="https://randomuser.me/api/portraits/men/85.jpg" />
+            <img v-if="authUser" :src="authUser.avatar" />
           </v-list-tile-avatar>
           <v-list-tile-content>
             <v-list-tile-title v-if="authUser">{{authUser.full_name}}</v-list-tile-title>

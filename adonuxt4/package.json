@@ -36,13 +36,14 @@
     "@nuxtjs/axios": "^4.5.2",
     "axios": "^0.17.1",
     "cross-env": "^5.1.0",
+    "gravatar": "^1.6.0",
     "nuxt": "^1.0.0-rc11",
     "pg": "^7.4.0",
     "vue-charts": "^0.2.1",
     "vue-multiselect": "^2.0.6",
     "vue-no-ssr": "^0.2.2",
     "vue-resize": "^0.4.3",
-    "vuetify": "^0.17.3"
+    "vuetify": "^0.17.6"
   },
   "devDependencies": {
     "standard": "^10.0.3"

@@ -1,6 +1,8 @@
 'use strict'
 
 const Model = use('Model')
+const gravatar = require('gravatar');
+
 
 class User extends Model {
 
@@ -11,6 +13,15 @@ class User extends Model {
 
   static get hidden () {
     return ['password']
+  }
+
+  static get computed () {
+    return ['avatar']
+  }
+
+  getAvatar () {
+    let avatar = gravatar.url(this.email)
+    return avatar
   }
 
   tokens () {
