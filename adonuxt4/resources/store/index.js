@@ -62,7 +62,7 @@ const createStore = () => {
         }
       },
       nuxtServerInit ({ commit }, { req }) {
-        console.log('nuxtServerInit', req.session)
+        console.log('nuxtServerInit', req.authUser)
         if (req.authUser) {
           commit('SET_USER', req.authUser)
         }

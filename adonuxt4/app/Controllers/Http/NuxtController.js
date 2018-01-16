@@ -16,8 +16,8 @@ class NuxtController {
     // }
     try {
       var authUser = await auth.getUser()
-      console.log(authUser.toJSON())
-      request.request.authUser = authUser
+      console.log('logged in', request.url())
+      request.request.authUser = authUser.toJSON()
     } catch (error) {
       console.log('You are not logged in')
     }
