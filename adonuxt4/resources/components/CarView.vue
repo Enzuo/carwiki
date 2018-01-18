@@ -25,7 +25,7 @@
             <v-card-title>
               <h3><v-icon>{{category.icon}}</v-icon>{{category.title}}</h3>
             </v-card-title>
-            <v-card-content>
+            <div>
               <v-data-table
                 :items="category.items"
                 class="elevation-1"
@@ -51,7 +51,7 @@
               <div v-for="component in category.components" :key="component">
                 <car-gears v-if="component === 'gears'" :car="car" :edit="edit" :key="car.id"></car-gears>
               </div>
-            </v-card-content>
+            </div>
           </v-card>
         </v-flex>
       </v-layout>

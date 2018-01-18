@@ -23,7 +23,7 @@
         :loading="action.loading"
         dark fab small
         :disabled="action.disabled || false"
-        @click="action.click"
+        @click="(action.click ? action.click() : null)"
         :to="action.to"
       >
         <v-icon>{{action.icon}}</v-icon>
