@@ -49,7 +49,7 @@
                 </template>
               </v-data-table>
               <div v-for="component in category.components" :key="component">
-                <car-gears v-if="component === 'gears'" :car="car" :edit="edit"></car-gears>
+                <car-gears v-if="component === 'gears'" :car="car" :edit="edit" :key="car.id"></car-gears>
               </div>
             </v-card-content>
           </v-card>
