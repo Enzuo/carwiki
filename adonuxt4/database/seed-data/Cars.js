@@ -168,5 +168,24 @@ module.exports = [
     gearRatio : [3.769, 2.045, 1.37, 1.036, 0.893, 0.774],
     gearSpeed : 35.5,
     factoryAcc : 11.6,
+  },
+  {
+    name : 'modus 1.5 dCi (65)',
+    weight : 1180,
+    engine_id : 13,
+    gearRatio : [3.8, 2.1, 1.485, 1.089, 0.831],
+    gearSpeed : 38.4,
+    factoryAcc : 15.9,
+    fuelTank : 49,
+    factoryEmission : 125,
+    factoryMileageUrban : 5.5,
+    factoryMileageCountry : 4.2,
+    turnCircle : 9.9,
+    lengthmm : 3792,
+    width : 1695,
+    height : 1589,
+    wheelbase : 2482,
+    trunk : 274,
+
   }
 ]

@@ -210,6 +210,19 @@ module.exports = [
     ],
     fueltype : 1,
     displacement : 1368,
+  },
+  {
+    id : 13,
+    name : 'renault 1.5 dCi (65)',
+    torque : [
+      [1000, 120],
+      [2000, 160],
+      [3000, 140],
+      [4000, 120],
+      [4500, 100],
+    ],
+    displacement : 1461,
+    fueltype : 2,
   }
 ]
 
