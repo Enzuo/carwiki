@@ -26,12 +26,13 @@ class CarController {
       'length',
       'width',
       'height',
-      'engine_id',
     ])
+    data.engine_id = request.body.engine ? request.body.engine.id : undefined
     const car = await Car.findOrFail(params.id)
     car.merge(data)
     await car.save()
-    return car.toJSON()
+    await car.load('engine')
+    return car
   }
 }
 

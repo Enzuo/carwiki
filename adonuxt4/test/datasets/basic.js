@@ -1,4 +1,6 @@
 const User = use('App/Models/User')
+const Engine = use('App/Models/Engine')
+const Car = use('App/Models/Car')
 
 
 async function user () {
@@ -10,8 +12,33 @@ async function user () {
   return user
 }
 
-function car () {
-
+async function car () {
+  var engine1 = await Engine.create({
+    id : 1,
+    name : 'petrol engine',
+    profile : [
+      [1500,67],
+      [6000,92]
+    ]
+  })
+  var engine2 = await Engine.create({
+    id : 2,
+    name : 'diesel engine',
+    profile : [
+      [1500,180],
+      [4000,130]
+    ]
+  })
+  await Car.create({
+    name : 'clio 4',
+    weight : 1055,
+    engine_id : 1
+  })
+  await Car.create({
+    name : 'clio 4 diesel',
+    weight : 1300,
+    engine_id : 2,
+  })
 }
 
 module.exports = { user, car }
