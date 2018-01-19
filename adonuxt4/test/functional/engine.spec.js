@@ -2,7 +2,7 @@
 
 const { test, trait } = use('Test/Suite')('Engine')
 const Engine = use('App/Models/Engine')
-const User = use('App/Models/User')
+const Dataset = require('../datasets/basic')
 
 trait('DatabaseTransactions')
 trait('Auth/Client')
@@ -30,13 +30,7 @@ test ('get list of engines', async ({ client }) => {
 
 
 test('update engine', async ({ client }) => {
-  await User.create({
-    full_name: 'Darth Vader',
-    email: 'darth_vader@starwars.com',
-    password: 'darth-1234'
-  })
-  const user = await User.find(1)
-
+  var user = await Dataset.user()
   var engine = await Engine.create({
     name : 'test engine',
     profile : [
@@ -62,6 +56,6 @@ test('update engine', async ({ client }) => {
   response.assertJSONSubset({
     id : engine.id,
     name : 'test updated engine',
-    profile : engine.profile,
+    profile : JSON.stringify(engine.profile),
   })
 })
