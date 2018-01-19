@@ -2,9 +2,13 @@
 
 const { test, trait } = use('Test/Suite')('Engine')
 const Engine = use('App/Models/Engine')
+const User = use('App/Models/User')
 
 trait('DatabaseTransactions')
+trait('Auth/Client')
+trait('Session/Client')
 trait('Test/ApiClient')
+
 
 
 test ('get list of engines', async ({ client }) => {
@@ -25,7 +29,14 @@ test ('get list of engines', async ({ client }) => {
 })
 
 
-test ('update engine', async ({ client }) => {
+test('update engine', async ({ client }) => {
+  await User.create({
+    full_name: 'Darth Vader',
+    email: 'darth_vader@starwars.com',
+    password: 'darth-1234'
+  })
+  const user = await User.find(1)
+
   var engine = await Engine.create({
     name : 'test engine',
     profile : [
@@ -41,7 +52,11 @@ test ('update engine', async ({ client }) => {
     [3200,45]
   ]
 
-  const response = await client.put('/api/engines/'+engine.id).send(engine).end()
+  const response = await client
+    .put('/api/engines/'+engine.id)
+    .send(engine)
+    .loginVia(user)
+    .end()
 
   response.assertStatus(200)
   response.assertJSONSubset({
