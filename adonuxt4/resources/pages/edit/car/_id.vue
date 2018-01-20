@@ -55,7 +55,7 @@ export default {
     async save () {
       console.log('save !')
       this.isSaving = true
-      await axios.put(`cars/${this.car.id}`,this.car)
+      await this.$axios.put(`cars/${this.car.id}`,this.car)
       this.isSaving = false
       this.shouldSave = false
     }
