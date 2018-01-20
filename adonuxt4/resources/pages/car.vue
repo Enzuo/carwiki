@@ -19,6 +19,9 @@ export default {
   },
   methods : {
     selectCar (id) {
+      if(!id){
+        return this.$router.push({ path: `/car`})
+      }
       this.$router.push({ path: `/car/${id}`})
     }
   },

@@ -44,9 +44,7 @@ export default {
   },
   methods : {
     selectItem (item) {
-      if(item){
-        this.$emit('select', item.id, item)
-      }
+      this.$emit('select', item ? item.id : null, item)
     },
     searchItem : _.debounce(async function(searchText) {
       if(searchText){

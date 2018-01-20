@@ -19,6 +19,9 @@ export default {
   },
   methods : {
     selectEngine (id) {
+      if(!id){
+        return this.$router.push({ path: `/engine`})
+      }
       this.$router.push({ path: `/engine/${id}`})
     }
   }
