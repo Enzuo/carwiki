@@ -25,7 +25,7 @@
             <v-card-title>
               <h3><v-icon>{{category.icon}}</v-icon>{{category.title}}</h3>
             </v-card-title>
-            <div>
+            <div class="card-content">
               <v-data-table
                 :items="category.items"
                 class="elevation-1"
@@ -112,7 +112,7 @@ export default {
 </script>
 
 <style scoped>
-v-card-content .table__overflow {
+.card-content .table__overflow {
   overflow: visible;
 }
 </style>
