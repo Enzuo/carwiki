@@ -12,7 +12,9 @@ class EngineController {
       .select('id', 'name')
       .limit(5).clone()
     if(search){
-      engines = await query.whereRaw('name_tsv @@ to_tsquery(?)', prepareTsQuery(search))
+      var tsQuery = prepareTsQuery(search)
+      engines = await query.whereRaw('name_tsv @@ to_tsquery(?)', tsQuery)
+        .orderByRaw('ts_rank(name_tsv, to_tsquery(?)) DESC', tsQuery)
     }
     else{
       engines = await query

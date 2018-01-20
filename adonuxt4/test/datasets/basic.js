@@ -15,7 +15,7 @@ async function user () {
 async function car () {
   var engine1 = await Engine.create({
     id : 1,
-    name : 'petrol engine',
+    name : 'petrol engine 1.2 (75)',
     profile : [
       [1500,67],
       [6000,92]
@@ -23,7 +23,7 @@ async function car () {
   })
   var engine2 = await Engine.create({
     id : 2,
-    name : 'diesel engine',
+    name : 'diesel engine 1.6',
     profile : [
       [1500,180],
       [4000,130]

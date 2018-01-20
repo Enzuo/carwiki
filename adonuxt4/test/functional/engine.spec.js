@@ -28,6 +28,81 @@ test ('get list of engines', async ({ client }) => {
   }])
 })
 
+test ('search engine', async ({ client, assert }) => {
+  await Dataset.car()
+
+  var response = await client.get('api/engines?search=petrol').end()
+  response.assertStatus(200)
+  assert.equal(response.body.length, 1)
+  response.assertJSONSubset([{
+    id : 1,
+    name : 'petrol engine 1.2 (75)',
+  }])
+
+  response = await client.get('api/engines?search=eng').end()
+  response.assertStatus(200)
+  assert.equal(response.body.length, 2)
+  response.assertJSONSubset([{
+    id : 1,
+    name : 'petrol engine 1.2 (75)',
+  }])
+
+  response = await client.get('api/engines?search=diesel').end()
+  response.assertStatus(200)
+  assert.equal(response.body.length, 1)
+  response.assertJSONSubset([{
+    id : 2,
+    name : 'diesel engine 1.6',
+  }])
+
+  response = await client.get('api/engines?search=1,2').end()
+  response.assertStatus(200)
+  assert.equal(response.body.length, 1)
+  response.assertJSONSubset([{
+    id : 1,
+    name : 'petrol engine 1.2 (75)',
+  }])
+
+  response = await client.get('api/engines?search=75').end()
+  response.assertStatus(200)
+  assert.equal(response.body.length, 1)
+  response.assertJSONSubset([{
+    id : 1,
+    name : 'petrol engine 1.2 (75)',
+  }])
+
+  response = await client.get('api/engines?search=(75)').end()
+  response.assertStatus(200)
+  assert.equal(response.body.length, 1)
+  response.assertJSONSubset([{
+    id : 1,
+    name : 'petrol engine 1.2 (75)',
+  }])
+
+  response = await client.get('api/engines?search=diesel engine').end()
+  response.assertStatus(200)
+  assert.equal(response.body.length, 2)
+  response.assertJSON([{
+    id : 2,
+    name : 'diesel engine 1.6',
+  },{
+    id : 1,
+    name : 'petrol engine 1.2 (75)',
+  }])
+
+  response = await client.get('api/engines?search=petrol engine 1.2 (75)').end()
+  response.assertStatus(200)
+  assert.equal(response.body.length, 2)
+  response.assertJSON([{
+    id : 1,
+    name : 'petrol engine 1.2 (75)',
+  },{
+    id : 2,
+    name : 'diesel engine 1.6',
+  }])
+
+})
+
 
 test('update engine', async ({ client }) => {
   var user = await Dataset.user()

@@ -1,5 +1,5 @@
 function prepareTsQuery(str){
-  str = str.replace(/\)|\(/, ' ')
+  str = str.replace(/\)|\(/g, ' ')
   str = str.replace(',', '.')
   str = str.trim()
   let strArr = str.split(/\s+/)
