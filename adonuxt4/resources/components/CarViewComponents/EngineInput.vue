@@ -4,10 +4,10 @@
       v-if="edit"
       @select="selectEngine"
       api="engines"
-      :preSelect="engine"
+      :initSelect="value"
     >
     </search-select>
-    <v-btn v-else flat color="primary" :href="'/engine/'+engine.id">{{ engine.name }}</v-btn>
+    <v-btn v-else flat color="primary" :href="'/engine/'+value.id">{{ value.name }}</v-btn>
   </div>
 </template>
 
@@ -16,11 +16,12 @@ import SearchSelect from '~/components/SearchSelect'
 import Vue from 'vue'
 
 export default {
-  props : { engine : Object, edit : Boolean },
+  props : { value : Object, edit : Boolean },
   components : { SearchSelect },
   methods : {
     selectEngine (id, engine) {
-      Vue.set(this.engine, engine)
+      this.$emit('input', engine)
+      // Vue.set(this.engine, engine)
     }
   }
 }

@@ -35,7 +35,7 @@
                 <template slot="items" scope="props">
                   <td class="text-xs-left">{{ props.item.title }}</td>
                   <td v-if="props.item.component === 'engine'" class="text-xs-right">
-                    <engine-input :engine.sync="car[props.item.value]" :edit="edit"></engine-input>
+                    <engine-input v-model="car[props.item.value]" :edit="edit"></engine-input>
                   </td>
                   <td v-else-if="props.item.component === 'traction'" class="text-xs-right">
                     <car-types-input v-model="car[props.item.value]" :edit="edit"></car-types-input>

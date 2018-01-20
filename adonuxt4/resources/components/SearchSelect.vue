@@ -3,6 +3,8 @@
     <multiselect
       v-model="selectedItem"
       :options="items"
+      :loading="isLoading"
+      :internal-search="false"
       placeholder="Search"
       @input="selectItem"
       @search-change="searchItem"
@@ -18,37 +20,57 @@
 <script>
 import axios from '~/plugins/axios'
 import Multiselect from 'vue-multiselect'
+import _ from 'lodash'
+
 
 export default {
   name : 'search-select',
-  props: ['id','params','api','preSelect'],
+  props: ['id','api','initSelect'],
   components : {
     Multiselect,
   },
   data : () => {
     return {
       items : [],
-      selectedItem : this.preSelect || null,
+      selectedItem : this.initSelect || null,
+      isLoading : false,
     }
   },
-  mounted() {
-    this.getItems()
+  async mounted() {
+    await this.getItems()
+    if(this.initSelect){
+      this.selectedItem = this.initSelect
+    }
   },
   methods : {
     selectItem (item) {
       if(item){
         this.$emit('select', item.id, item)
       }
-      console.log(this.selectedItem)
     },
-    searchItem : async(searchText) => {
-
-    },
-    async getItems () {
-      let data = await this.$axios.$get(this.api)
+    searchItem : _.debounce(async function(searchText) {
+      if(searchText){
+        this.isLoading = true
+        await this.getItems(searchText)
+        this.isLoading = false
+      }
+    }, 600),
+    async getItems (searchText) {
+      var params = {}
+      if(searchText){
+        params.search = searchText
+      }
+      let data = await this.$axios.$get(this.api, {params})
       this.items = data
     }
-  }
+  },
+  // watch : {
+  //   initSelect : function () {
+  //     console.log('watch initSelect')
+  //     this.items.push(this.initSelect)
+  //     this.selectedItem = this.initSelect
+  //   }
+  // }
 }
 </script>
 
