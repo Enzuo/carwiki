@@ -88,7 +88,7 @@ module.exports = [
     factoryEmission : 184,
   },
   {
-    name : 'ford fiesta 6 ecobost 1.0',
+    name : 'ford fiesta 6 ecobost 1.0 (100)',
     engine_id : 6,
     gearRatio : [3.583, 1.926, 1.206, 0.878, 0.689],
     gearSpeed : 45.1,

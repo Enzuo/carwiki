@@ -74,10 +74,6 @@ test('update car and change its engine', async ({ client }) => {
   })
 })
 
-// group('Car Revisions', (group) => {
-function timeout(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 
   test('update car revision (less than 24hours)',  async ({ client, assert }) => {
     var users = await Dataset.user()
@@ -102,16 +98,8 @@ function timeout(ms) {
     car.name = 'update car diesel'
 
     // Make previous(base) revision older than 24 hours
-    // await timeout(1000)
-    console.log('THIS TEST', CarRevision.query().db._globalTrx)
-    // var revisionOlder = await CarRevision.query().db.raw('UPDATE car_revisions SET updated_at = ? WHERE car_id = ? returning *',
-      // [moment().subtract(25,'hours').format(), car.id])
-    // var revisionOlder = await CarRevision.query().update({ updated_at : moment().subtract(25,'hours').format() }).where('car_id', car.id).returning('*')
-    // var revisionOlder = await Database.schema.raw('UPDATE car_revisions SET updated_at = ? WHERE car_id = ? returning *',
-    //   [moment().subtract(25,'hours').format(), car.id])
     var revisionOlder = await CarRevision.query().db._globalTrx.raw('UPDATE car_revisions SET updated_at = ? WHERE car_id = ? returning *',
       [moment().subtract(25,'hours').format(), car.id])
-    // console.log('revisionOlder', revisionOlder)
     assert.equal(revisionOlder.rowCount, 1, 'couldnt make revision older')
 
     var response = await client.put('/api/cars/'+car.id).send(car).loginVia(users[0]).end()

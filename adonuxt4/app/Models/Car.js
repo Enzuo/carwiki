@@ -6,11 +6,6 @@ const User = use('App/Models/User')
 const moment = require('moment')
 
 class Car extends Model {
-  static boot () {
-    super.boot()
-    // this.addHook('afterCreate', 'Car.carRevision')
-    // this.addHook('beforeUpdate', 'Car.carRevision')
-  }
 
   engine () {
     return this.belongsTo('App/Models/Engine')
@@ -19,10 +14,6 @@ class Car extends Model {
   setGearRatio (gearRatio) {
     return JSON.stringify(gearRatio)
   }
-
-  // setUserId(user_id){
-  //   return undefined
-  // }
 
   static get dates () {
     return super.dates.concat(['fromProductionDate','toProductionDate'])
@@ -39,7 +30,6 @@ class Car extends Model {
     await super.save(trx)
 
     if(after){
-      console.log("after")
       this.user_id = user_id
       await updateRevision(this)
     }
@@ -56,7 +46,6 @@ class Car extends Model {
 }
 
 async function updateRevision(car){
-  console.log('carRevision for car id : ', car.id)
   var lastRevision = await CarRevision.query()
     .where('car_id', car.id)
     .andWhere('updated_at', '>', moment().subtract(24, 'hours').format())
