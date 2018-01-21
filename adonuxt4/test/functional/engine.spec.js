@@ -29,6 +29,7 @@ test ('get list of engines', async ({ client }) => {
 })
 
 test ('search engine', async ({ client, assert }) => {
+  await Dataset.user()
   await Dataset.car()
 
   var response = await client.get('api/engines?search=petrol').end()
@@ -105,7 +106,7 @@ test ('search engine', async ({ client, assert }) => {
 
 
 test('update engine', async ({ client }) => {
-  var user = await Dataset.user()
+  var users = await Dataset.user()
   var engine = await Engine.create({
     name : 'test engine',
     profile : [
@@ -124,7 +125,7 @@ test('update engine', async ({ client }) => {
   const response = await client
     .put('/api/engines/'+engine.id)
     .send(engine)
-    .loginVia(user)
+    .loginVia(users[0])
     .end()
 
   response.assertStatus(200)

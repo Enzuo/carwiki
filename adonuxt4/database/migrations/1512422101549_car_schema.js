@@ -35,9 +35,45 @@ class CarSchema extends Schema {
       table.integer('engine_id').references('engines.id')
       table.timestamps()
     })
+
+    this.create('car_revisions', (table) => {
+      table.increments()
+      table.integer('car_id').references('cars.id').notNull()
+      table.integer('user_id').references('users.id').notNull()
+
+      table.string('name')
+      table.date('fromProductionDate')
+      table.date('toProductionDate')
+
+      table.json('gearRatio')
+      table.decimal('gearSpeed')
+      table.integer('transmission') // 1:Manual, 2:Auto .defaultTo(1)
+      table.integer('traction') // 1:FWD, 2:RWD, 3:AWD
+
+      table.integer('weight')
+      table.integer('lengthmm')
+      table.integer('width')
+      table.integer('height')
+      table.integer('wheelbase')
+      table.decimal('dragCoef')
+      table.decimal('dragArea')
+
+      table.integer('trunk')
+      table.integer('fuelTank')
+      table.decimal('turnCircle')
+
+      table.decimal('factoryMileageUrban')
+      table.decimal('factoryMileageCountry')
+      table.decimal('factoryAcc')
+      table.decimal('factoryEmission')
+
+      table.integer('engine_id').references('engines.id')
+      table.timestamps()
+    })
   }
 
   down () {
+    this.drop('car_revisions')
     this.drop('cars')
   }
 }

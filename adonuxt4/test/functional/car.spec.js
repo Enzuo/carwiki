@@ -2,6 +2,7 @@
 
 const { test, trait } = use('Test/Suite')('Car')
 const Car = use('App/Models/Car')
+const CarRevision = use('App/Models/CarRevision')
 const Dataset = require('../datasets/basic')
 
 trait('DatabaseTransactions')
@@ -11,6 +12,7 @@ trait('Test/ApiClient')
 
 
 test ('get list of cars', async ({ client }) => {
+  await Dataset.user()
   const testCar = {
     name : 'test car',
     weight : 1587,
@@ -25,6 +27,7 @@ test ('get list of cars', async ({ client }) => {
 })
 
 test ('get details of a car', async ({ client }) => {
+  await Dataset.user()
   const testCar = {
     name : 'test car',
     weight : 1587,
@@ -40,7 +43,7 @@ test ('get details of a car', async ({ client }) => {
 
 
 test('update car and change its engine', async ({ client }) => {
-  var user = await Dataset.user()
+  var users = await Dataset.user()
   await Dataset.car()
   var car = await Car.create({
     name : 'test car',
@@ -59,7 +62,7 @@ test('update car and change its engine', async ({ client }) => {
     }
   }
 
-  const response = await client.put('/api/cars/'+car.id).send(updatedCar).loginVia(user).end()
+  const response = await client.put('/api/cars/'+car.id).send(updatedCar).loginVia(users[0]).end()
 
   response.assertStatus(200)
   response.assertJSONSubset({
@@ -67,4 +70,19 @@ test('update car and change its engine', async ({ client }) => {
     name : updatedCar.name,
     engine : updatedCar.engine,
   })
+})
+
+test('should update car revision (less than 24hours)',  async ({ client, assert }) => {
+  var users = await Dataset.user()
+  var car = await Dataset.car()
+  car = car.toJSON()
+  car.name = 'update car diesel'
+
+  await client.put('/api/cars/'+car.id).send(car).loginVia(users[0]).end()
+
+  var revisions = await CarRevision.query().where('car_id', car.id).fetch()
+  revisions = revisions.toJSON()
+  assert.equal(revisions.length, 1)
+  assert.equal(revisions[0].car_id, car.id)
+  assert.equal(revisions[0].name, car.name)
 })

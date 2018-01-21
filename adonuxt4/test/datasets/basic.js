@@ -4,12 +4,16 @@ const Car = use('App/Models/Car')
 
 
 async function user () {
-  var user = await User.create({
+  var users = await User.createMany([{
     full_name: 'Darth Vader',
     email: 'darth_vader@starwars.com',
     password: 'darth-1234'
-  })
-  return user
+  },{
+    full_name: 'Yoda',
+    email: 'yoda@starwars.com',
+    password: 'yoda-1234'
+  }])
+  return users
 }
 
 async function car () {
@@ -34,11 +38,12 @@ async function car () {
     weight : 1055,
     engine_id : 1
   })
-  await Car.create({
+  var car = await Car.create({
     name : 'clio 4 diesel',
     weight : 1300,
     engine_id : 2,
   })
+  return car
 }
 
 module.exports = { user, car }

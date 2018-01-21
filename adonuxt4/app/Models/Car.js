@@ -3,6 +3,12 @@
 const Model = use('Model')
 
 class Car extends Model {
+  static boot () {
+    super.boot()
+    this.addHook('afterCreate', 'Car.carRevision')
+    this.addHook('beforeUpdate', 'Car.carRevision')
+  }
+
   engine () {
     return this.belongsTo('App/Models/Engine')
   }

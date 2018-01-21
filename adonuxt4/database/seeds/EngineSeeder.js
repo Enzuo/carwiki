@@ -22,7 +22,7 @@ const Factory = use('Factory')
 class EngineSeeder {
   async run () {
     try {
-      await Database.raw('truncate "cars", "engines" restart identity')
+      await Database.raw('truncate "car_revisions", "cars", "engines" restart identity')
       // await Database.truncate('engines')
 
       var engines = []
