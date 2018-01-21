@@ -17,7 +17,7 @@ class CarController {
     return car
   }
 
-  async update ({ params, request }) {
+  async update ({ params, request, auth }) {
     const data = request.only([
       'name',
       'gearRatio',
@@ -27,8 +27,12 @@ class CarController {
       'width',
       'height',
     ])
+    var user = await auth.getUser()
+    data.user_id = user.id
+    // TODO in Model engine_id
     data.engine_id = request.body.engine ? request.body.engine.id : undefined
     const car = await Car.findOrFail(params.id)
+
     car.merge(data)
     await car.save()
     await car.load('engine')

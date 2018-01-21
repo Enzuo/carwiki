@@ -33,17 +33,16 @@ async function car () {
       [4000,130]
     ]
   })
-  await Car.create({
+  var cars = await Car.createMany([{
     name : 'clio 4',
     weight : 1055,
     engine_id : 1
-  })
-  var car = await Car.create({
+  },{
     name : 'clio 4 diesel',
     weight : 1300,
     engine_id : 2,
-  })
-  return car
+  }])
+  return cars
 }
 
 module.exports = { user, car }

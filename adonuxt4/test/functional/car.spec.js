@@ -3,7 +3,9 @@
 const { test, trait } = use('Test/Suite')('Car')
 const Car = use('App/Models/Car')
 const CarRevision = use('App/Models/CarRevision')
+const Database = use('Database')
 const Dataset = require('../datasets/basic')
+const moment = require('moment')
 
 trait('DatabaseTransactions')
 trait('Auth/Client')
@@ -72,17 +74,93 @@ test('update car and change its engine', async ({ client }) => {
   })
 })
 
-test('should update car revision (less than 24hours)',  async ({ client, assert }) => {
-  var users = await Dataset.user()
-  var car = await Dataset.car()
-  car = car.toJSON()
-  car.name = 'update car diesel'
+// group('Car Revisions', (group) => {
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-  await client.put('/api/cars/'+car.id).send(car).loginVia(users[0]).end()
+  test('update car revision (less than 24hours)',  async ({ client, assert }) => {
+    var users = await Dataset.user()
+    var cars = await Dataset.car()
+    var car = cars[0].toJSON()
+    car.name = 'update car diesel'
 
-  var revisions = await CarRevision.query().where('car_id', car.id).fetch()
-  revisions = revisions.toJSON()
-  assert.equal(revisions.length, 1)
-  assert.equal(revisions[0].car_id, car.id)
-  assert.equal(revisions[0].name, car.name)
-})
+    var response = await client.put('/api/cars/'+car.id).send(car).loginVia(users[0]).end()
+    response.assertStatus(200)
+
+    var revisions = await CarRevision.query().where('car_id', car.id).fetch()
+    revisions = revisions.toJSON()
+    assert.equal(revisions.length, 1)
+    assert.equal(revisions[0].car_id, car.id)
+    assert.equal(revisions[0].name, car.name)
+  })
+
+  test('create a new car revision (last revision more than 24hours)',  async ({ client, assert }) => {
+    var users = await Dataset.user()
+    var cars = await Dataset.car()
+    var car = cars[0].toJSON()
+    car.name = 'update car diesel'
+
+    // Make previous(base) revision older than 24 hours
+    // await timeout(1000)
+    console.log('THIS TEST', CarRevision.query().db._globalTrx)
+    // var revisionOlder = await CarRevision.query().db.raw('UPDATE car_revisions SET updated_at = ? WHERE car_id = ? returning *',
+      // [moment().subtract(25,'hours').format(), car.id])
+    // var revisionOlder = await CarRevision.query().update({ updated_at : moment().subtract(25,'hours').format() }).where('car_id', car.id).returning('*')
+    // var revisionOlder = await Database.schema.raw('UPDATE car_revisions SET updated_at = ? WHERE car_id = ? returning *',
+    //   [moment().subtract(25,'hours').format(), car.id])
+    var revisionOlder = await CarRevision.query().db._globalTrx.raw('UPDATE car_revisions SET updated_at = ? WHERE car_id = ? returning *',
+      [moment().subtract(25,'hours').format(), car.id])
+    // console.log('revisionOlder', revisionOlder)
+    assert.equal(revisionOlder.rowCount, 1, 'couldnt make revision older')
+
+    var response = await client.put('/api/cars/'+car.id).send(car).loginVia(users[0]).end()
+    response.assertStatus(200)
+
+    var revisions = await CarRevision.query().where('car_id', car.id).fetch()
+    revisions = revisions.toJSON()
+    assert.equal(revisions.length, 2, '2 versions')
+    assert.equal(revisions[0].car_id, car.id)
+    assert.equal(revisions[0].name, 'clio 4')
+    assert.equal(revisions[0].user_id, users[0].id)
+    assert.equal(revisions[1].car_id, car.id)
+    assert.equal(revisions[1].name, car.name)
+    assert.equal(revisions[1].user_id, users[0].id)
+  })
+
+  test('create a new car revision when another user update',  async ({ client, assert }) => {
+    var users = await Dataset.user()
+    var cars = await Dataset.car()
+    var car = cars[0].toJSON()
+    car.name = 'update car diesel'
+
+    var response = await client.put('/api/cars/'+car.id).send(car).loginVia(users[1]).end()
+    response.assertStatus(200)
+
+    var revisions = await CarRevision.query().where('car_id', car.id).fetch()
+    revisions = revisions.toJSON()
+    assert.equal(revisions.length, 2)
+    assert.equal(revisions[0].car_id, car.id)
+    assert.equal(revisions[0].name, 'clio 4')
+    assert.equal(revisions[0].user_id, users[0].id)
+    assert.equal(revisions[1].car_id, car.id)
+    assert.equal(revisions[1].name, car.name)
+    assert.equal(revisions[1].user_id, users[1].id)
+  })
+
+  // test('merge revisions',  async ({ client, assert }) => {
+  //   var users = await Dataset.user()
+  //   var car = await Dataset.car()
+  //   car = car.toJSON()
+  //   car.name = 'update car diesel'
+
+  //   await client.put('/api/cars/'+car.id).send(car).loginVia(users[0]).end()
+
+  //   var revisions = await CarRevision.query().where('car_id', car.id).fetch()
+  //   revisions = revisions.toJSON()
+  //   assert.equal(revisions.length, 1)
+  //   assert.equal(revisions[0].car_id, car.id)
+  //   assert.equal(revisions[0].name, car.name)
+  // })
+
+// })
