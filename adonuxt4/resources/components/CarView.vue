@@ -32,7 +32,7 @@
                 hide-actions
                 hide-headers
               >
-                <template slot="items" scope="props">
+                <template slot="items" slot-scope="props">
                   <td class="text-xs-left">{{ props.item.title }}</td>
                   <td v-if="props.item.component === 'engine'" class="text-xs-right">
                     <engine-input v-model="car[props.item.value]" :edit="edit"></engine-input>

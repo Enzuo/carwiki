@@ -13,7 +13,7 @@
       :hint="selectedItemTitle"
       persistent-hint
     >
-      <template slot="item" scope="data">
+      <template slot="item" slot-scope="data">
         <span>{{data.item.label}}</span><span v-if="data.item.title" style="padding-left:5px" class="caption">- {{data.item.title}}</span>
       </template>
     </v-select>

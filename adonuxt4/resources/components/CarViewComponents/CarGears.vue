@@ -6,7 +6,7 @@
       hide-actions
       item-key="name"
     >
-      <template :slot="edit ? 'headers' : ''" scope="props">
+      <template :slot="edit ? 'headers' : ''" slot-scope="props">
         <tr>
           <th v-for="header in props.headers" :key="header.text"
               :class="['column',
@@ -22,14 +22,14 @@
           </th>
         </tr>
       </template>
-      <template :slot="edit ? 'items' : ''" scope="props">
+      <template :slot="edit ? 'items' : ''" slot-scope="props">
         <td><input size="2" :value="props.item.gear"></td>
         <td class="text-xs-right"><input size="4" :value="props.item.rpm" @input="changeRPM($event.target.value, props.index)"></td>
         <td class="text-xs-right"><input size="5" :value="props.item.speed" @change="changeSpeed($event.target.value, props.index)"></td>
         <td class="text-xs-right"><input size="5" :value="props.item.ratio" @change="changeRatio($event.target.value, props.index)"></td>
         <td><v-btn flat icon @click="deleteRow(props.index)"><v-icon>delete</v-icon></v-btn></td>
       </template>
-      <template :slot="edit ? '' : 'items'" scope="props">
+      <template :slot="edit ? '' : 'items'" slot-scope="props">
         <td>{{props.item.gear}}</td>
         <td class="text-xs-right"><input size="4" :value="props.item.rpm" @input="changeRPM($event.target.value, props.index)"></td>
         <td class="text-xs-right">{{props.item.speed}}</td>
