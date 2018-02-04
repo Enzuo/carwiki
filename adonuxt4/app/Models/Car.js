@@ -20,19 +20,11 @@ class Car extends Model {
   }
 
   async save (trx) {
-    var user_id = this.user_id
-    var after = this.isNew ? true : false
-    if(!after){
-      await updateRevision(this)
-    }
-
-    delete this.$attributes.user_id
-    await super.save(trx)
-
-    if(after){
-      this.user_id = user_id
-      await updateRevision(this)
-    }
+    // Weird bug here without that we loose a part of "this" when super.save is called...
+    var that = super.save
+    await saveRevision(this, CarRevision, 'car_id', async () => {
+      await super.save(trx)
+    })
   }
 
 
@@ -45,30 +37,57 @@ class Car extends Model {
   // }
 }
 
-async function updateRevision(car){
-  var lastRevision = await CarRevision.query()
-    .where('car_id', car.id)
+/**
+ * save the revision and call the item save,
+ * the item is saved before in case of item creation
+ * @param {*} item with user_id, isNew : adonis instance of a model
+ * @param {Model} RevisionModel Adonis model handeling this kind of revision
+ * @param {String} revisionKey the name of the revision column referencing the item
+ * @param {Function} saveCallback item saving callback
+ */
+async function saveRevision(item, RevisionModel, revisionKey, saveCallback){
+  // return await saveCallback()
+  var user_id = item.user_id
+  var after = item.isNew ? true : false
+  if(!after){
+    await updateOrCreateRevision(item, RevisionModel, revisionKey)
+  }
+
+  delete item.$attributes.user_id
+  if(saveCallback){
+    await saveCallback()
+  }
+
+  if(after){
+    item.user_id = user_id
+    await updateOrCreateRevision(item, RevisionModel, revisionKey)
+  }
+}
+
+async function updateOrCreateRevision(item, RevisionModel, revisionKey){
+  var lastRevision = await RevisionModel.query()
+    .where(revisionKey, item.id)
     .andWhere('updated_at', '>', moment().subtract(24, 'hours').format())
     .orderBy('updated_at', 'DESC')
     .first()
-  var newRevisionData = car.toJSON()
+  var newRevisionData = item.toJSON()
 
-  var user_id = car.user_id
-  // car created or updated without using the api
+  var user_id = item.user_id
+  // item created or updated without using the api
   if(!user_id){
     var user = await User.first()
     user_id = user.id
     newRevisionData.user_id = user_id
   }
   delete newRevisionData.id
-  newRevisionData.car_id = car.id
+  newRevisionData[revisionKey] = item.id
 
   if(lastRevision && lastRevision.user_id === user_id){
     lastRevision.merge(newRevisionData)
     await lastRevision.save()
     return
   }
-  await CarRevision.create(newRevisionData)
+  await RevisionModel.create(newRevisionData)
   return
 }
 

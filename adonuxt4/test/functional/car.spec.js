@@ -99,6 +99,7 @@ test('update car and change its engine', async ({ client }) => {
     car.gearRatio = [3.1, 2.5]
 
     // Make previous(base) revision older than 24 hours
+    // Use _globalTrx to be sure to do the update in the same transaction as the dataset creation
     var revisionOlder = await CarRevision.query().db._globalTrx.raw('UPDATE car_revisions SET updated_at = ? WHERE car_id = ? returning *',
       [moment().subtract(25,'hours').format(), car.id])
     assert.equal(revisionOlder.rowCount, 1, 'couldnt make revision older')
