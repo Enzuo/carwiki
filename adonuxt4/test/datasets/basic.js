@@ -36,7 +36,8 @@ async function car () {
   var cars = await Car.createMany([{
     name : 'clio 4',
     weight : 1055,
-    engine_id : 1
+    engine_id : 1,
+    gearRatio : [3, 2.2],
   },{
     name : 'clio 4 diesel',
     weight : 1300,

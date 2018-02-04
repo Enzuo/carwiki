@@ -96,6 +96,7 @@ test('update car and change its engine', async ({ client }) => {
     var cars = await Dataset.car()
     var car = cars[0].toJSON()
     car.name = 'update car diesel'
+    car.gearRatio = [3.1, 2.5]
 
     // Make previous(base) revision older than 24 hours
     var revisionOlder = await CarRevision.query().db._globalTrx.raw('UPDATE car_revisions SET updated_at = ? WHERE car_id = ? returning *',
@@ -113,6 +114,7 @@ test('update car and change its engine', async ({ client }) => {
     assert.equal(revisions[0].user_id, users[0].id)
     assert.equal(revisions[1].car_id, car.id)
     assert.equal(revisions[1].name, car.name)
+    assert.equal(revisions[1].gearRatio, JSON.stringify(car.gearRatio))
     assert.equal(revisions[1].user_id, users[0].id)
   })
 
