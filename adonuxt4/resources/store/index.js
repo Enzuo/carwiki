@@ -105,8 +105,8 @@ const createStore = () => {
         var _carIdArr = state.carBasket.map((car) => { return car.id })
         return state.carBasket ? `?cars=[${_carIdArr.toString()}]` : ''
       },
-      carsInBasket: (state) => {
-        return state.carBasket
+      nbCarsInBasket: (state) => {
+        return state.carBasket ? state.carBasket.length : null
       }
     }
   })

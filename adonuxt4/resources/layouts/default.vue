@@ -1,6 +1,20 @@
 <template>
   <v-app>
-    <app-menu/>
+    <app-menu v-model="drawer"/>
+    <v-toolbar color="indigo" dark fixed app>
+      <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-title>Application</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-menu bottom left>
+        <v-btn icon slot="activator">
+          <v-badge left v-model="show">
+            <span slot="badge">{{nbCarsInBasket}}</span>
+            <v-icon>shopping_cart</v-icon>
+          </v-badge>
+        </v-btn>
+        <car-basket :cars="carBasket"></car-basket>
+      </v-menu>
+    </v-toolbar>
     <v-content>
       <nuxt/>
     </v-content>
@@ -9,17 +23,35 @@
 </template>
 
 <script>
-  import MyFooter from '~/components/MyFooter'
-  import AppMenu from '~/components/AppMenu'
+import MyFooter from '~/components/MyFooter'
+import AppMenu from '~/components/AppMenu'
+import CarBasket from '~/components/CarBasket'
+import { mapGetters, mapState } from 'vuex'
 
-  export default {
-    name: 'layout-default',
 
-    components: {
-      MyFooter,
-      AppMenu
+export default {
+  name: 'layout-default',
+  components: {
+    MyFooter,
+    AppMenu,
+    CarBasket,
+  },
+  data: () => ({
+    drawer: null
+  }),
+  computed : {
+    ...mapGetters([
+      'nbCarsInBasket',
+    ]),
+    ...mapState([
+      'carBasket',
+    ]),
+    show : function () {
+      console.log('show', this.nbCarsInBasket )
+      return this.nbCarsInBasket ? true : false
     }
-  }
+  },
+}
 </script>
 
 <style>

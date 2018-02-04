@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent fixed app light :mini-variant.sync="mini">
+  <v-navigation-drawer fixed app light v-model="drawer" mobile-break-point="1264" :mini-variant="mini">
     <v-toolbar flat class="transparent">
       <v-list class="pa-0">
         <v-list-tile avatar to="/profile">
@@ -11,8 +11,8 @@
             <v-list-tile-title v-if="authUser">{{authUser.full_name}}</v-list-tile-title>
           </v-list-tile-content>
           <v-list-tile-action>
-            <v-btn icon @click.native.stop="mini = !mini">
-              <v-icon>chevron_left</v-icon>
+            <v-btn icon >
+              <v-icon>chevron_right</v-icon>
             </v-btn>
           </v-list-tile-action>
         </v-list-tile>
@@ -45,9 +45,11 @@ export default {
   components : {
     CarBasket
   },
+  props : ['value'],
   data : () => {
     return {
       mini: true,
+      drawer: true,
       right: null
     }
   },
@@ -63,8 +65,25 @@ export default {
     ...mapState([
       'authUser',
       'carBasket'
-    ])
+    ]),
   },
+  watch : {
+    value : function (val) {
+      if(this.$vuetify.breakpoint.width >= 1264 ){
+        if(val){
+          this.mini = false
+        }
+        else {
+          this.mini = true
+        }
+        this.drawer = true
+      }
+      else {
+        this.mini = false
+        this.drawer = val
+      }
+    }
+  }
 }
 </script>
 
