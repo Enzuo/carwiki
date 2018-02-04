@@ -4,30 +4,25 @@ const Schema = use('Schema')
 
 class EngineSchema extends Schema {
   async up () {
-    await this
-    // .create('engines', (table) => {
-    //   table.increments()
-    //   table.string('name',80)
-    //   table.specificType('name_tsv', 'tsvector')
-    //   // table.index('name', 'name_idx', 'gist(to_tsvector)')
-    //   table.json('profile')
-    //   table.timestamps()
-    // })
+
+    this.create('engines', (table) => {
+      table.increments()
+      table.string('name').unique()
+      table.specificType('name_tsv', 'tsvector')
+      table.date('fromProductionDate')
+      table.date('toProductionDate')
+
+      table.json('profile')
+      table.decimal('gearSpeed')
+      table.integer('fueltype')
+      table.integer('displacement')
+      table.integer('cylinders')
+      table.integer('compression_ratio')
+      table.timestamps()
+    })
+
     //https://www.compose.com/articles/indexing-for-full-text-search-in-postgresql/
     .raw(`
-      CREATE TABLE engines(
-         id SERIAL PRIMARY KEY
-        ,name VARCHAR(80) NOT NULL
-        ,name_tsv tsvector
-        ,profile json
-        ,fueltype SMALLINT
-        ,displacement INTEGER
-        ,cylinders SMALLINT
-        ,compression_ratio INTEGER
-        ,created_at TIMESTAMP DEFAULT NOW()
-        ,updated_at TIMESTAMP
-      );
-
       DROP FUNCTION IF EXISTS name_tsv_trigger();
       CREATE FUNCTION name_tsv_trigger() RETURNS trigger AS $$
       begin
@@ -36,23 +31,12 @@ class EngineSchema extends Schema {
       end
       $$ LANGUAGE plpgsql;
 
-      CREATE OR REPLACE FUNCTION updated_at_trigger()
-      RETURNS TRIGGER AS $$
-      BEGIN
-          NEW.updated_at = now();
-          RETURN NEW;
-      END;
-      $$ language 'plpgsql';
-
       CREATE TRIGGER engines_upd_tsvector BEFORE INSERT OR UPDATE
       ON engines
       FOR EACH ROW EXECUTE PROCEDURE name_tsv_trigger();
-
-      CREATE TRIGGER engines_upd_at BEFORE UPDATE
-      ON engines
-      FOR EACH ROW EXECUTE PROCEDURE  updated_at_trigger();
     `)
     //https://github.com/tgriesser/knex/issues/203
+    // https://forum.adonisjs.com/t/raw-sql-query-not-working-for-migrations/446/4
     // await this.raw('CREATE INDEX name_idx ON engines USING gist(to_tsvector(name))')
   }
 
