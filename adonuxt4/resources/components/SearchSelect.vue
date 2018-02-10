@@ -1,11 +1,14 @@
 <template>
   <div>
+    <v-layout row>
     <multiselect
       v-model="selectedItem"
       :options="items"
       :loading="isLoading"
       :internal-search="false"
-      placeholder="Search"
+      :clearOnSelect="true"
+      :preserveSearch="true"
+      :placeholder="search"
       @input="selectItem"
       @search-change="searchItem"
       label="name"
@@ -13,6 +16,12 @@
     >
       <template slot="noResult">Not found, <button>create one </button>?</template>
     </multiselect>
+    <v-btn icon v-if="search && search.length > 4 && search !== 'Search'">
+      <v-icon>
+        control_point
+      </v-icon>
+    </v-btn>
+    </v-layout>
   </div>
 </template>
 
@@ -34,6 +43,7 @@ export default {
       items : [],
       selectedItem : this.initSelect || null,
       isLoading : false,
+      search : 'Search', // also placeholder
     }
   },
   async mounted() {
@@ -46,7 +56,11 @@ export default {
     selectItem (item) {
       this.$emit('select', item ? item.id : null, item)
     },
-    searchItem : _.debounce(async function(searchText) {
+    searchItem : async function (searchText) {
+      this.search = searchText || 'Search'
+      await this.searchItemDebounce(searchText)
+    },
+    searchItemDebounce : _.debounce(async function(searchText) {
       if(searchText){
         this.isLoading = true
         await this.getItems(searchText)
