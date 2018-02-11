@@ -65,6 +65,9 @@ function romanize(num) {
 }
 
 function getTypicalRPMInterval(torque, precision) {
+  if(torque.length<2){
+    return 1000
+  }
   var intervals = [];
   for (var i = 1; i < torque.length; i++) {
     intervals.push(torque[i][0] - torque[i - 1][0])

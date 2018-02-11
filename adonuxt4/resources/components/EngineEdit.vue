@@ -32,6 +32,7 @@
 
 <script>
 import {torqueToPS, PSToTorque, getTypicalRPMInterval} from "~/../app/Helpers/helpers"
+import Vue from 'vue'
 
 export default {
   name : 'engine-edit',
@@ -41,13 +42,16 @@ export default {
   },
   methods : {
     deleteRow : function(index){
-        this.engine.profile.splice(index,1)
+      this.engine.profile.splice(index,1)
     },
     addRow : function(index){
-        var torqueArr = this.engine.profile
-        var interval = getTypicalRPMInterval(torqueArr, 50)
-        var rpm = torqueArr.length ? torqueArr[torqueArr.length-1][0] + interval : 1000
-        torqueArr.push([rpm, 0])
+      if(!this.engine.profile){
+        Vue.set(this.engine, 'profile', [])
+      }
+      var torqueArr = this.engine.profile
+      var interval = getTypicalRPMInterval(torqueArr, 50)
+      var rpm = torqueArr.length ? torqueArr[torqueArr.length-1][0] + interval : 1000
+      torqueArr.push([rpm, 0])
     },
   }
 }

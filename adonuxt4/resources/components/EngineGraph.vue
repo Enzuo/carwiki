@@ -57,6 +57,9 @@ export default {
       var curvesPerEngines = [];
       for (var j = 0; j < this.engines.length; j++) {
         var engine = this.engines[j];
+        if(!engine.profile){
+          continue
+        }
 
         var engineCurves = [];
         if (this.showTorque) {
