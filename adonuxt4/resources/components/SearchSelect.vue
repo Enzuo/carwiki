@@ -16,7 +16,7 @@
     >
       <template slot="noResult">Not found, <button>create one </button>?</template>
     </multiselect>
-    <v-btn icon v-if="search && search.length > 4 && search !== 'Search'" @click="create">
+    <v-btn icon v-if="search && search.length > 4 && search !== placeholder && createPath" @click="create">
       <v-icon>
         control_point
       </v-icon>
@@ -34,7 +34,7 @@ import _ from 'lodash'
 
 export default {
   name : 'search-select',
-  props: ['id','api','initSelect'],
+  props: ['id','api','initSelect','createPath'],
   components : {
     Multiselect,
   },
@@ -43,6 +43,7 @@ export default {
       items : [],
       selectedItem : this.initSelect || null,
       isLoading : false,
+      placeholder : 'Search',
       search : 'Search', // also placeholder
     }
   },
@@ -57,7 +58,7 @@ export default {
       this.$emit('select', item ? item.id : null, item)
     },
     searchItem : async function (searchText) {
-      this.search = searchText || 'Search'
+      this.search = searchText || this.placeholder
       await this.searchItemDebounce(searchText)
     },
     searchItemDebounce : _.debounce(async function(searchText) {
@@ -76,7 +77,7 @@ export default {
       this.items = data
     },
     create : function () {
-      this.$router.push({ path : '/edit/engine', query : {name : this.search}})
+      this.$router.push({ path : this.createPath, query : {name : this.search}})
     }
   },
   // watch : {
@@ -90,4 +91,9 @@ export default {
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style scoped>
+  .multiselect .multiselect__tags {
+    border-radius: 0px;
+  }
+</style>
 

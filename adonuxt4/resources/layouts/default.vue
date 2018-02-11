@@ -3,8 +3,25 @@
     <app-menu v-model="drawer"/>
     <v-toolbar color="indigo" dark fixed app>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>Application</v-toolbar-title>
-      <v-spacer></v-spacer>
+      <v-spacer v-if="$nuxt.$route.name==='car-id'">
+        <search-select
+          @select="selectCar"
+          createPath="/edit/car"
+          api="cars"
+        >
+        </search-select>
+      </v-spacer>
+      <v-spacer v-else-if="$nuxt.$route.name==='engine-id'">
+        <search-select
+          @select="selectEngine"
+          createPath="/edit/engine"
+          api="engines"
+        >
+        </search-select>
+      </v-spacer>
+      <v-spacer v-else>
+        <v-toolbar-title >Application</v-toolbar-title>
+      </v-spacer>
       <v-menu bottom left>
         <v-btn icon slot="activator">
           <v-badge left v-model="show">
@@ -26,6 +43,7 @@
 import MyFooter from '~/components/MyFooter'
 import AppMenu from '~/components/AppMenu'
 import CarBasket from '~/components/CarBasket'
+import SearchSelect from '~/components/SearchSelect'
 import { mapGetters, mapState } from 'vuex'
 
 
@@ -35,6 +53,7 @@ export default {
     MyFooter,
     AppMenu,
     CarBasket,
+    SearchSelect,
   },
   data: () => ({
     drawer: null
@@ -47,10 +66,25 @@ export default {
       'carBasket',
     ]),
     show : function () {
+      console.log('current router name', this.$nuxt.$route.name)
       console.log('show', this.nbCarsInBasket )
       return this.nbCarsInBasket ? true : false
     }
   },
+  methods : {
+    selectCar (id) {
+      if(!id){
+        return this.$router.push({ path: `/car`})
+      }
+      this.$router.push({ path: `/car/${id}`})
+    },
+    selectEngine (id) {
+      if(!id){
+        return this.$router.push({ path: `/engine`})
+      }
+      this.$router.push({ path: `/engine/${id}`})
+    }
+  }
 }
 </script>
 
@@ -82,5 +116,9 @@ export default {
     font-weight: 300;
     font-size: 2.5em;
     margin: 0;
+  }
+
+  .toolbar__title {
+    overflow : visible;
   }
 </style>

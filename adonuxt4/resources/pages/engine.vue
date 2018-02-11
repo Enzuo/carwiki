@@ -2,6 +2,7 @@
   <div>
     <search-select
       @select="selectEngine"
+      createPath="/edit/engine"
       api="engines"
     >
     </search-select>

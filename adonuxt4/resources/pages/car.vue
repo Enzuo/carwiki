@@ -2,6 +2,7 @@
   <div>
     <search-select
       @select="selectCar"
+      createPath="/edit/car"
       api="cars"
     >
     </search-select>
