@@ -32,6 +32,7 @@ class EngineSeeder {
         engines.push(Engine.create(engineData))
       }
       await Promise.all(engines)
+      await Database.raw('ALTER SEQUENCE "engines_id_seq" RESTART WITH 15;')
 
       var cars = []
       for (let carData of carsSeedData) {

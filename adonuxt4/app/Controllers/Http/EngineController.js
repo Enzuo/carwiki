@@ -38,6 +38,12 @@ class EngineController {
     await engine.save()
     return engine.toJSON()
   }
+
+  async store ({ params, request }) {
+    const data = request.only(['name', 'profile'])
+    const engine = await Engine.create(data)
+    return engine.toJSON()
+  }
 }
 
 module.exports = EngineController

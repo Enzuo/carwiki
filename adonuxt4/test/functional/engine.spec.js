@@ -135,3 +135,26 @@ test('update engine', async ({ client }) => {
     profile : JSON.stringify(engine.profile),
   })
 })
+
+test('create engine', async({ client }) => {
+  var users = await Dataset.user()
+  var engine = {
+    name : 'my new car',
+    profile : [
+      [1000, 35],
+      [3000,100]
+    ]
+  }
+  const response = await client
+    .post('/api/engines/')
+    .send(engine)
+    .loginVia(users[0])
+    .end()
+
+  response.assertStatus(200)
+  response.assertJSONSubset({
+    id : 1,
+    name : engine.name,
+    profile : JSON.stringify(engine.profile),
+  })
+})
