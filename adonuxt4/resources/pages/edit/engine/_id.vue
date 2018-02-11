@@ -43,8 +43,8 @@ export default {
       isSaving : false,
     }
   },
-  async asyncData ({ params, store }) {
-    let engine = null
+  async asyncData ({ params, store, query }) {
+    let engine = {name : query.name}
     if(params.id){
       let { data } = await axios.get(`engines/${params.id}`)
       engine = data
@@ -65,7 +65,13 @@ export default {
     async save () {
       console.log('save !')
       this.isSaving = true
-      await axios.put(`engines/${this.engine.id}`,this.engine)
+      if(this.engine.id){
+        await this.$axios.$put(`engines/${this.engine.id}`,this.engine)
+      }
+      else {
+        this.engine = await this.$axios.$post(`engines`,this.engine)
+        this.$store.commit('setCurrentEngine', this.engine.id)
+      }
       this.isSaving = false
       this.shouldSave = false
     }

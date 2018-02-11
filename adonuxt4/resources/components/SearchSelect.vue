@@ -16,7 +16,7 @@
     >
       <template slot="noResult">Not found, <button>create one </button>?</template>
     </multiselect>
-    <v-btn icon v-if="search && search.length > 4 && search !== 'Search'">
+    <v-btn icon v-if="search && search.length > 4 && search !== 'Search'" @click="create">
       <v-icon>
         control_point
       </v-icon>
@@ -74,6 +74,9 @@ export default {
       }
       let data = await this.$axios.$get(this.api, {params})
       this.items = data
+    },
+    create : function () {
+      this.$router.push({ path : '/edit/engine', query : {name : this.search}})
     }
   },
   // watch : {
