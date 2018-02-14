@@ -51,6 +51,20 @@ class CarController {
     await car.load('engine')
     return car
   }
+
+  async store ({ params, request }) {
+    const data = request.only([
+      'name',
+      'gearRatio',
+      'gearSpeed',
+      'weight',
+      'length',
+      'width',
+      'height',
+    ])
+    const car = await Car.create(data)
+    return car.toJSON()
+  }
 }
 
 module.exports = CarController

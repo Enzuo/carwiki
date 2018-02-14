@@ -25,8 +25,8 @@ export default {
       isSaving : false,
     }
   },
-  async asyncData ({ params, store, app }) {
-    let car = null
+  async asyncData ({ params, store, app, query }) {
+    let car = {name : query.name, gearRatio : []}
     if(params.id){
       let { data } = await app.$axios.get(`cars/${params.id}`)
       car = data
@@ -55,7 +55,13 @@ export default {
     async save () {
       console.log('save !')
       this.isSaving = true
-      await this.$axios.put(`cars/${this.car.id}`,this.car)
+      if(this.car.id){
+        await this.$axios.$put(`cars/${this.car.id}`,this.car)
+      }
+      else {
+        this.car = await this.$axios.$post(`cars`,this.car)
+        this.$store.commit('setCurrentCar', this.car.id)
+      }
       this.isSaving = false
       this.shouldSave = false
     }

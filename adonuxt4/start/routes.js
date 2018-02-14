@@ -32,7 +32,8 @@ Route.group(() => {
 
   Route.resource('cars', 'CarController')
   .middleware(new Map([
-    [['cars.update'], ['auth']]
+    [['cars.update'], ['auth']],
+    [['cars.store'], ['auth']]
   ])).apiOnly()
 
 }).prefix('api')
