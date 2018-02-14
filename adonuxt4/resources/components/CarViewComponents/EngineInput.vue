@@ -7,7 +7,8 @@
       :initSelect="value"
     >
     </search-select>
-    <v-btn v-else flat color="primary" :href="'/engine/'+value.id">{{ value.name }}</v-btn>
+    <v-btn v-else-if="value" flat color="primary" :href="'/engine/'+value.id">{{ value.name }}</v-btn>
+    <div v-else>-</div>
   </div>
 </template>
 

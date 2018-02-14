@@ -51,6 +51,9 @@ import {
         var gears = []
         var car = this.car
         var speed = this.speed
+        if(!car.engine){
+          return gears
+        }
         for(var i=0; i<car.gearRatio.length; i++){
           // TODO : create helper function to get rpm for speed
           var rpmForSpeed =

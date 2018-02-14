@@ -134,6 +134,10 @@ export default {
     add : function () {
       var gearRatio = this.car.gearRatio
       var defaultRatio = gearRatio.length ? gearRatio[gearRatio.length-1] : 1
+      if(!this.car.gearSpeed){
+        this.car.gearSpeed = 5
+        this.refRatio = defaultRatio * this.car.gearSpeed
+      }
 
       this.rpms.push(1000)
       this.car.gearRatio.push([defaultRatio])
