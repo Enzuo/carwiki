@@ -43,12 +43,13 @@ export default {
       isSaving : false,
     }
   },
-  async asyncData ({ params, store, query }) {
+  async asyncData ({ params, store, app, query }) {
     let engine = {name : query.name}
     if(params.id){
-      let { data } = await axios.get(`engines/${params.id}`)
+      let { data } = await app.$axios.get(`engines/${params.id}`)
       engine = data
     }
+    store.commit('setCurrentEngine', params.id)
     return { engine }
   },
   watch: {
