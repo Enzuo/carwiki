@@ -15,7 +15,7 @@ const createStore = () => {
         state.currentEngine = id
       },
       setCurrentCar (state, id) {
-        state.currentCar = id
+        Vue.set(state, 'currentCar', id)
       },
       addToBasket(state, car) {
         let length = state.carBasket.length
