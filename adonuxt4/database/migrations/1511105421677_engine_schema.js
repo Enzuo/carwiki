@@ -23,14 +23,6 @@ class EngineSchema extends Schema {
 
     //https://www.compose.com/articles/indexing-for-full-text-search-in-postgresql/
     .raw(`
-      DROP FUNCTION IF EXISTS name_tsv_trigger();
-      CREATE FUNCTION name_tsv_trigger() RETURNS trigger AS $$
-      begin
-        new.name_tsv = to_tsvector('english', COALESCE(new.name,''));
-        return new;
-      end
-      $$ LANGUAGE plpgsql;
-
       CREATE TRIGGER engines_upd_tsvector BEFORE INSERT OR UPDATE
       ON engines
       FOR EACH ROW EXECUTE PROCEDURE name_tsv_trigger();

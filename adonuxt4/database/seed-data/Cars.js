@@ -27,7 +27,7 @@ module.exports = [
       factoryEmission : 99,
   },
   {
-      name : 'clio 4 1.2 (75)',
+      name : 'renault clio 4 1.2 (75)',
       weight : 1050,
       engine_id : 2,
       gearRatio : [3.702, 2.040, 1.386, 1.024, 0.79],
@@ -121,7 +121,7 @@ module.exports = [
     factoryEmission : 115,
   },
   {
-    name : 'trafic dci 2.0 (90)',
+    name : 'renault trafic dci 2.0 (90)',
     engine_id : 8,
     gearRatio : [4.564, 2.442, 1.515, 0.986, 0.773, 0.600],
     gearSpeed : 50.44,
@@ -170,7 +170,7 @@ module.exports = [
     factoryAcc : 11.6,
   },
   {
-    name : 'modus 1.5 dCi (65)',
+    name : 'renault modus 1.5 dCi (65)',
     weight : 1180,
     engine_id : 13,
     gearRatio : [3.8, 2.1, 1.485, 1.089, 0.831],

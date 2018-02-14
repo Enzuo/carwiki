@@ -7,6 +7,7 @@ class CarSchema extends Schema {
     this.create('cars', (table) => {
       table.increments()
       table.string('name').unique()
+      table.specificType('name_tsv', 'tsvector')
       table.date('fromProductionDate')
       table.date('toProductionDate')
 
@@ -35,6 +36,12 @@ class CarSchema extends Schema {
       table.integer('engine_id').references('engines.id')
       table.timestamps()
     })
+
+    .raw(`
+      CREATE TRIGGER cars_upd_tsvector BEFORE INSERT OR UPDATE
+      ON cars
+      FOR EACH ROW EXECUTE PROCEDURE name_tsv_trigger();
+    `)
 
     this.create('car_revisions', (table) => {
       table.increments()

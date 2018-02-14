@@ -6,7 +6,20 @@ const {prepareTsQuery} = use('App/Helpers/sql')
 
 class CarController {
   async index ({request}) {
-    return Car.all('id', 'name')
+    let search = request.input('search')
+    let cars = []
+    let query = Car.query()
+      .select('id', 'name')
+      .limit(5).clone()
+    if(search){
+      var tsQuery = prepareTsQuery(search)
+      cars = await query.whereRaw('name_tsv @@ to_tsquery(?)', tsQuery)
+        .orderByRaw('ts_rank(name_tsv, to_tsquery(?)) DESC', tsQuery)
+    }
+    else{
+      cars = await query
+    }
+    return cars
   }
 
   async show ({params}) {
