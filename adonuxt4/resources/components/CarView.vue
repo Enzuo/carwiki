@@ -21,12 +21,13 @@
     <v-container fluid grid-list-md >
       <v-layout  rows wrap >
         <v-flex md6 v-for="category in view_structure" :key="category.title" >
-          <v-card>
+          <v-card v-if="!(edit && category.edit === false)">
             <v-card-title>
               <h3><v-icon>{{category.icon}}</v-icon>{{category.title}}</h3>
             </v-card-title>
             <div class="card-content">
               <v-data-table
+                v-if="category.items"
                 :items="category.items"
                 class="elevation-1"
                 hide-actions
@@ -51,6 +52,7 @@
               </v-data-table>
               <div v-for="component in category.components" :key="component">
                 <car-gears v-if="component === 'gears'" :car="car" :edit="edit" :key="car.id"></car-gears>
+                <car-eco v-else-if="component === 'eco'" :car="car"></car-eco>
               </div>
             </div>
           </v-card>
@@ -64,6 +66,7 @@
 import EngineInput from '~/components/CarViewComponents/EngineInput'
 import CarTypesInput from '~/components/CarViewComponents/CarTypesInput'
 import CarGears from '~/components/CarViewComponents/CarGears'
+import CarEco from '~/components/CarEco'
 import {getMaxPower, getMaxTorque} from "~/plugins/helpers.js"
 
 
@@ -76,6 +79,7 @@ export default {
     EngineInput,
     CarTypesInput,
     CarGears,
+    CarEco,
   },
   data : function () {
     var maxPowerObj = this.car.engine ? getMaxPower(this.car.engine.profile) : { maxPower : 0, atRPM : 0}
@@ -111,6 +115,13 @@ export default {
         ],
         components : [
           'gears'
+        ]
+      },{
+        title : 'efficiency',
+        edit : false,
+        icon : 'graphic_eq',
+        components : [
+          'eco'
         ]
       }]
     }

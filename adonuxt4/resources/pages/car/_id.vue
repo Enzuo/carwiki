@@ -3,8 +3,6 @@
     <div v-if="car">
       <car-view :car="car"></car-view>
 
-      <car-eco :car="car"></car-eco>
-
       <action-buttons :actions="actions"></action-buttons>
     </div>
 

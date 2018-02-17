@@ -1,13 +1,12 @@
 <template>
   <div>
-    <h3>Rendement</h3>
     <v-text-field
       :value="speed" @change="v => speed = v ? parseInt(v) : 0"
       label="Speed (km/h)"
     ></v-text-field>
-    Minimal Power needed for speed : {{ minPowerNeededForSpeed }}
+    Power needed to maintain that speed : {{ minPowerNeededForSpeed }}
     <div v-for="gear in throttlePerGear" :key="gear.gearNumber">
-      {{gear.gearNumber}} - RPM : {{gear.rpm}} - % Throttle : {{gear.throttle*100}}
+      {{gear.gearNumber}} - RPM : {{gear.rpm}} - Throttle : {{gear.throttle}} %
     </div>
     <img src="http://cdn2.blogautomobile.fr/wp-content/uploads/2010/09/rendement-du-moteur-thermique-4.jpg"/>
   </div>
@@ -45,7 +44,7 @@ import {
 
         console.log('weight', weight, 'speed', speed, 'airDrag',airDrag, 'wheelDrag',wheelDrag)
 
-        return (airDrag + wheelDrag)/ 735 // metric horsepower (ps)
+        return ((airDrag + wheelDrag)/ 735).toFixed(1) // metric horsepower (ps)
       },
       throttlePerGear : function () {
         var gears = []
@@ -69,7 +68,11 @@ import {
           }
           var ps = torqueToPS(torqueForRpm, rpmForSpeed)
           var throttle = this.minPowerNeededForSpeed/ps
-          gears.push({gearNumber : romanize(i+1), throttle, rpm : rpmForSpeed})
+          gears.push({
+            gearNumber : romanize(i+1),
+            throttle : (throttle * 100).toFixed(1),
+            torque : (torqueForRpm * throttle).toFixed(0),
+            rpm : rpmForSpeed.toFixed(0) })
         }
         return gears
       }
