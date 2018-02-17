@@ -1,3 +1,4 @@
+const Database = use('Database')
 const User = use('App/Models/User')
 const Engine = use('App/Models/Engine')
 const Car = use('App/Models/Car')
@@ -34,15 +35,20 @@ async function car () {
     ]
   })
   var cars = await Car.createMany([{
+    id : 1,
     name : 'clio 4',
     weight : 1055,
     engine_id : 1,
     gearRatio : [3, 2.2],
   },{
+    id : 2,
     name : 'clio 4 diesel',
     weight : 1300,
     engine_id : 2,
   }])
+  await Database.raw('ALTER SEQUENCE "cars_id_seq" RESTART WITH 3;')
+  await Database.raw('ALTER SEQUENCE "engines_id_seq" RESTART WITH 3;')
+
   return cars
 }
 

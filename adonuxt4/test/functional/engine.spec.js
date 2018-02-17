@@ -138,6 +138,7 @@ test('update engine', async ({ client }) => {
 
 test('create engine', async({ client }) => {
   var users = await Dataset.user()
+  await Dataset.car()
   var engine = {
     name : 'my new car',
     profile : [
@@ -153,7 +154,7 @@ test('create engine', async({ client }) => {
 
   response.assertStatus(200)
   response.assertJSONSubset({
-    id : 1,
+    id : 3,
     name : engine.name,
     profile : JSON.stringify(engine.profile),
   })

@@ -62,8 +62,11 @@ class CarController {
       'width',
       'height',
     ])
+    // TODO in Model engine_id
+    data.engine_id = request.body.engine ? request.body.engine.id : undefined
     const car = await Car.create(data)
-    return car.toJSON()
+    await car.load('engine')
+    return car
   }
 }
 

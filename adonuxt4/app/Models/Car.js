@@ -15,6 +15,10 @@ class Car extends Model {
     return JSON.stringify(gearRatio)
   }
 
+  static get hidden () {
+    return ['name_tsv']
+  }
+
   static get dates () {
     return super.dates.concat(['fromProductionDate','toProductionDate'])
   }

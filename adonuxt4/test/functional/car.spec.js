@@ -25,7 +25,10 @@ test ('get list of cars', async ({ client }) => {
   const response = await client.get('/api/cars').end()
 
   response.assertStatus(200)
-  response.assertJSONSubset([testCar])
+  response.assertJSONSubset([{
+    id : 1,
+    name : 'test car'
+  }])
 })
 
 test ('get details of a car', async ({ client }) => {
@@ -71,6 +74,29 @@ test('update car and change its engine', async ({ client }) => {
     id : car.id,
     name : updatedCar.name,
     engine : updatedCar.engine,
+  })
+})
+
+test('create a new car', async ({ client }) => {
+  var users = await Dataset.user()
+  await Dataset.car()
+  var car = {
+    name : 'test car',
+    weight : 1587,
+    engine : { id :1 },
+  }
+
+  const response = await client
+    .post('/api/cars/')
+    .send(car)
+    .loginVia(users[0])
+    .end()
+
+  response.assertStatus(200)
+  response.assertJSONSubset({
+    id : 3,
+    name : car.name,
+    engine : car.engine,
   })
 })
 
