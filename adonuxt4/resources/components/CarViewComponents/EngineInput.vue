@@ -20,9 +20,11 @@ export default {
   props : { value : Object, edit : Boolean },
   components : { SearchSelect },
   methods : {
-    selectEngine (id, engine) {
+    async selectEngine (id, engine) {
+      if(id){
+        engine = await this.$axios.$get(`engines/${id}`)
+      }
       this.$emit('input', engine)
-      // Vue.set(this.engine, engine)
     }
   }
 }
