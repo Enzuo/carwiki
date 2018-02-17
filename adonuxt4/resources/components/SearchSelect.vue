@@ -9,6 +9,8 @@
       :clearOnSelect="true"
       :preserveSearch="true"
       :placeholder="search"
+      selectLabel=""
+      deselectLabel=""
       @input="selectItem"
       @search-change="searchItem"
       label="name"
