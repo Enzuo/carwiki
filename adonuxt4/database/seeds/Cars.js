@@ -19,7 +19,7 @@ const carsSeedData = require('../seed-data/Cars')
 
 const Factory = use('Factory')
 
-class EngineSeeder {
+class CarSeeder {
   async run () {
     try {
       await Database.raw('truncate "car_revisions", "cars", "engines" restart identity')
@@ -48,4 +48,4 @@ class EngineSeeder {
   }
 }
 
-module.exports = EngineSeeder
+module.exports = CarSeeder

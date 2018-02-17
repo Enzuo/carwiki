@@ -25,6 +25,7 @@ class CarSchema extends Schema {
       table.decimal('dragArea')
 
       table.integer('trunk')
+      table.integer('trunkMax')
       table.integer('fuelTank')
       table.decimal('turnCircle')
 
@@ -32,6 +33,7 @@ class CarSchema extends Schema {
       table.decimal('factoryMileageExtraUrban')
       table.decimal('factoryAcc')
       table.decimal('factoryEmission')
+      table.decimal('factoryTopSpeed')
 
       table.integer('engine_id').references('engines.id')
       table.timestamps()
@@ -66,6 +68,7 @@ class CarSchema extends Schema {
       table.decimal('dragArea')
 
       table.integer('trunk')
+      table.integer('trunkMax')
       table.integer('fuelTank')
       table.decimal('turnCircle')
 
@@ -73,6 +76,7 @@ class CarSchema extends Schema {
       table.decimal('factoryMileageExtraUrban')
       table.decimal('factoryAcc')
       table.decimal('factoryEmission')
+      table.decimal('factoryTopSpeed')
 
       table.integer('engine_id').references('engines.id')
       table.timestamps()

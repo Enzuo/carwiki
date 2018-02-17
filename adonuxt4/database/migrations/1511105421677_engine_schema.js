@@ -13,11 +13,11 @@ class EngineSchema extends Schema {
       table.date('toProductionDate')
 
       table.json('profile')
-      table.decimal('gearSpeed')
       table.integer('fueltype')
       table.integer('displacement')
       table.integer('cylinders')
-      table.integer('compression_ratio')
+      table.decimal('compression_ratio')
+      table.integer('type')
       table.timestamps()
     })
 

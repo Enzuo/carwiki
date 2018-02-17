@@ -54,6 +54,7 @@ module.exports = [
       height : 1495,
       wheelbase : 2638,
       dragCoef : 0.3,
+      dragArea : 2.22,
       trunk : 440,
       fuelTank : 50,
       turnCircle : 10.93,
@@ -186,6 +187,52 @@ module.exports = [
     height : 1589,
     wheelbase : 2482,
     trunk : 274,
+  },
+  {
+    name : 'mazda cx5 SkyActiv-G 165',
+    engine_id : 14,
+    fromProductionDate : 2017,
+    toProductionDate : null,
 
+    gearRatio : [3.7,1.95,1.30,1.03,0.84,0.68],
+    gearSpeed : 46.15,
+    transmission : 1, // 1:Manual, 2:Auto .defaultTo(1)
+    traction : 1, // 1:FWD, 2:RWD, 3:AWD
+
+    weight : 1335,
+    lengthmm : 4550,
+    width : 1840,
+    height : 1675,
+    wheelbase : 2700,
+    dragCoef : 0.32,
+    dragArea : 2.56,
+
+    trunk : 477,
+    trunkMax : 1620,
+    fuelTank : 56,
+    turnCircle : 11,
+
+    factoryMileageUrban : 7.9,
+    factoryMileageExtraUrban : 5.6,
+    factoryAcc : 10.4,
+    factoryEmission : 149,
+    factoryTopSpeed : 201,
+
+    // Detailled interior dimensions
+    // legRoom : [1041, 1007],
+    // shoulderRoom : [1451, 1391],
+    // headRoom : [1007,991],
+    // hipRoom : [1402,1405],
+    // trunkMinWidth : 1050, // Between wheel archs
+    // trunkWidth : 1448,
+    // trunkLength : 965,
+    // trunkMaxLength : 1696,
+    // trunkHeight : 823,
+    // trunkLoadingHeight : 745,
+    // interiorLength : 1890,
+    // interiorWidth : 1540,
+    // interiorHeight : 1265,
+
+    // grounClearance : 210,
   }
 ]

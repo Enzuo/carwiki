@@ -223,6 +223,23 @@ module.exports = [
     ],
     displacement : 1461,
     fueltype : 2,
+  },
+  {
+    id : 14,
+    name : 'mazda skyactiv-G (165)',
+    torque : [
+      [1000,98.8],
+      [2000,172.9],
+      [3000,197.6],
+      [4000,210],
+      [5000,205.6],
+      [6000,192.6],
+    ],
+    fueltype : 1,
+    displacement : 1998,
+    cylinders : 4, // 4 inline
+    compression_ratio : 14, // 14:1
+    type : 1, // dohc
   }
 ]
 
