@@ -43,6 +43,7 @@
                   <td v-else-if="props.item.component === 'transmission'" class="text-xs-right">
                     <car-types-input v-model="car[props.item.value]" type="transmission" :edit="edit"></car-types-input>
                   </td>
+                  <td v-else-if="props.item.computedValue">{{ props.item.computedValue }}</td>
                   <td v-else-if="edit"><input v-model="car[props.item.value]"></td>
                   <td v-else class="text-xs-right">{{ car[props.item.value] }}</td>
                   <td class="text-xs-right caption">{{ props.item.unit }}</td>
@@ -63,6 +64,8 @@
 import EngineInput from '~/components/CarViewComponents/EngineInput'
 import CarTypesInput from '~/components/CarViewComponents/CarTypesInput'
 import CarGears from '~/components/CarViewComponents/CarGears'
+import {getMaxPower, getMaxTorque} from "~/plugins/helpers.js"
+
 
 export default {
   props : {
@@ -75,6 +78,8 @@ export default {
     CarGears,
   },
   data : function () {
+    var maxPowerObj = this.car.engine ? getMaxPower(this.car.engine.profile) : { maxPower : 0, atRPM : 0}
+    var maxTorqueObj = this.car.engine ? getMaxTorque(this.car.engine.profile) : { maxTorque: 0, atRPM : 0}
     return {
       view_structure : [{
         title : 'size',
@@ -94,6 +99,8 @@ export default {
         items : [
           {title:'engine', value: 'engine', component : 'engine' },
           {title:'acc 0-100', value: 'factoryAcc', unit:'s'},
+          {title:'power', computedValue: `${maxPowerObj.maxPower.toFixed(0)} hp at ${maxPowerObj.atRPM} rpm`},
+          {title:'torque', computedValue: `${maxTorqueObj.maxTorque.toFixed(0)} nm at ${maxTorqueObj.atRPM} rpm`},
         ]
       },{
         title : 'transmission',

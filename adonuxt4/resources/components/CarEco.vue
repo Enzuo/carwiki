@@ -18,7 +18,7 @@ import {
   torqueToPS,
   romanize,
   getTorqueForRPM
-} from "~/plugins/helpers.js";
+} from "~/plugins/helpers.js"
 
   export default {
     props : ['car'],

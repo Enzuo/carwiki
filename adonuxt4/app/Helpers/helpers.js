@@ -52,6 +52,40 @@ function getTorqueForRPM(torqueCurve, rpm) {
   return prevTorquePoint[1] + distTorque * distPercent
 }
 
+/**
+ *  maximums torque (nm) & power (ps) from an engine profile
+ */
+function getMaxTorque(torqueCurve){
+  var maxTorque = 0
+  var atRPM = 0
+  if(torqueCurve){
+    for(var i=0; i < torqueCurve.length; i++){
+      var val = torqueCurve[i]
+      if(val[1] > maxTorque){
+        maxTorque = val[1]
+        atRPM = val[0]
+      }
+    }
+  }
+  return { maxTorque, atRPM }
+}
+
+function getMaxPower(torqueCurve){
+  var maxPower = 0
+  var atRPM = 0
+  if(torqueCurve){
+    for(var i=0; i < torqueCurve.length; i++){
+      var val = torqueCurve[i]
+      var power = torqueToPS(val[1], val[0])
+      if(power > maxPower){
+        maxPower = power
+        atRPM = val[0]
+      }
+    }
+  }
+  return { maxPower, atRPM }
+}
+
 // http://blog.stevenlevithan.com/archives/javascript-roman-numeral-converter
 function romanize(num) {
   var lookup = { M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1 }, roman = '', i;
@@ -96,6 +130,8 @@ module.exports = {
   torqueToPSperT,
   PSToTorque,
   getTorqueForRPM,
+  getMaxTorque,
+  getMaxPower,
   romanize,
   getTypicalRPMInterval,
 }
