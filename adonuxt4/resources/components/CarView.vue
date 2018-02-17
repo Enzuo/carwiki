@@ -1,5 +1,39 @@
 <template>
   <div>
+    <div v-if="cars">
+      <v-card>
+        <v-flex v-for="category in view_structure" :key="category.title" >
+          <v-data-table
+            :headers="headers"
+            v-if="category.items"
+            :items="category.items"
+            hide-actions
+          >
+            <template slot="items" slot-scope="props">
+              <td class="text-xs-left">{{ props.item.title }}</td>
+              <!-- https://github.com/vuejs/vue/issues/3479 -->
+              <template v-for="(car, index) in cars">
+                <td v-if="props.item.component === 'engine'" :key="car.id" class="text-xs-right">
+                  <engine-input v-model="cars[index][props.item.value]"></engine-input>
+                </td>
+                <td v-else-if="props.item.component === 'traction'" :key="car.id" class="text-xs-right">
+                  <car-types-input v-model="cars[index][props.item.value]"></car-types-input>
+                </td>
+                <td v-else-if="props.item.component === 'transmission'"  :key="car.id" class="text-xs-right">
+                  <car-types-input v-model="cars[index][props.item.value]" type="transmission"></car-types-input>
+                </td>
+                <td v-else-if="props.item.computedValue" :key="car.id" class="text-xs-right">{{ _self[props.item.computedValue][index] }}</td>
+                <td v-else :key="car.id" class="text-xs-right">{{ cars[index][props.item.value] }}</td>
+              </template>
+            </template>
+          </v-data-table>
+          <div v-for="component in category.components" :key="component">
+            <car-eco v-if="component === 'eco'" :car="cars[0]"></car-eco>
+          </div>
+        </v-flex>
+      </v-card>
+    </div>
+    <div v-else>
     <div v-if="edit">
       <v-layout row>
         <v-flex xs3>
@@ -44,7 +78,7 @@
                   <td v-else-if="props.item.component === 'transmission'" class="text-xs-right">
                     <car-types-input v-model="car[props.item.value]" type="transmission" :edit="edit"></car-types-input>
                   </td>
-                  <td v-else-if="props.item.computedValue" class="text-xs-right">{{ props.item.computedValue }}</td>
+                  <td v-else-if="props.item.computedValue" class="text-xs-right">{{ _self[props.item.computedValue] }}</td>
                   <td v-else-if="edit"><input v-model="car[props.item.value]"></td>
                   <td v-else class="text-xs-right">{{ car[props.item.value] }}</td>
                   <td class="text-xs-right caption">{{ props.item.unit }}</td>
@@ -59,6 +93,7 @@
         </v-flex>
       </v-layout>
     </v-container>
+    </div>
   </div>
 </template>
 
@@ -73,6 +108,7 @@ import {getMaxPower, getMaxTorque} from "~/plugins/helpers.js"
 export default {
   props : {
     car : Object,
+    cars : Array,
     edit : Boolean
   },
   components : {
@@ -82,12 +118,55 @@ export default {
     CarEco,
   },
   computed : {
+    maxPower : function (){
+      var cars = this.cars ? this.cars : [this.car]
+      var maxPowers = cars.map(car => {
+        var maxPower = car.engine ? getMaxPower(car.engine.profile) : { maxPower : 0, atRPM : 0}
+        return `${maxPower.maxPower.toFixed(0)} hp at ${maxPower.atRPM} rpm`
+      })
+      return this.cars ? maxPowers : maxPowers[0]
+    },
+    maxTorque : function () {
+      var cars = this.cars ? this.cars : [this.car]
+      var maxTorques = cars.map(car => {
+        var maxTorque = car.engine ? getMaxTorque(car.engine.profile) : { maxTorque : 0, atRPM : 0}
+        return `${maxTorque.maxTorque.toFixed(0)} nm at ${maxTorque.atRPM} rpm`
+      })
+      return this.cars ? maxTorques : maxTorques[0]
+    },
+    mpgAvg : function () {
+      var cars = this.cars ? this.cars : [this.car]
+      var mpgAvgs = cars.map(car => {
+        var mpgUrban = parseFloat(car.factoryMileageUrban)
+        var mpgHighW = parseFloat(car.factoryMileageExtraUrban)
+        var mpgAvg = mpgHighW && mpgUrban ? mpgUrban*0.35 + mpgHighW*0.65 : mpgUrban ? mpgUrban : 0
+        return mpgAvg.toFixed(1)
+      })
+      return this.cars ? mpgAvgs : mpgAvgs[0]
+    },
+    mpgAvgReal : function () {
+      if(this.mpgAvg instanceof Array){
+        return this.mpgAvg.map(avg => {
+          return (avg * 1.25).toFixed(1)
+        })
+      }
+      return (this.mpgAvg * 1.25).toFixed(1) // 25% more compared to factory claim
+    },
+    headers : function () {
+      var cars = this.cars ? this.cars : [this.car]
+      var headers = [{
+        sortable : false
+      }]
+      return headers.concat(cars.map(car => {
+        return {
+          text : car.name,
+          align : 'right',
+          sortable : false,
+        }
+      }))
+    },
     view_structure : function () {
-      var maxPowerObj = this.car.engine ? getMaxPower(this.car.engine.profile) : { maxPower : 0, atRPM : 0}
-      var maxTorqueObj = this.car.engine ? getMaxTorque(this.car.engine.profile) : { maxTorque: 0, atRPM : 0}
-      var mpgAvg = (parseFloat(this.car.factoryMileageUrban || this.car.factoryMileageExtraUrban || 0) * 0.35 + parseFloat(this.car.factoryMileageExtraUrban || this.car.factoryMileageUrban || 0 )*0.65).toFixed(1)
-      var mpgAvgReal = (mpgAvg * 1.25).toFixed(1) // 25% more compared to factory claim
-      return [{
+       return [{
         title : 'size',
         icon : 'fullscreen',
         items : [
@@ -105,12 +184,12 @@ export default {
         items : [
           {title:'engine', value: 'engine', component : 'engine' },
           {title:'acc 0-100', value: 'factoryAcc', unit:'s'},
-          {title:'power', computedValue: `${maxPowerObj.maxPower.toFixed(0)} hp at ${maxPowerObj.atRPM} rpm`},
-          {title:'torque', computedValue: `${maxTorqueObj.maxTorque.toFixed(0)} nm at ${maxTorqueObj.atRPM} rpm`},
+          {title:'power', computedValue: 'maxPower'},
+          {title:'torque', computedValue: 'maxTorque'},
           {title:'consumptions urban', value: 'factoryMileageUrban', unit:'l/100'},
           {title:'consumptions country', value: 'factoryMileageExtraUrban', unit:'l/100'},
-          {title:'consumptions avg', computedValue: mpgAvg, unit:'l/100'},
-          {title:'consumptions real avg', computedValue: mpgAvgReal, unit:'l/100'},
+          {title:'consumptions avg', computedValue: 'mpgAvg', unit:'l/100'},
+          {title:'consumptions real avg', computedValue: 'mpgAvgReal', unit:'l/100'},
           {title:'CO2 Emission', value: 'factoryEmission', unit:'l/100'},
         ]
       },{
