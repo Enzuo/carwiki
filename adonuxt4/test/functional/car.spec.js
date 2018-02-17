@@ -141,7 +141,7 @@ test('create a new car', async ({ client }) => {
     assert.equal(revisions[0].user_id, users[0].id)
     assert.equal(revisions[1].car_id, car.id)
     assert.equal(revisions[1].name, car.name)
-    assert.equal(revisions[1].gearRatio, JSON.stringify(car.gearRatio))
+    assert.equal(JSON.stringify(revisions[1].gearRatio), JSON.stringify(car.gearRatio))
     assert.equal(revisions[1].user_id, users[0].id)
   })
 
