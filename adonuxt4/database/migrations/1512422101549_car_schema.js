@@ -29,7 +29,7 @@ class CarSchema extends Schema {
       table.decimal('turnCircle')
 
       table.decimal('factoryMileageUrban')
-      table.decimal('factoryMileageCountry')
+      table.decimal('factoryMileageExtraUrban')
       table.decimal('factoryAcc')
       table.decimal('factoryEmission')
 
@@ -70,7 +70,7 @@ class CarSchema extends Schema {
       table.decimal('turnCircle')
 
       table.decimal('factoryMileageUrban')
-      table.decimal('factoryMileageCountry')
+      table.decimal('factoryMileageExtraUrban')
       table.decimal('factoryAcc')
       table.decimal('factoryEmission')
 

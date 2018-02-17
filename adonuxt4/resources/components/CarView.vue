@@ -44,7 +44,7 @@
                   <td v-else-if="props.item.component === 'transmission'" class="text-xs-right">
                     <car-types-input v-model="car[props.item.value]" type="transmission" :edit="edit"></car-types-input>
                   </td>
-                  <td v-else-if="props.item.computedValue">{{ props.item.computedValue }}</td>
+                  <td v-else-if="props.item.computedValue" class="text-xs-right">{{ props.item.computedValue }}</td>
                   <td v-else-if="edit"><input v-model="car[props.item.value]"></td>
                   <td v-else class="text-xs-right">{{ car[props.item.value] }}</td>
                   <td class="text-xs-right caption">{{ props.item.unit }}</td>
@@ -81,11 +81,13 @@ export default {
     CarGears,
     CarEco,
   },
-  data : function () {
-    var maxPowerObj = this.car.engine ? getMaxPower(this.car.engine.profile) : { maxPower : 0, atRPM : 0}
-    var maxTorqueObj = this.car.engine ? getMaxTorque(this.car.engine.profile) : { maxTorque: 0, atRPM : 0}
-    return {
-      view_structure : [{
+  computed : {
+    view_structure : function () {
+      var maxPowerObj = this.car.engine ? getMaxPower(this.car.engine.profile) : { maxPower : 0, atRPM : 0}
+      var maxTorqueObj = this.car.engine ? getMaxTorque(this.car.engine.profile) : { maxTorque: 0, atRPM : 0}
+      var mpgAvg = (parseFloat(this.car.factoryMileageUrban || this.car.factoryMileageExtraUrban || 0) * 0.35 + parseFloat(this.car.factoryMileageExtraUrban || this.car.factoryMileageUrban || 0 )*0.65).toFixed(1)
+      var mpgAvgReal = (mpgAvg * 1.25).toFixed(1) // 25% more compared to factory claim
+      return [{
         title : 'size',
         icon : 'fullscreen',
         items : [
@@ -105,6 +107,11 @@ export default {
           {title:'acc 0-100', value: 'factoryAcc', unit:'s'},
           {title:'power', computedValue: `${maxPowerObj.maxPower.toFixed(0)} hp at ${maxPowerObj.atRPM} rpm`},
           {title:'torque', computedValue: `${maxTorqueObj.maxTorque.toFixed(0)} nm at ${maxTorqueObj.atRPM} rpm`},
+          {title:'consumptions urban', value: 'factoryMileageUrban', unit:'l/100'},
+          {title:'consumptions country', value: 'factoryMileageExtraUrban', unit:'l/100'},
+          {title:'consumptions avg', computedValue: mpgAvg, unit:'l/100'},
+          {title:'consumptions real avg', computedValue: mpgAvgReal, unit:'l/100'},
+          {title:'CO2 Emission', value: 'factoryEmission', unit:'l/100'},
         ]
       },{
         title : 'transmission',
