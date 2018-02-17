@@ -32,13 +32,13 @@ class Car extends Model {
   }
 
 
-  // getGearRatio (gearRatio) {
-  //   console.log('before parse', gearRatio)
-  //   let parsedRatios = JSON.parse(gearRatio)
-  //   console.log('after parse', gearRatio)
+  getGearRatio (gearRatio) {
+  // //   console.log('before parse', gearRatio)
+  // //   let parsedRatios = JSON.parse(gearRatio)
+  // //   console.log('after parse', gearRatio)
 
-  //   return JSON.parse(gearRatio, parsedRatios)
-  // }
+    return typeof gearRatio === 'string' ? JSON.parse(gearRatio) :  gearRatio
+  }
 }
 
 /**
