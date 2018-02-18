@@ -5,6 +5,7 @@
     <span>With translation {{ $t('key') }}</span><br>
     <button @click="$i18n.i18next.changeLanguage('en')">Change to EN</button><br>
     <button @click="$i18n.i18next.changeLanguage('cn')">Change to CN</button><br>
+    <button @click="$i18n.i18next.changeLanguage('fr')">Change to FR</button><br>
     <nuxt-link :to="{ name: 'about' }">About</nuxt-link>
   </section>
 </template>
