@@ -10,11 +10,10 @@ Vue.use(VueI18next);
 var isClient = process.browser ? true : false
 console.log('VUE I18next init, client :', isClient)
 
-// if(isClient){
-//   i18next
-//   // .use(FetchBackend)
-//   .use(XHRBackend)
-// }
+if(isClient){
+  i18next
+  .use(XHRBackend)
+}
 
 // with this condition it'll be ignored on nuxt module build
 // https://github.com/nuxt/nuxt.js/issues/2458
@@ -28,27 +27,13 @@ const options = {
   fallbackLng: 'en',
   // keySeparator: false, // Allow usage of dots in keys
   debug : true,
-  // resources : {
-  //   en: {
-  //     translation: {
-  //       "key": "hello world "+isClient
-  //     }
-  //   },
-  //   cn: {
-  //     translation: {
-  //       "key": "chinese "
-  //     }
-  //   }
-  // },
+  // preload : ['en'],
+  // initImmediate seems to be working (no more display of my keys when hydrating the client)
+  // However it's supposed to work with sync backend only
+  initImmediate: false,
   backend : {
     // path where resources get loaded from
     loadPath: isClient ? '/locales/{{lng}}/{{ns}}.json' : 'resources/static/locales/{{lng}}/{{ns}}.json',
-
-    // path to post missing resources
-    // addPath: '/locales/{{lng}}/{{ns}}.missing.json',
-
-    // jsonIndent to use when storing json files
-    // jsonIndent: 2
   }
 }
 
@@ -56,34 +41,6 @@ const options = {
 if (!i18next.isInitialized) {
   i18next.init(options)
 }
-// i18next.init({
-//   lng: 'en',
-//   fallbackLng: 'en',
-//   // keySeparator: false, // Allow usage of dots in keys
-//   debug : true,
-//   // resources : {
-//   //   en: {
-//   //     translation: {
-//   //       "key": "hello world "+isClient
-//   //     }
-//   //   },
-//   //   cn: {
-//   //     translation: {
-//   //       "key": "chinese "
-//   //     }
-//   //   }
-//   // },
-//   backend : {
-//     // path where resources get loaded from
-//     loadPath: isClient ? '/locales/{{lng}}/{{ns}}.json' : 'resources/static/locales/{{lng}}/{{ns}}.json',
-
-//     // path to post missing resources
-//     // addPath: '/locales/{{lng}}/{{ns}}.missing.json',
-
-//     // jsonIndent to use when storing json files
-//     // jsonIndent: 2
-//   }
-// })
 
 
 export default ({ app }, inject) => {
