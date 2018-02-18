@@ -1,12 +1,13 @@
 <template>
-  <div>
+  <v-container page>
     <div v-if="car">
+      <h1>{{car.name}}</h1>
       <car-view :car="car"></car-view>
 
       <action-buttons :actions="actions"></action-buttons>
     </div>
 
-  </div>
+  </v-container>
 </template>
 
 <script>

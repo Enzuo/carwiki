@@ -34,25 +34,7 @@
       </v-card>
     </div>
     <div v-else>
-      <div v-if="edit">
-        <v-layout row>
-          <v-flex xs3>
-            <v-subheader>Name</v-subheader>
-          </v-flex>
-          <v-flex xs9>
-            <v-text-field
-              name="name"
-              label="Name"
-              v-model="car.name"
-              single-line
-            ></v-text-field>
-          </v-flex>
-        </v-layout>
-      </div>
-      <div v-else>
-        Name : {{car.name}}
-      </div>
-      <v-container fluid grid-list-md >
+      <v-container fluid pa-0 grid-list-md >
         <v-layout  rows wrap >
           <v-flex md6 v-for="category in view_structure" :key="category.title" >
             <v-card v-if="!(edit && category.edit === false)">
@@ -63,7 +45,7 @@
                 <v-data-table
                   v-if="category.items"
                   :items="category.items"
-                  class="elevation-1"
+                  class="elevation-0"
                   hide-actions
                   hide-headers
                 >
@@ -77,6 +59,9 @@
                     </td>
                     <td v-else-if="props.item.component === 'transmission'" class="text-xs-right">
                       <car-types-input v-model="car[props.item.value]" type="transmission" :edit="edit"></car-types-input>
+                    </td>
+                    <td v-else-if="props.item.component === 'bodytype'" class="text-xs-right">
+                      <car-types-input v-model="car[props.item.value]" type="bodytype" :edit="edit"></car-types-input>
                     </td>
                     <td v-else-if="props.item.computedValue" class="text-xs-right">{{ _self[props.item.computedValue] }}</td>
                     <td v-else-if="edit"><input v-model="car[props.item.value]"></td>
@@ -120,6 +105,16 @@ export default {
   data : function () {
     return {
       view_structure : [{
+          title : 'about',
+          icon : 'directions_car',
+          items : [
+            {title:'name', value: 'name'},
+            {title:'body type', value: 'bodyType', component :'bodytype'},
+            {title:'segment', value: 'segment'},
+            {title:'doors', value: 'doors'},
+            {title:'seats', value: 'seatings'},
+          ]
+        },{
           title : 'size',
           icon : 'fullscreen',
           items : [
@@ -143,7 +138,7 @@ export default {
             {title:'consumptions country', value: 'factoryMileageExtraUrban', unit:'l/100'},
             {title:'consumptions avg', computedValue: 'mpgAvg', unit:'l/100'},
             {title:'consumptions real avg', computedValue: 'mpgAvgReal', unit:'l/100'},
-            {title:'CO2 Emission', value: 'factoryEmission', unit:'l/100'},
+            {title:'CO2 Emission', value: 'factoryEmission', unit:'g/km'},
           ]
         },{
           title : 'transmission',
@@ -162,7 +157,16 @@ export default {
           components : [
             'eco'
           ]
-      }]
+        },{
+          title : 'interior details',
+          edit : false,
+          icon : 'fullscreen_exit',
+          items : [
+            {title:'trunk', value: 'trunk', unit : 'l' },
+            {title:'fuel tank', value: 'fuelTank', unit : 'l' },
+          ],
+        }
+      ]
     }
   },
   computed : {

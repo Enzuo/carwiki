@@ -69,6 +69,9 @@ export default {
     if(this.type === 'transmission'){
       items = transmissionsTypes
     }
+    if(this.type === 'bodytype'){
+      items = bodyTypes
+    }
     return {
       items
     }
