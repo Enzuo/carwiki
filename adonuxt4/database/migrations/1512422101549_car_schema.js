@@ -10,6 +10,10 @@ class CarSchema extends Schema {
       table.specificType('name_tsv', 'tsvector')
       table.date('fromProductionDate')
       table.date('toProductionDate')
+      table.string('segment', 30)
+      table.integer('bodyType')
+      table.integer('doors')
+      table.integer('seatings')
 
       table.json('gearRatio')
       table.decimal('gearSpeed')
@@ -53,6 +57,10 @@ class CarSchema extends Schema {
       table.string('name')
       table.date('fromProductionDate')
       table.date('toProductionDate')
+      table.string('segment', 30)
+      table.integer('bodyType')
+      table.integer('doors')
+      table.integer('seatings')
 
       table.json('gearRatio')
       table.decimal('gearSpeed')

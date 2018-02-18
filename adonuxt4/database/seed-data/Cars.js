@@ -193,13 +193,18 @@ module.exports = [
     engine_id : 14,
     fromProductionDate : 2017,
     toProductionDate : null,
+    segment : 'J(C)', // 1A: mini cars (8.7%) 2B: small cars (26%) 3C: medium cars (23%) 4D: large cars (11%) 5E: executive cars (3%) 6F: luxury cars (0.3%)
+                      // 7J: sport utility cars (including off-road vehicles) (13%) 8M: Multi purpose cars (13%) 9S: Sports cars
+    bodyType : 9, // Suv
+    doors : 5,
+    seatings : 5,
 
     gearRatio : [3.7,1.95,1.30,1.03,0.84,0.68],
     gearSpeed : 46.15,
     transmission : 1, // 1:Manual, 2:Auto .defaultTo(1)
     traction : 1, // 1:FWD, 2:RWD, 3:AWD
 
-    weight : 1335,
+    weight : 1335,  // https://en.wikipedia.org/wiki/Curb_weight
     lengthmm : 4550,
     width : 1840,
     height : 1675,

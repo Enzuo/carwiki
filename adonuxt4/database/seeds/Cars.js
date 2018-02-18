@@ -38,7 +38,7 @@ class CarSeeder {
       for (let carData of carsSeedData) {
         cars.push(Car.create(carData))
       }
-      await Promise.all(cars)
+      await Promise.all(cars) // Swallow errros
     }
     catch(err){
       Database.close()
