@@ -14,10 +14,21 @@ module.exports = {
       generateStatsFile: true,
       statsFilename: 'webpack-stats.json'
     },
-    vendor: ['axios', '~/plugins/vue-charts', '~/plugins/vuetify']
+    vendor: [
+      'axios',
+      '~/plugins/vue-charts',
+      '~/plugins/vuetify',
+      '~/plugins/vue-i18n.js',
+      'i18next',
+      'vue-i18next2'
+    ]
   },
 
-  plugins : ['~/plugins/vuetify'],
+  plugins : [
+    '~/plugins/vuetify',
+    '~/plugins/vue-i18n',
+    // { src: '~/plugins/vue-i18n.js', ssr: false }
+  ],
 
   css: ['~assets/css/main.css','vuetify/dist/vuetify.min.css'],
 
