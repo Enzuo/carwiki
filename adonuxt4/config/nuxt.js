@@ -20,14 +20,14 @@ module.exports = {
       '~/plugins/vuetify',
       '~/plugins/vue-i18n.js',
       'i18next',
-      'vue-i18next2'
+      '@panter/vue-i18next',
     ]
   },
 
   plugins : [
     '~/plugins/vuetify',
-    '~/plugins/vue-i18n',
-    // { src: '~/plugins/vue-i18n.js', ssr: false }
+    // '~/plugins/vue-i18n',
+    { src: '~/plugins/vue-i18n.js', ssr: true }
   ],
 
   css: ['~assets/css/main.css','vuetify/dist/vuetify.min.css'],
