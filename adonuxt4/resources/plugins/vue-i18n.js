@@ -1,9 +1,9 @@
-import Vue from 'vue';
-import i18next from 'i18next';
-import VueI18next from '@panter/vue-i18next';
+import Vue from 'vue'
+import i18next from 'i18next'
+import VueI18next from '@panter/vue-i18next'
 // import FetchBackend from 'i18next-fetch-backend';
-import XHRBackend from 'i18next-xhr-backend';
-import LngDetector from 'i18next-browser-languagedetector';
+import XHRBackend from 'i18next-xhr-backend'
+import LngDetector from 'i18next-browser-languagedetector'
 
 Vue.use(VueI18next);
 
@@ -40,17 +40,17 @@ if(isClient){
 
 // with this condition it'll be ignored on nuxt module build
 // https://github.com/nuxt/nuxt.js/issues/2458
-if (process.server) {
-  var servLngDetector = new LngDetector()
+// if (process.server) {
+//   var servLngDetector = new LngDetector()
 
-  const fsBackend = require('i18next-node-fs-backend')
-  i18next.use(fsBackend).use(servLngDetector)
+//   const fsBackend = require('i18next-node-fs-backend')
+//   i18next.use(fsBackend).use(servLngDetector)
 
-  // Server side detection :
-  // https://github.com/i18next/react-i18next/issues/280
+//   // Server side detection :
+//   // https://github.com/i18next/react-i18next/issues/280
 
-  detectorOpts.order = ['servQueryString', 'servCookies']
-}
+//   detectorOpts.order = ['servQueryString', 'servCookies']
+// }
 
 const options = {
   fallbackLng: 'en',
@@ -67,12 +67,20 @@ const options = {
   detection : detectorOpts,
 }
 
-if (!i18next.isInitialized) {
+if (isClient && !i18next.isInitialized) {
   i18next.init(options)
 }
 
-export default ({ app }, inject) => {
+export default ({ app, req}, inject) => {
   // Set `i18n` instance on `app`
   // This way we can use it in middleware and pages `asyncData`/`fetch`
-  app.i18n = new VueI18next(i18next);
+  if(!isClient && req && req.i18n){
+    app.i18n = new VueI18next(req.i18n);
+  }
+  else {
+    app.i18n = new VueI18next(i18next);
+  }
+  // console.log('plugin context', Object.keys(context))
+
+  console.log('setup add i18n', app.i18n.t('key'), i18next.language)
 }

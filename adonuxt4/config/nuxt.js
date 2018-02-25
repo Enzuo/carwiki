@@ -26,8 +26,12 @@ module.exports = {
 
   plugins : [
     '~/plugins/vuetify',
-    // '~/plugins/vue-i18n',
-    { src: '~/plugins/vue-i18n.js', ssr: true }
+    '~/plugins/vue-i18n',
+    // { src: '~/plugins/vue-i18n.js', ssr: true }
+  ],
+
+  serverMiddleware : [
+    { path : '/', handler : './server_middleware/i18n'},
   ],
 
   css: ['~assets/css/main.css','vuetify/dist/vuetify.min.css'],
