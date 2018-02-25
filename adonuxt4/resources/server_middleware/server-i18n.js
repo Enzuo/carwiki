@@ -1,8 +1,6 @@
 const i18next = require('i18next')
 const i18nextMiddleware = require('i18next-express-middleware')
 
-console.log('SETUP i18n server middleware', process.server ? true : false)
-
 i18next.use(i18nextMiddleware.LanguageDetector)
 
 const fsBackend = require('i18next-node-fs-backend')
@@ -31,15 +29,12 @@ i18next.init({
   }
 })
 
-// exports = function (req, res, next) {
 var middleware = i18nextMiddleware.handle(i18next, {
   ignoreRoutes: ["/vuetify.min.css.map"],
 })
 module.exports = function (req, res, next) {
-  if(!req.paht){
+  if(!req.path){
     req.path = req.url
   }
-  console.log(req.url)
-  console.log('translation middleware')
   middleware(req, res, next)
 }

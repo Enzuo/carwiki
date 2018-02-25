@@ -31,7 +31,7 @@ module.exports = {
   ],
 
   serverMiddleware : [
-    { path : '/', handler : './server_middleware/i18n'},
+    './server_middleware/server-i18n',
   ],
 
   css: ['~assets/css/main.css','vuetify/dist/vuetify.min.css'],
