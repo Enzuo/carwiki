@@ -2,31 +2,33 @@
   <div>
     <div v-if="cars">
       <v-card>
-        <v-flex v-for="category in view_structure" :key="category.title" >
-          <v-data-table
-            :headers="headers"
-            v-if="category.items"
-            :items="category.items"
-            hide-actions
-          >
-            <template slot="items" slot-scope="props">
-              <td class="text-xs-left">{{ props.item.title }}</td>
-              <!-- https://github.com/vuejs/vue/issues/3479 -->
-              <template v-for="(car, index) in cars">
-                <td v-if="props.item.component === 'engine'" :key="car.id" class="text-xs-right">
-                  <engine-input v-model="cars[index][props.item.value]"></engine-input>
-                </td>
-                <td v-else-if="props.item.component === 'traction'" :key="car.id" class="text-xs-right">
-                  <car-types-input v-model="cars[index][props.item.value]"></car-types-input>
-                </td>
-                <td v-else-if="props.item.component === 'transmission'"  :key="car.id" class="text-xs-right">
-                  <car-types-input v-model="cars[index][props.item.value]" type="transmission"></car-types-input>
-                </td>
-                <td v-else-if="props.item.computedValue" :key="car.id" class="text-xs-right">{{ _self[props.item.computedValue][index] }}</td>
-                <td v-else :key="car.id" class="text-xs-right">{{ cars[index][props.item.value] }}</td>
-              </template>
+        <v-data-table
+          :headers="headers"
+          :items="view_items_compare"
+          hide-actions
+        >
+          <template slot="items" slot-scope="props">
+            <td class="text-xs-left">{{ props.item.title }}</td>
+            <!-- https://github.com/vuejs/vue/issues/3479 -->
+            <template v-for="(car, index) in cars">
+              <td v-if="props.item.component === 'engine'" :key="car.id" class="text-xs-right">
+                <engine-input v-model="cars[index][props.item.value]"></engine-input>
+              </td>
+              <td v-else-if="props.item.component === 'traction'" :key="car.id" class="text-xs-right">
+                <car-types-input v-model="cars[index][props.item.value]"></car-types-input>
+              </td>
+              <td v-else-if="props.item.component === 'transmission'" :key="car.id" class="text-xs-right">
+                <car-types-input v-model="cars[index][props.item.value]" type="transmission"></car-types-input>
+              </td>
+              <td v-else-if="props.item.component === 'bodytype'" :key="car.id" class="text-xs-right">
+                <car-types-input v-model="car[props.item.value]" type="bodytype" :edit="edit"></car-types-input>
+              </td>
+              <td v-else-if="props.item.computedValue" :key="car.id" class="text-xs-right">{{ _self[props.item.computedValue][index] }}</td>
+              <td v-else :key="car.id" class="text-xs-right">{{ cars[index][props.item.value] }}</td>
             </template>
-          </v-data-table>
+          </template>
+        </v-data-table>
+        <v-flex v-for="category in view_structure" :key="category.title" >
           <div v-for="component in category.components" :key="component">
             <car-eco v-if="component === 'eco'" :car="cars[0]"></car-eco>
           </div>
@@ -217,6 +219,22 @@ export default {
         }
       }))
     },
+    view_items_compare : function () {
+      var items = []
+      for(var i=0; i<this.view_structure.length; i++){
+        var category = this.view_structure[i]
+        if(category.items){
+          for(var j=0; j<category.items.length; j++){
+            var item = category.items[j]
+            if(item.unit){
+              item.title = `${item.title} (${item.unit})`
+            }
+            items.push(item)
+          }
+        }
+      }
+      return items
+    }
   }
 }
 </script>
