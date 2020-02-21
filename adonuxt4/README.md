@@ -1,60 +1,35 @@
-<p align="center"><img width="300" src="https://raw.githubusercontent.com/liam-potter/adonuxt-4/master/resources/static/img/logo.png"></p>
+# What is it ?
 
+Display and compare cars stats
 
-# AdoNuxt
-> [Adonis 4](http://dev.adonisjs.com/) + [Nuxt](https://nuxtjs.org) = :fire:
+- Engine curve compare
+- Acceleration in differents situations comparison
 
+![screen comparison](doc/screen_compare.jpg)
 
-## Installation
-This is a project template for [adonis-cli](https://github.com/adonisjs/adonis-cli). If you do not already have it installed simply run:
-```bash
-npm install -g @adonisjs/cli
-```
+# Vision
 
-> Adonis 4 requires adonis-cli >= 3.0.14 (`adonis --version`). If upgrading from Adonis 3.x remove the old version before reinstalling the latest version as above.
+In the long run, this project would become a wiki where user can input car data, fix current car data if those datas are wrong and compare all the cars in the world with detailled overview and graphs in a design and functional way.
 
-Once you have the CLI installed you can clone this template using the CLI which will automatically install all dependencies (where `<project-name>` is the name of your project):
-```bash
-# npm
-adonis new --blueprint liam-potter/adonuxt-4 <project-name>
+# How to install
 
-# yarn
-adonis new --blueprint liam-potter/adonuxt-4 <project-name> --yarn
-```
+- install postgres 9.6 & create database
+- fill the .env file with your database configuration
 
-## Getting Started
-- Install the relevant database package e.g. for Postgres: `npm install pg` (or `yarn add pg`)
-- Configure your database options in the `.env` file
+# Developer commands
+- npm run dev
 
+### Database
+- adonis make:migration
+- adonis migration:run
+- adonis migration:rollback
+- adonis seed (--files EngineSeeder.js)
 
-## Usage
-| npm | yarn | Description |
-|-----|------|-------------|
-| npm run dev | yarn dev | Start Adonis server in development with Nuxt in development mode (hot reloading + watcher). Listen on [http://localhost:3333](http://localhost:3333) |
-| npm run dev-debug | yarn dev-debug | As above, with additional Adonis debugging available at `chrome://inspect` |
-| npm run build | yarn build | Build the Nuxt application for production |
-| npm run start | yarn start | Start the Adonis server in production |
+### Tests
+- Create a database for tests
+- Fill the .env.testing file
+- Launch with adonis test or npm test
 
-## Features
-See [Adonis features](https://dev.adonisjs.com/docs) and [Nuxt features](https://nuxtjs.org/guide/#features)
-
-## Sample API Endpoint
-This template comes with a sample Adonis API endpoint for the `User` model. To use it simple run the sample migration and seed provided.
-
-```bash
-adonis migration:run
-adonis seed
-```
-
-At some point I will update this boilerplate to also include a simple Nuxt CRUD interface for this endpoint :smile:
-
-## Adonis Changes
-- No more `public` directory, use `resources/static` instead
-- The `resources\views` directory is still available for non-Nuxt use but be wary that your `.edge` templates will live in the same directory as your Nuxt application code.
-
-## Nuxt changes
-- The `nuxt.config.js` file is now in `config/nuxt.js`
-- The Nuxt project directory is `resources`
 
 ## Documentation
 - [Adonis](https://dev.adonisjs.com/docs)
