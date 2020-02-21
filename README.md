@@ -5,6 +5,7 @@ Display and compare cars stats
 - Engine curve compare
 - Acceleration in differents situations comparison
 
+![screen comparison](adonuxt4/doc/screen_compare.jpg)
 
 # Vision
 
