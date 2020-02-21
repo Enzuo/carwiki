@@ -16,6 +16,7 @@ In the long run, this project would become a wiki where user can input car data,
 - fill the .env file with your database configuration
 
 # Developer commands
+- npm run dev
 
 ### Database
 - adonis make:migration
